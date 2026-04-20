@@ -1,0 +1,138 @@
+---
+import Layout from './Layout.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  pubDate: Date;
+  author: string;
+  tags?: string[];
+}
+
+const { title, description, pubDate, author, tags = [] } = Astro.props;
+---
+
+<Layout title={title} description={description}>
+  <article class="tutorial">
+    <header class="header">
+      <h1>{title}</h1>
+      <div class="meta">
+        <span class="date">{pubDate.toLocaleDateString('zh-CN')}</span>
+        <span class="author">by {author}</span>
+        {tags.length > 0 && (
+          <div class="tags">
+            {tags.map(tag => <span class="tag">{tag}</span>)}
+          </div>
+        )}
+      </div>
+    </header>
+    <div class="content">
+      <slot />
+    </div>
+  </article>
+</Layout>
+
+<style>
+  .tutorial {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .header {
+    margin-bottom: 2rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .header h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+  }
+  
+  .meta {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    color: #888;
+    font-size: 0.9rem;
+    flex-wrap: wrap;
+  }
+  
+  .tags {
+    display: flex;
+    gap: 0.5rem;
+  }
+  
+  .tag {
+    background: var(--border);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+  }
+  
+  .content {
+    font-size: 1.05rem;
+    line-height: 1.8;
+  }
+  
+  .content :global(h2) {
+    font-size: 1.8rem;
+    margin-top: 2.5rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+  
+  .content :global(h3) {
+    font-size: 1.4rem;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .content :global(p) {
+    margin-bottom: 1.25rem;
+  }
+  
+  .content :global(code) {
+    background: var(--card-bg);
+    padding: 0.2rem 0.4rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+    font-family: 'Fira Code', 'Consolas', monospace;
+  }
+  
+  .content :global(pre) {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.25rem;
+    overflow-x: auto;
+    margin-bottom: 1.5rem;
+  }
+  
+  .content :global(pre code) {
+    background: none;
+    padding: 0;
+  }
+  
+  .content :global(ul), .content :global(ol) {
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  
+  .content :global(li) {
+    margin-bottom: 0.5rem;
+  }
+  
+  .content :global(a) {
+    text-decoration: underline;
+  }
+  
+  .content :global(blockquote) {
+    border-left: 4px solid var(--accent);
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    color: #aaa;
+  }
+</style>

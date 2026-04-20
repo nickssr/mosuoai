@@ -1,0 +1,95 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="关于" description="关于摸索AI - 记录 AI Agent 开发的探索之路">
+  <article class="about">
+    <h1>关于摸索AI</h1>
+    
+    <section>
+      <h2>👋 这里是哪里？</h2>
+      <p>
+        摸索AI 是一个记录 AI Agent 开发探索之路的地方。这里分享 OpenClaw、Hermes Agent 
+        等工具的实战经验、教程和心得。
+      </p>
+    </section>
+    
+    <section>
+      <h2>🎯 为什么要做这个？</h2>
+      <p>
+        AI Agent 是个新领域，文档少、坑多。我在摸索过程中踩了不少坑，也积累了一些经验。
+        把这些记录下来，希望能帮到同样在探索的人。
+      </p>
+    </section>
+    
+    <section>
+      <h2>📚 内容方向</h2>
+      <ul>
+        <li><strong>OpenClaw 教程</strong> - 安装、配置、Skill 开发、部署</li>
+        <li><strong>Hermes Agent</strong> - 使用指南、实战案例</li>
+        <li><strong>AI 工具评测</strong> - 各种 AI 开发工具的对比和推荐</li>
+        <li><strong>项目实战</strong> - 从零到一构建 AI Agent 项目</li>
+      </ul>
+    </section>
+    
+    <section>
+      <h2>👨‍💻 关于作者</h2>
+      <p>
+        老李，一个在 AI Agent 领域摸索的开发者。有糖尿病，总是熬夜，做事有点拖拉，
+        但认真起来会忘记时间。
+      </p>
+    </section>
+    
+    <section>
+      <h2>📬 联系我</h2>
+      <p>
+        有问题或建议？欢迎交流。
+      </p>
+    </section>
+  </article>
+</Layout>
+
+<style>
+  .about {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .about h1 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid var(--accent);
+  }
+  
+  .about section {
+    margin-bottom: 2.5rem;
+  }
+  
+  .about h2 {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    color: var(--text);
+  }
+  
+  .about p {
+    color: #aaa;
+    line-height: 1.8;
+    margin-bottom: 1rem;
+  }
+  
+  .about ul {
+    list-style: none;
+    padding-left: 0;
+  }
+  
+  .about li {
+    padding: 0.5rem 0;
+    color: #aaa;
+    line-height: 1.6;
+  }
+  
+  .about li strong {
+    color: var(--text);
+  }
+</style>
