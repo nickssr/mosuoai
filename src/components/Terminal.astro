@@ -1,0 +1,89 @@
+---
+interface Props {
+  content: string;
+  title?: string;
+}
+
+const { content, title = 'Terminal' } = Astro.props;
+---
+
+<div class="terminal">
+  <div class="terminal-header">
+    <div class="terminal-buttons">
+      <span class="terminal-btn terminal-btn-close"></span>
+      <span class="terminal-btn terminal-btn-minimize"></span>
+      <span class="terminal-btn terminal-btn-maximize"></span>
+    </div>
+    <span class="terminal-title">{title}</span>
+  </div>
+  <div class="terminal-body">
+    <pre><code>{content}</code></pre>
+  </div>
+</div>
+
+<style>
+  .terminal {
+    background: #0d1117;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin: var(--space-6) 0;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--color-border);
+  }
+
+  .terminal-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    background: #161b22;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .terminal-buttons {
+    display: flex;
+    gap: var(--space-2);
+  }
+
+  .terminal-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: var(--radius-full);
+  }
+
+  .terminal-btn-close {
+    background: #ff5f56;
+  }
+
+  .terminal-btn-minimize {
+    background: #ffbd2e;
+  }
+
+  .terminal-btn-maximize {
+    background: #27c93f;
+  }
+
+  .terminal-title {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    font-family: var(--font-mono);
+  }
+
+  .terminal-body {
+    padding: var(--space-5);
+    overflow-x: auto;
+  }
+
+  .terminal-body pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .terminal-body code {
+    font-family: var(--font-mono);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    color: var(--color-text-secondary);
+  }
+</style>

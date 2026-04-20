@@ -21,6 +21,43 @@ const {
 
 const siteName = '摸索 AI';
 const twitterHandle = '@mosuoai';
+
+function generateJSONLD() {
+  const baseSchema = {
+    '@context': 'https://schema.org',
+    '@type': article ? 'Article' : 'WebPage',
+    headline: title,
+    description,
+    image: new URL(image, Astro.url.origin).href,
+    url: canonicalURL,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': canonicalURL,
+    },
+  };
+
+  if (article) {
+    return {
+      ...baseSchema,
+      datePublished: article.publishedTime,
+      dateModified: article.modifiedTime || article.publishedTime,
+      author: article.authors?.map((author) => ({
+        '@type': 'Person',
+        name: author,
+      })),
+      publisher: {
+        '@type': 'Organization',
+        name: siteName,
+        logo: {
+          '@type': 'ImageObject',
+          url: new URL('/logo.png', Astro.url.origin).href,
+        },
+      },
+    };
+  }
+
+  return baseSchema;
+}
 ---
 
 <!-- 基础 Meta 标签 -->
@@ -79,44 +116,3 @@ const twitterHandle = '@mosuoai';
 
 <!-- JSON-LD 结构化数据 -->
 <script type="application/ld+json" set:html={JSON.stringify(generateJSONLD())} />
-
----
-
-{
-  function generateJSONLD() {
-    const baseSchema = {
-      '@context': 'https://schema.org',
-      '@type': article ? 'Article' : 'WebPage',
-      headline: title,
-      description,
-      image: new URL(image, Astro.url.origin).href,
-      url: canonicalURL,
-      mainEntityOfPage: {
-        '@type': 'WebPage',
-        '@id': canonicalURL,
-      },
-    };
-
-    if (article) {
-      return {
-        ...baseSchema,
-        datePublished: article.publishedTime,
-        dateModified: article.modifiedTime || article.publishedTime,
-        author: article.authors?.map((author) => ({
-          '@type': 'Person',
-          name: author,
-        })),
-        publisher: {
-          '@type': 'Organization',
-          name: siteName,
-          logo: {
-            '@type': 'ImageObject',
-            url: new URL('/logo.png', Astro.url.origin).href,
-          },
-        },
-      };
-    }
-
-    return baseSchema;
-  }
-}
