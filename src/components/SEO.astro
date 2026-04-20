@@ -1,0 +1,122 @@
+---
+interface Props {
+  title: string;
+  description?: string;
+  image?: string;
+  article?: {
+    publishedTime: string;
+    modifiedTime?: string;
+    authors?: string[];
+  };
+  canonicalURL?: string;
+}
+
+const {
+  title,
+  description = '摸索 AI - AI Agent 教程与实战',
+  image = '/og-image.png',
+  article,
+  canonicalURL = Astro.url.href,
+} = Astro.props;
+
+const siteName = '摸索 AI';
+const twitterHandle = '@mosuoai';
+---
+
+<!-- 基础 Meta 标签 -->
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="description" content={description} />
+<meta name="theme-color" content="#00d4e0" />
+<link rel="canonical" href={canonicalURL} />
+
+<!-- 搜索引擎优化 -->
+<meta name="robots" content="index, follow" />
+<meta name="googlebot" content="index, follow" />
+
+<!-- 作者 -->
+{article?.authors?.map((author) => <meta name="author" content={author} />)}
+
+<!-- Open Graph -->
+<meta property="og:type" content={article ? 'article' : 'website'} />
+<meta property="og:title" content={`${title} | ${siteName}`} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={new URL(image, Astro.url.origin).href} />
+<meta property="og:url" content={canonicalURL} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:locale" content="zh_CN" />
+
+<!-- Open Graph 文章属性 -->
+{article && (
+  <>
+    <meta property="article:published_time" content={article.publishedTime} />
+    {article.modifiedTime && <meta property="article:modified_time" content={article.modifiedTime} />}
+    {article.authors?.map((author) => (
+      <meta property="article:author" content={author} />
+    ))}
+  </>
+)}
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:site" content={twitterHandle} />
+<meta name="twitter:creator" content={twitterHandle} />
+<meta name="twitter:title" content={`${title} | ${siteName}`} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={new URL(image, Astro.url.origin).href} />
+
+<!-- Favicon -->
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+
+<!-- 预加载字体 -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link
+  href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+  rel="stylesheet"
+/>
+
+<!-- JSON-LD 结构化数据 -->
+<script type="application/ld+json" set:html={JSON.stringify(generateJSONLD())} />
+
+---
+
+{
+  function generateJSONLD() {
+    const baseSchema = {
+      '@context': 'https://schema.org',
+      '@type': article ? 'Article' : 'WebPage',
+      headline: title,
+      description,
+      image: new URL(image, Astro.url.origin).href,
+      url: canonicalURL,
+      mainEntityOfPage: {
+        '@type': 'WebPage',
+        '@id': canonicalURL,
+      },
+    };
+
+    if (article) {
+      return {
+        ...baseSchema,
+        datePublished: article.publishedTime,
+        dateModified: article.modifiedTime || article.publishedTime,
+        author: article.authors?.map((author) => ({
+          '@type': 'Person',
+          name: author,
+        })),
+        publisher: {
+          '@type': 'Organization',
+          name: siteName,
+          logo: {
+            '@type': 'ImageObject',
+            url: new URL('/logo.png', Astro.url.origin).href,
+          },
+        },
+      };
+    }
+
+    return baseSchema;
+  }
+}

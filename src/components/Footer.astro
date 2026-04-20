@@ -1,0 +1,86 @@
+---
+const currentYear = new Date().getFullYear();
+
+const footerLinks = [
+  { href: '/about', label: '关于' },
+  { href: '/rss.xml', label: 'RSS' },
+  { href: '/sitemap.xml', label: 'Sitemap' },
+];
+---
+
+<footer class="footer">
+  <div class="footer-content">
+    <div class="footer-links">
+      {footerLinks.map((link) => (
+        <a href={link.href} class="footer-link">
+          {link.label}
+        </a>
+      ))}
+    </div>
+
+    <div class="footer-bottom">
+      <p class="copyright">
+        &copy; {currentYear} MosuoAI - Made with Astro & Cloudflare Pages
+      </p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .footer {
+    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    padding: var(--space-8) var(--space-6);
+    margin-top: auto;
+  }
+
+  .footer-content {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-6);
+  }
+
+  .footer-links {
+    display: flex;
+    gap: var(--space-6);
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .footer-link {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color var(--transition-fast);
+  }
+
+  .footer-link:hover {
+    color: var(--color-primary);
+  }
+
+  .footer-bottom {
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--color-border);
+    width: 100%;
+    text-align: center;
+  }
+
+  .copyright {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  /* 移动端 */
+  @media (max-width: 640px) {
+    .footer {
+      padding: var(--space-6) var(--space-4);
+    }
+
+    .footer-links {
+      gap: var(--space-4);
+    }
+  }
+</style>

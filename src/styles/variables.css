@@ -1,0 +1,71 @@
+:root {
+  /* 背景色 */
+  --color-bg-primary: #0a0e14;
+  --color-bg-secondary: #111827;
+  --color-bg-tertiary: #1f2937;
+  --color-bg-glass: rgba(17, 24, 39, 0.8);
+
+  /* 文字色 */
+  --color-text-primary: #f9fafb;
+  --color-text-secondary: #9ca3af;
+  --color-text-muted: #6b7280;
+
+  /* 边框 */
+  --color-border: #374151;
+  --color-border-light: #4b5563;
+
+  /* 品牌主色 - 科技青色 */
+  --color-primary: #00d4e0;
+  --color-primary-dark: #00b4c0;
+  --color-primary-glow: rgba(0, 212, 224, 0.3);
+
+  /* 强调色 - 紫罗兰 */
+  --color-accent: #8b5cf6;
+  --color-accent-glow: rgba(139, 92, 246, 0.3);
+
+  /* 功能色 */
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-error: #ef4444;
+  --color-info: #3b82f6;
+
+  /* 字体 */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Consolas', monospace;
+  --font-serif: 'Georgia', 'Times New Roman', serif;
+
+  /* 间距 (4px 倍数) */
+  --space-1: 0.25rem;  /* 4px */
+  --space-2: 0.5rem;   /* 8px */
+  --space-3: 0.75rem;  /* 12px */
+  --space-4: 1rem;     /* 16px */
+  --space-5: 1.25rem;  /* 20px */
+  --space-6: 1.5rem;   /* 24px */
+  --space-8: 2rem;     /* 32px */
+  --space-10: 2.5rem;  /* 40px */
+  --space-12: 3rem;    /* 48px */
+
+  /* 圆角 */
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+  --radius-2xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* 阴影 */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.5);
+  --shadow-glow-primary: 0 0 20px var(--color-primary-glow);
+  --shadow-glow-accent: 0 0 20px var(--color-accent-glow);
+
+  /* 过渡 */
+  --transition-fast: 150ms ease;
+  --transition-base: 250ms ease;
+  --transition-slow: 400ms ease;
+}
+
+/* 响应式断点
+ * sm: 640px, md: 768px, lg: 1024px, xl: 1280px, 2xl: 1536px
+ */
