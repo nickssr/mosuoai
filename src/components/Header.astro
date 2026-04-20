@@ -22,6 +22,30 @@ const navLinks = [
       ))}
     </nav>
 
+    <div class="nav-actions">
+      <!-- 搜索框预留 -->
+      <div class="search-container">
+        <button class="search-btn" aria-label="搜索">
+          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"/>
+            <path d="m21 21-4.35-4.35"/>
+          </svg>
+        </button>
+        <input type="text" class="search-input" placeholder="搜索文章..." disabled />
+      </div>
+
+      <!-- 主题切换预留 -->
+      <button class="theme-toggle" aria-label="切换主题">
+        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+        </svg>
+      </button>
+    </div>
+
     <button class="menu-toggle" aria-label="切换菜单">
       <span class="hamburger"></span>
     </button>
@@ -129,13 +153,83 @@ const navLinks = [
     width: 100%;
   }
 
+  /* Nav Actions - 搜索和主题切换 */
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+  }
+
   /* 搜索框预留 */
   .search-container {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .search-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: not-allowed;
+    opacity: 0.5;
+    transition: all var(--transition-fast);
+  }
+
+  .search-btn:hover {
+    border-color: var(--color-border-light);
+  }
+
+  .search-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-text-secondary);
+  }
+
+  .search-input {
     display: none;
+    width: 200px;
+    padding: var(--space-2) var(--space-3);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    color: var(--color-text-primary);
+    font-size: 0.875rem;
   }
 
   /* 主题切换预留 */
   .theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all var(--transition-fast);
+  }
+
+  .theme-toggle:hover {
+    border-color: var(--color-border-light);
+    opacity: 0.7;
+  }
+
+  .sun-icon,
+  .moon-icon {
+    width: 18px;
+    height: 18px;
+    color: var(--color-text-secondary);
+  }
+
+  .moon-icon {
     display: none;
   }
 
