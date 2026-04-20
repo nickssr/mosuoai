@@ -2,46 +2,70 @@
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout title="关于" description="关于摸索AI - 记录 AI Agent 开发的探索之路">
+<Layout title="关于" description="关于摸索 AI - 记录 AI Agent 开发的探索之路">
   <article class="about">
-    <h1>关于摸索AI</h1>
+    <header class="header">
+      <div class="header-icon">🔮</div>
+      <h1>关于摸索AI</h1>
+    </header>
     
-    <section>
-      <h2>👋 这里是哪里？</h2>
+    <section class="section">
+      <div class="section-icon">👋</div>
+      <h2>这里是哪里？</h2>
       <p>
         摸索AI 是一个记录 AI Agent 开发探索之路的地方。这里分享 OpenClaw、Hermes Agent 
         等工具的实战经验、教程和心得。
       </p>
     </section>
     
-    <section>
-      <h2>🎯 为什么要做这个？</h2>
+    <section class="section">
+      <div class="section-icon">🎯</div>
+      <h2>为什么要做这个？</h2>
       <p>
         AI Agent 是个新领域，文档少、坑多。我在摸索过程中踩了不少坑，也积累了一些经验。
         把这些记录下来，希望能帮到同样在探索的人。
       </p>
     </section>
     
-    <section>
-      <h2>📚 内容方向</h2>
-      <ul>
-        <li><strong>OpenClaw 教程</strong> - 安装、配置、Skill 开发、部署</li>
-        <li><strong>Hermes Agent</strong> - 使用指南、实战案例</li>
-        <li><strong>AI 工具评测</strong> - 各种 AI 开发工具的对比和推荐</li>
-        <li><strong>项目实战</strong> - 从零到一构建 AI Agent 项目</li>
-      </ul>
+    <section class="section">
+      <div class="section-icon">📚</div>
+      <h2>内容方向</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="card-icon">🦾</div>
+          <h3>OpenClaw 教程</h3>
+          <p>安装、配置、Skill 开发、部署</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <h3>Hermes Agent</h3>
+          <p>使用指南、实战案例</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🧪</div>
+          <h3>AI 工具评测</h3>
+          <p>各种 AI 开发工具的对比和推荐</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🚀</div>
+          <h3>项目实战</h3>
+          <p>从零到一构建 AI Agent 项目</p>
+        </div>
+      </div>
     </section>
     
-    <section>
-      <h2>👨‍💻 关于作者</h2>
+    <section class="section">
+      <div class="section-icon">👨‍💻</div>
+      <h2>关于作者</h2>
       <p>
         老李，一个在 AI Agent 领域摸索的开发者。有糖尿病，总是熬夜，做事有点拖拉，
         但认真起来会忘记时间。
       </p>
     </section>
     
-    <section>
-      <h2>📬 联系我</h2>
+    <section class="section">
+      <div class="section-icon">📬</div>
+      <h2>联系我</h2>
       <p>
         有问题或建议？欢迎交流。
       </p>
@@ -55,41 +79,121 @@ import Layout from '../layouts/Layout.astro';
     margin: 0 auto;
   }
   
-  .about h1 {
+  .header {
+    text-align: center;
+    padding: 3rem 0;
+    margin-bottom: 3rem;
+  }
+  
+  .header-icon {
+    font-size: 4rem;
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .header h1 {
     font-size: 2.5rem;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--accent);
+    font-weight: 800;
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
   
-  .about section {
+  .section {
     margin-bottom: 2.5rem;
+    padding: 2rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
   }
   
-  .about h2 {
+  .section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    opacity: 0.5;
+  }
+  
+  .section-icon {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .section h2 {
     font-size: 1.5rem;
+    font-weight: 700;
     margin-bottom: 1rem;
     color: var(--text);
   }
   
-  .about p {
-    color: #aaa;
+  .section p {
+    color: var(--text-muted);
     line-height: 1.8;
-    margin-bottom: 1rem;
+    font-size: 1rem;
   }
   
-  .about ul {
-    list-style: none;
-    padding-left: 0;
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+    margin-top: 1.5rem;
   }
   
-  .about li {
-    padding: 0.5rem 0;
-    color: #aaa;
-    line-height: 1.6;
+  .card {
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
   }
   
-  .about li strong {
+  .card:hover {
+    border-color: var(--primary);
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-md), 0 0 20px rgba(124, 58, 237, 0.15);
+  }
+  
+  .card-icon {
+    font-size: 2rem;
+    margin-bottom: 0.75rem;
+  }
+  
+  .card h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
     color: var(--text);
+  }
+  
+  .card p {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    line-height: 1.5;
+  }
+  
+  @media (max-width: 768px) {
+    .header h1 {
+      font-size: 2rem;
+    }
+    
+    .section {
+      padding: 1.5rem;
+    }
+    
+    .grid {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
