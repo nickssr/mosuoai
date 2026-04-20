@@ -1,6 +1,5 @@
 ---
-import { Icon } from 'lucide-astro';
-import { Info, TriangleAlert, CircleCheck, CircleX } from 'lucide-astro/icons';
+import { Info, TriangleAlert, CircleCheck, CircleX } from 'lucide-astro';
 
 interface Props {
   type?: 'info' | 'warning' | 'success' | 'error';
@@ -9,27 +8,32 @@ interface Props {
 
 const { type = 'info', title } = Astro.props;
 
+const iconMap = {
+  info: Info,
+  warning: TriangleAlert,
+  success: CircleCheck,
+  error: CircleX,
+};
+
+const IconComponent = iconMap[type];
+
 const config = {
   info: {
-    icon: Info,
     borderColor: 'var(--color-info)',
     bgColor: 'rgba(59, 130, 246, 0.1)',
     titleColor: 'var(--color-info)',
   },
   warning: {
-    icon: TriangleAlert,
     borderColor: 'var(--color-warning)',
     bgColor: 'rgba(245, 158, 11, 0.1)',
     titleColor: 'var(--color-warning)',
   },
   success: {
-    icon: CircleCheck,
     borderColor: 'var(--color-success)',
     bgColor: 'rgba(16, 185, 129, 0.1)',
     titleColor: 'var(--color-success)',
   },
   error: {
-    icon: CircleX,
     borderColor: 'var(--color-error)',
     bgColor: 'rgba(239, 68, 68, 0.1)',
     titleColor: 'var(--color-error)',
@@ -42,7 +46,7 @@ const currentConfig = config[type];
 <div class="callout" style={`border-left-color: ${currentConfig.borderColor}; background: ${currentConfig.bgColor};`}>
   {title && (
     <div class="callout-title" style={`color: ${currentConfig.titleColor};`}>
-      <Icon name={currentConfig.icon} size={18} class="callout-icon" />
+      <IconComponent size={18} class="callout-icon" />
       <span>{title}</span>
     </div>
   )}

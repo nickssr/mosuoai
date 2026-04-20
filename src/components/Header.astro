@@ -1,6 +1,5 @@
 ---
-import { Icon } from 'lucide-astro';
-import { Bot, Search, Sun, Moon, Menu, X } from 'lucide-astro/icons';
+import { Bot, Search, Sun, Moon, Menu, X } from 'lucide-astro';
 
 const navLinks = [
   { href: '/tutorials', label: '教程' },
@@ -13,7 +12,7 @@ const navLinks = [
 <header class="header">
   <div class="nav">
     <a href="/" class="logo">
-      <Icon name={Bot} class="logo-icon" size={28} />
+      <Bot size={28} class="logo-icon" />
       <span class="logo-text">MosuoAI</span>
     </a>
 
@@ -29,21 +28,21 @@ const navLinks = [
       <!-- 搜索框预留 -->
       <div class="search-container">
         <button class="search-btn" aria-label="搜索">
-          <Icon name={Search} class="search-icon" size={18} />
+          <Search size={18} class="search-icon" />
         </button>
         <input type="text" class="search-input" placeholder="搜索文章..." disabled />
       </div>
 
       <!-- 主题切换预留 -->
       <button class="theme-toggle" aria-label="切换主题">
-        <Icon name={Sun} class="sun-icon" size={18} />
-        <Icon name={Moon} class="moon-icon" size={18} />
+        <Sun size={18} class="sun-icon" />
+        <Moon size={18} class="moon-icon" />
       </button>
     </div>
 
     <button class="menu-toggle" aria-label="切换菜单">
-      <Icon name={Menu} class="hamburger-icon menu-open" size={24} />
-      <Icon name={X} class="hamburger-icon menu-close" size={24} />
+      <Menu size={24} class="hamburger-icon menu-open" />
+      <X size={24} class="hamburger-icon menu-close" />
     </button>
   </div>
 

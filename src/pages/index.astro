@@ -1,6 +1,5 @@
 ---
-import { Icon } from 'lucide-astro';
-import { Newspaper, Calendar, Bot } from 'lucide-astro/icons';
+import { Newspaper, Calendar, Bot } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -50,7 +49,7 @@ const allTags = allPosts
 
         {sortedPosts.length === 0 ? (
           <div class="empty-state">
-            <Icon name={Newspaper} size={56} class="empty-icon" />
+            <Newspaper size={56} class="empty-icon" />
             <p>还没有文章，敬请期待...</p>
           </div>
         ) : (
@@ -84,7 +83,7 @@ const allTags = allPosts
                   </div>
                   <div class="card-footer">
                     <span class="card-date">
-                      <Icon name={Calendar} size={14} />
+                      <Calendar size={14} />
                       {latestPost.data.pubDate.toLocaleDateString('zh-CN', {
                         year: 'numeric',
                         month: 'long',
@@ -144,7 +143,7 @@ const allTags = allPosts
       <aside class="sidebar">
         <!-- Author Card -->
         <div class="sidebar-card author-card">
-          <Icon name={Bot} size={64} class="author-avatar" />
+          <Bot size={64} height={64} class="author-avatar" />
           <h3 class="author-name">老李</h3>
           <p class="author-bio">
             AI Agent 开发者，热衷于探索 AI 技术的实际应用。

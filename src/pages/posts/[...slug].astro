@@ -1,6 +1,5 @@
 ---
-import { Icon } from 'lucide-astro';
-import { Calendar, User, Tag, ArrowLeft, ArrowRight } from 'lucide-astro/icons';
+import { Calendar, User, Tag, ArrowLeft, ArrowRight } from 'lucide-astro';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
@@ -96,7 +95,7 @@ const categoryNames: Record<string, string> = {
 
       <div class="post-meta">
         <span class="meta-item">
-          <Icon name={Calendar} size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
+          <Calendar size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
           <time datetime={post.data.pubDate.toISOString()}>
             {post.data.pubDate.toLocaleDateString('zh-CN', {
               year: 'numeric',
@@ -107,7 +106,7 @@ const categoryNames: Record<string, string> = {
         </span>
         <span class="meta-divider">•</span>
         <span class="meta-item">
-          <Icon name={User} size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
+          <User size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
           {readingTime} 分钟阅读
         </span>
         <span class="meta-divider">•</span>
@@ -130,7 +129,7 @@ const categoryNames: Record<string, string> = {
         <div class="post-tags">
           {post.data.tags.map((tag) => (
             <a href={`/tags/${tag}`} class="tag">
-              <Icon name={Tag} size={12} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
+              <Tag size={12} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
               {tag}
             </a>
           ))}
@@ -157,12 +156,12 @@ const categoryNames: Record<string, string> = {
       {post.data.tags && post.data.tags.length > 0 && (
         <div class="footer-tags">
           <span class="footer-label">
-            <Icon name={Tag} size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
+            <Tag size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
             标签：
           </span>
           {post.data.tags.map((tag) => (
             <a href={`/tags/${tag}`} class="tag">
-              <Icon name={Tag} size={12} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
+              <Tag size={12} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
               {tag}
             </a>
           ))}
@@ -175,7 +174,7 @@ const categoryNames: Record<string, string> = {
           {prevPost && (
             <a href={`/posts/${prevPost.slug}`} class="nav-item nav-prev">
               <span class="nav-label">
-                <Icon name={ArrowLeft} size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
+                <ArrowLeft size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
                 上一篇
               </span>
               <span class="nav-title">{prevPost.data.title}</span>
@@ -185,7 +184,7 @@ const categoryNames: Record<string, string> = {
             <a href={`/posts/${nextPost.slug}`} class="nav-item nav-next">
               <span class="nav-label">
                 下一篇
-                <Icon name={ArrowRight} size={14} style="display:inline-block;vertical-align:middle;margin-left:4px;" />
+                <ArrowRight size={14} style="display:inline-block;vertical-align:middle;margin-left:4px;" />
               </span>
               <span class="nav-title">{nextPost.data.title}</span>
             </a>
