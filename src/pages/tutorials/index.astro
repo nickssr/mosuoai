@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'lucide-astro';
+import { BookOpen, Construction, Calendar, User } from 'lucide-astro/icons';
 import Layout from '../../layouts/Layout.astro';
 import { getCollection } from 'astro:content';
 
@@ -8,14 +10,14 @@ const sortedTutorials = tutorials.sort((a, b) => b.data.order - a.data.order);
 
 <Layout title="教程" description="AI Agent 开发教程 - OpenClaw、Hermes Agent 等工具实战指南">
   <section class="page-header">
-    <div class="header-icon">📚</div>
+    <Icon name={BookOpen} size={64} class="header-icon" />
     <h1>全部教程</h1>
     <p class="subtitle">系统学习 AI Agent 开发，从入门到实战</p>
   </section>
-  
+
   {sortedTutorials.length === 0 ? (
     <div class="empty-state">
-      <div class="empty-icon">🚧</div>
+      <Icon name={Construction} size={64} class="empty-icon" />
       <h2>教程正在筹备中</h2>
       <p>精彩内容即将上线，敬请期待...</p>
     </div>
@@ -37,11 +39,11 @@ const sortedTutorials = tutorials.sort((a, b) => b.data.order - a.data.order);
             <p class="description">{tutorial.data.description}</p>
             <div class="meta">
               <span class="meta-item">
-                <span class="icon">📅</span>
+                <Icon name={Calendar} size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
                 {tutorial.data.pubDate.toLocaleDateString('zh-CN')}
               </span>
               <span class="meta-item">
-                <span class="icon">✍️</span>
+                <Icon name={User} size={14} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
                 {tutorial.data.author}
               </span>
             </div>
@@ -63,7 +65,7 @@ const sortedTutorials = tutorials.sort((a, b) => b.data.order - a.data.order);
   }
   
   .header-icon {
-    font-size: 3rem;
+    color: var(--primary-light);
     margin-bottom: 1rem;
     animation: float 3s ease-in-out infinite;
   }
@@ -215,7 +217,7 @@ const sortedTutorials = tutorials.sort((a, b) => b.data.order - a.data.order);
   }
   
   .icon {
-    font-size: 0.9rem;
+    color: var(--text-dim);
   }
   
   .arrow {
@@ -242,9 +244,9 @@ const sortedTutorials = tutorials.sort((a, b) => b.data.order - a.data.order);
   }
   
   .empty-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
+    color: var(--text-muted);
     opacity: 0.5;
+    margin-bottom: 1rem;
   }
   
   .empty-state h2 {

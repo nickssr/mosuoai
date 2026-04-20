@@ -1,4 +1,7 @@
 ---
+import { Icon } from 'lucide-astro';
+import { Bot, Search, Sun, Moon, Menu, X } from 'lucide-astro/icons';
+
 const navLinks = [
   { href: '/tutorials', label: '教程' },
   { href: '/reviews', label: '评测' },
@@ -10,7 +13,7 @@ const navLinks = [
 <header class="header">
   <div class="nav">
     <a href="/" class="logo">
-      <span class="logo-icon">🤖</span>
+      <Icon name={Bot} class="logo-icon" size={28} />
       <span class="logo-text">MosuoAI</span>
     </a>
 
@@ -26,28 +29,21 @@ const navLinks = [
       <!-- 搜索框预留 -->
       <div class="search-container">
         <button class="search-btn" aria-label="搜索">
-          <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/>
-            <path d="m21 21-4.35-4.35"/>
-          </svg>
+          <Icon name={Search} class="search-icon" size={18} />
         </button>
         <input type="text" class="search-input" placeholder="搜索文章..." disabled />
       </div>
 
       <!-- 主题切换预留 -->
       <button class="theme-toggle" aria-label="切换主题">
-        <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="5"/>
-          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-        </svg>
-        <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
-        </svg>
+        <Icon name={Sun} class="sun-icon" size={18} />
+        <Icon name={Moon} class="moon-icon" size={18} />
       </button>
     </div>
 
     <button class="menu-toggle" aria-label="切换菜单">
-      <span class="hamburger"></span>
+      <Icon name={Menu} class="hamburger-icon menu-open" size={24} />
+      <Icon name={X} class="hamburger-icon menu-close" size={24} />
     </button>
   </div>
 
@@ -116,7 +112,12 @@ const navLinks = [
   }
 
   .logo-icon {
-    font-size: 1.75rem;
+    color: var(--color-text-primary);
+    transition: color var(--transition-fast);
+  }
+
+  .logo:hover .logo-icon {
+    color: var(--color-primary);
   }
 
   /* Nav Links */
@@ -186,8 +187,6 @@ const navLinks = [
   }
 
   .search-icon {
-    width: 18px;
-    height: 18px;
     color: var(--color-text-secondary);
   }
 
@@ -224,8 +223,6 @@ const navLinks = [
 
   .sun-icon,
   .moon-icon {
-    width: 18px;
-    height: 18px;
     color: var(--color-text-secondary);
   }
 
@@ -245,47 +242,29 @@ const navLinks = [
     border: none;
     cursor: pointer;
     padding: var(--space-2);
-  }
-
-  .hamburger {
-    width: 24px;
-    height: 2px;
-    background: var(--color-text-primary);
-    border-radius: 2px;
     position: relative;
-    transition: background var(--transition-fast);
   }
 
-  .hamburger::before,
-  .hamburger::after {
-    content: '';
-    position: absolute;
-    width: 24px;
-    height: 2px;
-    background: var(--color-text-primary);
-    border-radius: 2px;
-    transition: transform var(--transition-base);
+  .hamburger-icon {
+    color: var(--color-text-primary);
+    transition: opacity var(--transition-fast);
   }
 
-  .hamburger::before {
-    top: -7px;
+  .menu-open {
+    display: block;
   }
 
-  .hamburger::after {
-    bottom: -7px;
+  .menu-close {
+    display: none;
   }
 
   /* 汉堡菜单激活状态 */
-  .menu-toggle.active .hamburger {
-    background: transparent;
+  .menu-toggle.active .menu-open {
+    display: none;
   }
 
-  .menu-toggle.active .hamburger::before {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-
-  .menu-toggle.active .hamburger::after {
-    transform: rotate(-45deg) translate(5px, -5px);
+  .menu-toggle.active .menu-close {
+    display: block;
   }
 
   /* 移动端菜单 */

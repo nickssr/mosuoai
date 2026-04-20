@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'lucide-astro';
+import { Calendar, User, Tag, ArrowLeft } from 'lucide-astro/icons';
 import Layout from './Layout.astro';
 
 interface Props {
@@ -30,17 +32,22 @@ const { title, description, pubDate, author, tags = [] } = Astro.props;
       <div class="meta">
         <div class="meta-left">
           <span class="meta-item">
-            <span class="icon">📅</span>
+            <Icon name={Calendar} size={16} class="icon" />
             {pubDate.toLocaleDateString('zh-CN')}
           </span>
           <span class="meta-item">
-            <span class="icon">✍️</span>
+            <Icon name={User} size={16} class="icon" />
             {author}
           </span>
         </div>
         {tags.length > 0 && (
           <div class="tags">
-            {tags.map(tag => <span class="tag">{tag}</span>)}
+            {tags.map(tag => (
+              <span class="tag">
+                <Icon name={Tag} size={12} style="display:inline-block;vertical-align:middle;margin-right:4px;" />
+                {tag}
+              </span>
+            ))}
           </div>
         )}
       </div>
@@ -50,7 +57,7 @@ const { title, description, pubDate, author, tags = [] } = Astro.props;
     </div>
     <footer class="article-footer">
       <a href="/tutorials" class="back-link">
-        <span class="arrow">←</span>
+        <Icon name={ArrowLeft} size={16} class="arrow" style="display:inline-block;" />
         返回教程列表
       </a>
     </footer>
@@ -154,7 +161,9 @@ const { title, description, pubDate, author, tags = [] } = Astro.props;
   }
   
   .icon {
-    font-size: 1rem;
+    color: var(--text-dim);
+    display: inline-flex;
+    align-items: center;
   }
   
   .tags {
@@ -346,6 +355,7 @@ const { title, description, pubDate, author, tags = [] } = Astro.props;
   
   .arrow {
     transition: transform 0.3s ease;
+    color: var(--text-dim);
   }
   
   @media (max-width: 768px) {

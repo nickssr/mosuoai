@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'lucide-astro';
+import { Newspaper, Calendar, Bot } from 'lucide-astro/icons';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -48,7 +50,7 @@ const allTags = allPosts
 
         {sortedPosts.length === 0 ? (
           <div class="empty-state">
-            <div class="empty-icon">📝</div>
+            <Icon name={Newspaper} size={56} class="empty-icon" />
             <p>还没有文章，敬请期待...</p>
           </div>
         ) : (
@@ -82,7 +84,7 @@ const allTags = allPosts
                   </div>
                   <div class="card-footer">
                     <span class="card-date">
-                      <span class="icon">📅</span>
+                      <Icon name={Calendar} size={14} />
                       {latestPost.data.pubDate.toLocaleDateString('zh-CN', {
                         year: 'numeric',
                         month: 'long',
@@ -142,7 +144,7 @@ const allTags = allPosts
       <aside class="sidebar">
         <!-- Author Card -->
         <div class="sidebar-card author-card">
-          <div class="author-avatar">🤖</div>
+          <Icon name={Bot} size={64} class="author-avatar" />
           <h3 class="author-name">老李</h3>
           <p class="author-bio">
             AI Agent 开发者，热衷于探索 AI 技术的实际应用。
@@ -270,11 +272,6 @@ const allTags = allPosts
     display: flex;
     align-items: center;
     gap: 0.5rem;
-  }
-
-  .section-title::before {
-    content: '📰';
-    font-size: 1.25rem;
   }
 
   /* Bento Grid */
@@ -481,6 +478,10 @@ const allTags = allPosts
     gap: 0.4rem;
   }
 
+  .card-date svg {
+    flex-shrink: 0;
+  }
+
   .read-more {
     color: var(--color-primary);
     font-weight: 500;
@@ -525,7 +526,7 @@ const allTags = allPosts
   }
 
   .author-avatar {
-    font-size: 4rem;
+    color: var(--color-text-primary);
     margin-bottom: 0.75rem;
   }
 
@@ -654,9 +655,9 @@ const allTags = allPosts
   }
 
   .empty-icon {
-    font-size: 3.5rem;
-    margin-bottom: 1rem;
+    color: var(--color-text-muted);
     opacity: 0.5;
+    margin-bottom: 1rem;
   }
 
   .empty-state p {

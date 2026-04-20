@@ -1,4 +1,6 @@
 ---
+import { Icon } from 'lucide-astro';
+import { Sparkles } from 'lucide-astro/icons';
 interface Props {
   title: string;
   description?: string;
@@ -23,7 +25,7 @@ const { title, description = '摸索AI - AI Agent 教程与实战' } = Astro.pro
     <header class="header">
       <nav class="nav">
         <a href="/" class="logo">
-          <span class="logo-icon">🔮</span>
+          <Icon name={Sparkles} size={28} class="logo-icon" />
           <span class="logo-text">摸索AI</span>
         </a>
         <div class="nav-links">
@@ -150,7 +152,12 @@ const { title, description = '摸索AI - AI Agent 教程与实战' } = Astro.pro
   }
   
   .logo-icon {
-    font-size: 1.75rem;
+    color: var(--text);
+    transition: color 0.2s ease;
+  }
+
+  .logo:hover .logo-icon {
+    color: var(--primary-light);
   }
   
   .logo:hover {
