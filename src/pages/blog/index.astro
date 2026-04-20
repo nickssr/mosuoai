@@ -1,12 +1,12 @@
 ---
-import Layout from '../../layouts/Layout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const posts = await getCollection('blog');
 const sortedPosts = posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDate.getTime());
 ---
 
-<Layout title="博客" description="AI Agent 开发随笔、想法与实战记录">
+<BaseLayout title="博客" description="AI Agent 开发随笔、想法与实战记录">
   <h1>博客</h1>
   <p class="intro">记录 AI Agent 开发的思考与实战</p>
   
@@ -30,7 +30,7 @@ const sortedPosts = posts.sort((a, b) => b.data.pubDate.getTime() - a.data.pubDa
       ))}
     </div>
   )}
-</Layout>
+</BaseLayout>
 
 <style>
   h1 {

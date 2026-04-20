@@ -1,13 +1,13 @@
 ---
 import { BookOpen, Construction, Calendar, User } from 'lucide-astro';
-import Layout from '../../layouts/Layout.astro';
+import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 const tutorials = await getCollection('tutorials');
 const sortedTutorials = tutorials.sort((a, b) => b.data.order - a.data.order);
 ---
 
-<Layout title="教程" description="AI Agent 开发教程 - OpenClaw、Hermes Agent 等工具实战指南">
+<BaseLayout title="教程" description="AI Agent 开发教程 - OpenClaw、Hermes Agent 等工具实战指南">
   <section class="page-header">
     <BookOpen size={64} class="header-icon" />
     <h1>全部教程</h1>
@@ -54,7 +54,7 @@ const sortedTutorials = tutorials.sort((a, b) => b.data.order - a.data.order);
       ))}
     </div>
   )}
-</Layout>
+</BaseLayout>
 
 <style>
   .page-header {

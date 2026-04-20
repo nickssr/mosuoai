@@ -1,9 +1,9 @@
 ---
 import { Sparkles, Hand, Target, BookOpen, HandHelping, Bot, FlaskConical, Rocket, User, Mail } from 'lucide-astro';
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<Layout title="关于" description="关于摸索 AI - 记录 AI Agent 开发的探索之路">
+<BaseLayout title="关于" description="关于摸索 AI - 记录 AI Agent 开发的探索之路">
   <article class="about">
     <header class="header">
       <Sparkles size={64} class="header-icon" />
@@ -72,7 +72,7 @@ import Layout from '../layouts/Layout.astro';
       </p>
     </section>
   </article>
-</Layout>
+</BaseLayout>
 
 <style>
   .about {
