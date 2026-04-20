@@ -1,30 +1,22 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
 
-const tutorials = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/tutorials' }),
+const posts = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/posts' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
     pubDate: z.date(),
-    author: z.string().default('老李'),
+    updatedDate: z.date().optional(),
+    heroImage: z.string().optional(),
     tags: z.array(z.string()).default([]),
-    order: z.number().default(0),
-  }),
-});
-
-const blog = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/blog' }),
-  schema: z.object({
-    title: z.string(),
-    description: z.string(),
-    pubDate: z.date(),
-    author: z.string().default('老李'),
-    tags: z.array(z.string()).default([]),
+    category: z.enum(['tutorial', 'review', 'case-study', 'news']),
+    difficulty: z.enum(['beginner', 'intermediate', 'advanced']),
+    draft: z.boolean().default(false),
+    noindex: z.boolean().default(false),
   }),
 });
 
 export const collections = {
-  'tutorials': tutorials,
-  'blog': blog,
+  'posts': posts,
 };

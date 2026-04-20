@@ -1,489 +1,760 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const tutorials = await getCollection('tutorials');
-const sortedTutorials = tutorials.sort((a, b) => b.data.order - a.data.order);
+const allPosts = await getCollection('posts', ({ data }) => {
+  return !data.draft;
+});
+
+const sortedPosts = allPosts.sort((a, b) => {
+  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
+});
+
+const latestPost = sortedPosts[0];
+const remainingPosts = sortedPosts.slice(1, 7);
+
+const allTags = allPosts
+  .flatMap(post => post.data.tags)
+  .filter((tag, index, self) => self.indexOf(tag) === index)
+  .slice(0, 15);
 ---
 
-<Layout title="首页" description="摸索AI - AI Agent 教程与实战，OpenClaw、Hermes Agent 使用教程">
-  <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-bg">
-      <div class="hero-glow"></div>
-    </div>
-    <div class="hero-content">
-      <div class="hero-icon">🔮</div>
-      <h1 class="hero-title">
-        <span class="text-gradient">摸索AI</span>
-      </h1>
-      <p class="hero-subtitle">AI Agent 教程与实战</p>
-      <p class="hero-desc">
-        记录 AI Agent 开发的探索之路，分享 OpenClaw、Hermes Agent 等工具的实战经验。
-        从零开始，一步步构建你的智能助手。
-      </p>
-      <div class="hero-actions">
-        <a href="/tutorials" class="btn btn-primary">
-          开始学习
-          <span class="btn-arrow">→</span>
-        </a>
-        <a href="/about" class="btn btn-secondary">
-          了解更多
-        </a>
+<BaseLayout title="MosuoAI" description="AI Agent 开发者的深度指南">
+  <div class="homepage">
+    <!-- Hero Section -->
+    <section class="hero">
+      <div class="hero-bg">
+        <div class="hero-glow"></div>
       </div>
-    </div>
-  </section>
+      <div class="hero-content">
+        <h1 class="hero-title">
+          <span class="text-gradient">MosuoAI</span>
+        </h1>
+        <p class="hero-subtitle">AI Agent 开发者的深度指南</p>
+        <p class="hero-desc">
+          探索 AI Agent 开发的无限可能，分享 OpenClaw、Hermes Agent 等工具的实战经验。
+          从入门到精通，陪你走好每一步。
+        </p>
+      </div>
+    </section>
 
-  <!-- Stats -->
-  <section class="stats">
-    <div class="stat-item">
-      <div class="stat-value">{sortedTutorials.length}</div>
-      <div class="stat-label">教程</div>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-value">100%</div>
-      <div class="stat-label">免费</div>
-    </div>
-    <div class="stat-divider"></div>
-    <div class="stat-item">
-      <div class="stat-value">实战</div>
-      <div class="stat-label">导向</div>
-    </div>
-  </section>
+    <!-- Main Content: Bento Grid + Sidebar -->
+    <div class="main-layout">
+      <!-- Bento Grid Section -->
+      <section class="bento-section">
+        <div class="section-header">
+          <h2 class="section-title">最新文章</h2>
+        </div>
 
-  <!-- Tutorials Section -->
-  <section class="tutorials-section">
-    <div class="section-header">
-      <h2 class="section-title">最新教程</h2>
-      <a href="/tutorials" class="view-all">
-        查看全部
-        <span class="arrow">→</span>
-      </a>
+        {sortedPosts.length === 0 ? (
+          <div class="empty-state">
+            <div class="empty-icon">📝</div>
+            <p>还没有文章，敬请期待...</p>
+          </div>
+        ) : (
+          <div class="bento-grid">
+            <!-- Latest Post - Large Card (spans 2 columns) -->
+            {latestPost && (
+              <article class="bento-card bento-card-large">
+                <div class="card-glow"></div>
+                <div class="card-content">
+                  {latestPost.data.heroImage && (
+                    <div class="card-hero-image">
+                      <img src={latestPost.data.heroImage} alt={latestPost.data.title} loading="lazy" />
+                    </div>
+                  )}
+                  <div class="card-meta-top">
+                    <span class="category-badge category-{latestPost.data.category}">
+                      {latestPost.data.category}
+                    </span>
+                    <span class="difficulty-badge difficulty-{latestPost.data.difficulty}">
+                      {latestPost.data.difficulty}
+                    </span>
+                  </div>
+                  <h3 class="card-title">
+                    <a href={`/posts/${latestPost.id}`}>{latestPost.data.title}</a>
+                  </h3>
+                  <p class="card-desc">{latestPost.data.description}</p>
+                  <div class="card-tags">
+                    {latestPost.data.tags.slice(0, 4).map(tag => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </div>
+                  <div class="card-footer">
+                    <span class="card-date">
+                      <span class="icon">📅</span>
+                      {latestPost.data.pubDate.toLocaleDateString('zh-CN', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </span>
+                    <span class="read-more">阅读全文 →</span>
+                  </div>
+                </div>
+              </article>
+            )}
+
+            <!-- Remaining Posts - Small Cards -->
+            {remainingPosts.map((post) => (
+              <article class="bento-card">
+                <div class="card-glow"></div>
+                <div class="card-content">
+                  <div class="card-meta-top">
+                    <span class="category-badge category-{post.data.category}">
+                      {post.data.category}
+                    </span>
+                  </div>
+                  <h3 class="card-title">
+                    <a href={`/posts/${post.id}`}>{post.data.title}</a>
+                  </h3>
+                  <p class="card-desc">{post.data.description}</p>
+                  <div class="card-tags">
+                    {post.data.tags.slice(0, 3).map(tag => (
+                      <span class="tag">{tag}</span>
+                    ))}
+                  </div>
+                  <div class="card-footer">
+                    <span class="card-date">
+                      {post.data.pubDate.toLocaleDateString('zh-CN', {
+                        month: 'short',
+                        day: 'numeric'
+                      })}
+                    </span>
+                  </div>
+                </div>
+              </article>
+            ))}
+          </div>
+        )}
+
+        {sortedPosts.length > 6 && (
+          <div class="section-footer">
+            <a href="/posts" class="btn btn-outline">
+              查看全部文章
+              <span class="btn-arrow">→</span>
+            </a>
+          </div>
+        )}
+      </section>
+
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <!-- Author Card -->
+        <div class="sidebar-card author-card">
+          <div class="author-avatar">🤖</div>
+          <h3 class="author-name">老李</h3>
+          <p class="author-bio">
+            AI Agent 开发者，热衷于探索 AI 技术的实际应用。
+            在这里分享实战经验和踩坑记录。
+          </p>
+          <div class="author-social">
+            <a href="/about" class="social-link">关于我</a>
+          </div>
+        </div>
+
+        <!-- Popular Posts -->
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">热门文章</h3>
+          <ul class="popular-list">
+            {sortedPosts.slice(0, 5).map((post, index) => (
+              <li class="popular-item">
+                <span class="rank">{index + 1}</span>
+                <a href={`/posts/${post.id}`} class="popular-title">
+                  {post.data.title}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <!-- Tag Cloud -->
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">标签云</h3>
+          <div class="tag-cloud">
+            {allTags.map(tag => (
+              <a href={`/tags/${tag}`} class="tag-cloud-item">{tag}</a>
+            ))}
+          </div>
+        </div>
+      </aside>
     </div>
-    
-    {sortedTutorials.length === 0 ? (
-      <div class="empty-state">
-        <div class="empty-icon">📚</div>
-        <p>还没有教程，敬请期待...</p>
-      </div>
-    ) : (
-      <div class="tutorial-grid">
-        {sortedTutorials.slice(0, 6).map((tutorial) => (
-          <article class="tutorial-card">
-            <div class="card-glow"></div>
-            <div class="card-content">
-              <div class="card-tags">
-                {tutorial.data.tags.slice(0, 3).map(tag => (
-                  <span class="tag">{tag}</span>
-                ))}
-              </div>
-              <h3 class="card-title">
-                <a href={`/tutorials/${tutorial.id}`}>{tutorial.data.title}</a>
-              </h3>
-              <p class="card-desc">{tutorial.data.description}</p>
-              <div class="card-meta">
-                <span class="card-date">
-                  <span class="icon">📅</span>
-                  {tutorial.data.pubDate.toLocaleDateString('zh-CN')}
-                </span>
-                <span class="card-author">
-                  <span class="icon">✍️</span>
-                  {tutorial.data.author}
-                </span>
-              </div>
-            </div>
-          </article>
-        ))}
-      </div>
-    )}
-    
-    {sortedTutorials.length > 6 && (
-      <div class="section-footer">
-        <a href="/tutorials" class="btn btn-outline">
-          查看全部教程
-          <span class="btn-arrow">→</span>
-        </a>
-      </div>
-    )}
-  </section>
-</Layout>
+  </div>
+</BaseLayout>
 
 <style>
+  /* Homepage Container */
+  .homepage {
+    position: relative;
+  }
+
   /* Hero Section */
   .hero {
     position: relative;
     text-align: center;
-    padding: 5rem 0 4rem;
-    margin-bottom: 3rem;
+    padding: 4rem 0 3rem;
+    margin-bottom: 2rem;
     overflow: hidden;
   }
-  
+
   .hero-bg {
     position: absolute;
     inset: 0;
     overflow: hidden;
     pointer-events: none;
   }
-  
+
   .hero-glow {
     position: absolute;
     width: 600px;
     height: 600px;
-    background: radial-gradient(circle, rgba(124, 58, 237, 0.15) 0%, transparent 70%);
+    background: radial-gradient(circle, rgba(0, 212, 224, 0.12) 0%, transparent 70%);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     animation: pulse 4s ease-in-out infinite;
   }
-  
+
   @keyframes pulse {
     0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
     50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
   }
-  
+
   .hero-content {
     position: relative;
     z-index: 1;
   }
-  
-  .hero-icon {
-    font-size: 4rem;
-    margin-bottom: 1.5rem;
-    animation: float 3s ease-in-out infinite;
-  }
-  
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
-  }
-  
+
   .hero-title {
     font-size: 3.5rem;
     font-weight: 800;
     margin-bottom: 0.75rem;
     letter-spacing: -0.02em;
   }
-  
+
   .hero-subtitle {
     font-size: 1.5rem;
-    color: var(--text-muted);
+    color: var(--color-text-secondary);
     margin-bottom: 1rem;
-    font-weight: 500;
+    font-weight: 600;
   }
-  
+
   .hero-desc {
     max-width: 600px;
-    margin: 0 auto 2rem;
-    color: var(--text-dim);
-    font-size: 1.1rem;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
     line-height: 1.7;
   }
-  
-  .hero-actions {
+
+  /* Main Layout - Bento + Sidebar */
+  .main-layout {
+    display: grid;
+    grid-template-columns: 1fr 340px;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  /* Bento Section */
+  .bento-section {
+    min-width: 0;
+  }
+
+  .section-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
     display: flex;
-    gap: 1rem;
-    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .section-title::before {
+    content: '📰';
+    font-size: 1.25rem;
+  }
+
+  /* Bento Grid */
+  .bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.25rem;
+  }
+
+  /* Bento Cards */
+  .bento-card {
+    position: relative;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all var(--transition-base);
+  }
+
+  .bento-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--color-primary);
+    box-shadow: 0 8px 25px rgba(0, 212, 224, 0.15);
+  }
+
+  .card-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(0, 212, 224, 0.1) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    pointer-events: none;
+  }
+
+  .bento-card:hover .card-glow {
+    opacity: 1;
+  }
+
+  /* Large Card - spans 2 columns */
+  .bento-card-large {
+    grid-column: span 2;
+  }
+
+  .card-content {
+    position: relative;
+    z-index: 1;
+    padding: 1.5rem;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Hero Image for Large Card */
+  .card-hero-image {
+    width: 100%;
+    height: 200px;
+    margin: -1.5rem -1.5rem 1.25rem;
+    overflow: hidden;
+  }
+
+  .card-hero-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Meta Top */
+  .card-meta-top {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
     flex-wrap: wrap;
   }
-  
+
+  .category-badge,
+  .difficulty-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .category-tutorial {
+    background: rgba(0, 212, 224, 0.15);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 212, 224, 0.3);
+  }
+
+  .category-review {
+    background: rgba(139, 92, 246, 0.15);
+    color: var(--color-accent);
+    border: 1px solid rgba(139, 92, 246, 0.3);
+  }
+
+  .category-case-study {
+    background: rgba(16, 185, 129, 0.15);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .category-news {
+    background: rgba(59, 130, 246, 0.15);
+    color: var(--color-info);
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .difficulty-beginner {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--color-success);
+    border: 1px solid rgba(16, 185, 129, 0.2);
+  }
+
+  .difficulty-intermediate {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--color-warning);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+  }
+
+  .difficulty-advanced {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--color-error);
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  /* Card Title */
+  .card-title {
+    margin-bottom: 0.75rem;
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.4;
+    flex-shrink: 0;
+  }
+
+  .bento-card-large .card-title {
+    font-size: 1.5rem;
+  }
+
+  .card-title a {
+    color: var(--color-text-primary);
+    transition: color var(--transition-fast);
+  }
+
+  .card-title a:hover {
+    color: var(--color-primary);
+  }
+
+  /* Card Description */
+  .card-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    flex-grow: 1;
+  }
+
+  .bento-card-large .card-desc {
+    font-size: 0.95rem;
+    -webkit-line-clamp: 3;
+  }
+
+  /* Card Tags */
+  .card-tags {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+  }
+
+  .tag {
+    background: rgba(0, 212, 224, 0.1);
+    color: var(--color-primary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 212, 224, 0.2);
+    transition: all var(--transition-fast);
+  }
+
+  .bento-card:hover .tag {
+    background: rgba(0, 212, 224, 0.15);
+  }
+
+  /* Card Footer */
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-border);
+    font-size: 0.85rem;
+  }
+
+  .card-date {
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .read-more {
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.85rem;
+  }
+
+  .icon {
+    font-size: 0.85rem;
+  }
+
+  /* Section Footer */
+  .section-footer {
+    text-align: center;
+    margin-top: 2rem;
+  }
+
+  /* Sidebar */
+  .sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .sidebar-card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Author Card */
+  .author-card {
+    text-align: center;
+  }
+
+  .author-avatar {
+    font-size: 4rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .author-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .author-bio {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+  }
+
+  .author-social {
+    display: flex;
+    justify-content: center;
+    gap: 0.75rem;
+  }
+
+  .social-link {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-primary);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all var(--transition-fast);
+  }
+
+  .social-link:hover {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  /* Popular List */
+  .popular-list {
+    list-style: none;
+  }
+
+  .popular-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.6rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .popular-item:last-child {
+    border-bottom: none;
+  }
+
+  .rank {
+    flex-shrink: 0;
+    width: 20px;
+    height: 20px;
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .popular-item:nth-child(1) .rank {
+    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+    color: white;
+  }
+
+  .popular-item:nth-child(2) .rank {
+    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
+    color: white;
+  }
+
+  .popular-item:nth-child(3) .rank {
+    background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
+    color: white;
+  }
+
+  .popular-title {
+    color: var(--color-text-primary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    transition: color var(--transition-fast);
+  }
+
+  .popular-title:hover {
+    color: var(--color-primary);
+  }
+
+  /* Tag Cloud */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+  }
+
+  .tag-cloud-item {
+    background: rgba(0, 212, 224, 0.1);
+    color: var(--color-primary);
+    padding: 0.3rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 212, 224, 0.2);
+    transition: all var(--transition-fast);
+  }
+
+  .tag-cloud-item:hover {
+    background: var(--color-primary);
+    color: white;
+    transform: translateY(-1px);
+  }
+
+  /* Empty State */
+  .empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .empty-icon {
+    font-size: 3.5rem;
+    margin-bottom: 1rem;
+    opacity: 0.5;
+  }
+
+  .empty-state p {
+    color: var(--color-text-secondary);
+    font-size: 1rem;
+  }
+
   /* Buttons */
   .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    padding: 0.875rem 1.75rem;
+    padding: 0.75rem 1.5rem;
     border-radius: var(--radius-md);
     font-weight: 600;
-    font-size: 1rem;
-    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    transition: all var(--transition-base);
     cursor: pointer;
     border: none;
   }
-  
-  .btn-primary {
-    background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-    color: white;
-    box-shadow: var(--shadow-md), 0 0 20px rgba(124, 58, 237, 0.4);
-  }
-  
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-lg), 0 0 30px rgba(124, 58, 237, 0.5);
-    color: white;
-  }
-  
-  .btn-secondary {
-    background: var(--bg-card);
-    color: var(--text);
-    border: 1px solid var(--border);
-  }
-  
-  .btn-secondary:hover {
-    background: var(--bg-card-hover);
-    border-color: var(--border-light);
-    color: var(--text);
-  }
-  
+
   .btn-outline {
     background: transparent;
-    color: var(--primary-light);
-    border: 2px solid var(--primary);
+    color: var(--color-primary);
+    border: 2px solid var(--color-primary);
   }
-  
+
   .btn-outline:hover {
-    background: var(--primary);
+    background: var(--color-primary);
     color: white;
   }
-  
+
   .btn-arrow {
-    transition: transform 0.3s ease;
+    transition: transform var(--transition-fast);
   }
-  
+
   .btn:hover .btn-arrow {
     transform: translateX(4px);
   }
-  
-  /* Stats */
-  .stats {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 3rem;
-    padding: 2rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    margin-bottom: 4rem;
+
+  /* Responsive */
+  @media (max-width: 1024px) {
+    .main-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+    }
+
+    .sidebar-card {
+      padding: 1rem;
+    }
   }
-  
-  .stat-item {
-    text-align: center;
-  }
-  
-  .stat-value {
-    font-size: 2.5rem;
-    font-weight: 700;
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-  }
-  
-  .stat-label {
-    color: var(--text-dim);
-    font-size: 0.875rem;
-    margin-top: 0.25rem;
-  }
-  
-  .stat-divider {
-    width: 1px;
-    height: 40px;
-    background: var(--border);
-  }
-  
-  /* Section */
-  .tutorials-section {
-    margin-top: 2rem;
-  }
-  
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 2rem;
-    padding-bottom: 1rem;
-    border-bottom: 2px solid var(--border);
-  }
-  
-  .section-title {
-    font-size: 1.8rem;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-  
-  .section-title::before {
-    content: '📖';
-    font-size: 1.5rem;
-  }
-  
-  .view-all {
-    color: var(--primary-light);
-    font-weight: 600;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    transition: gap 0.3s ease;
-  }
-  
-  .view-all:hover {
-    gap: 0.75rem;
-  }
-  
-  /* Tutorial Grid */
-  .tutorial-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-    gap: 1.5rem;
-  }
-  
-  .tutorial-card {
-    position: relative;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: all 0.3s ease;
-  }
-  
-  .card-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 0%, rgba(124, 58, 237, 0.1) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    pointer-events: none;
-  }
-  
-  .tutorial-card:hover {
-    transform: translateY(-4px);
-    border-color: var(--primary);
-    box-shadow: var(--shadow-lg), 0 0 30px rgba(124, 58, 237, 0.2);
-  }
-  
-  .tutorial-card:hover .card-glow {
-    opacity: 1;
-  }
-  
-  .card-content {
-    position: relative;
-    z-index: 1;
-    padding: 1.5rem;
-  }
-  
-  .card-tags {
-    display: flex;
-    gap: 0.5rem;
-    flex-wrap: wrap;
-    margin-bottom: 1rem;
-  }
-  
-  .tag {
-    background: linear-gradient(135deg, rgba(124, 58, 237, 0.2) 0%, rgba(139, 92, 246, 0.1) 100%);
-    color: var(--primary-light);
-    padding: 0.25rem 0.75rem;
-    border-radius: 20px;
-    font-size: 0.75rem;
-    font-weight: 600;
-    border: 1px solid rgba(124, 58, 237, 0.3);
-  }
-  
-  .card-title {
-    margin-bottom: 0.75rem;
-    font-size: 1.25rem;
-    font-weight: 600;
-    line-height: 1.4;
-  }
-  
-  .card-title a {
-    color: var(--text);
-    transition: color 0.2s ease;
-  }
-  
-  .card-title a:hover {
-    color: var(--primary-light);
-  }
-  
-  .card-desc {
-    color: var(--text-muted);
-    font-size: 0.95rem;
-    line-height: 1.6;
-    margin-bottom: 1.25rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-  
-  .card-meta {
-    display: flex;
-    gap: 1.5rem;
-    font-size: 0.85rem;
-    color: var(--text-dim);
-  }
-  
-  .card-date, .card-author {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-  
-  .icon {
-    font-size: 0.9rem;
-  }
-  
-  .section-footer {
-    text-align: center;
-    margin-top: 3rem;
-  }
-  
-  .empty-state {
-    text-align: center;
-    padding: 4rem 2rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-  }
-  
-  .empty-icon {
-    font-size: 4rem;
-    margin-bottom: 1rem;
-    opacity: 0.5;
-  }
-  
-  .empty-state p {
-    color: var(--text-muted);
-    font-size: 1.1rem;
-  }
-  
-  /* Mobile */
+
   @media (max-width: 768px) {
     .hero {
-      padding: 3rem 0 2rem;
+      padding: 2.5rem 0 2rem;
     }
-    
+
     .hero-title {
       font-size: 2.25rem;
     }
-    
+
     .hero-subtitle {
-      font-size: 1.25rem;
+      font-size: 1.15rem;
     }
-    
+
     .hero-desc {
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
-    
-    .stats {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-    
-    .stat-divider {
-      width: 40px;
-      height: 1px;
-    }
-    
-    .tutorial-grid {
+
+    .bento-grid {
       grid-template-columns: 1fr;
     }
-    
-    .section-header {
-      flex-direction: column;
-      gap: 1rem;
-      align-items: flex-start;
+
+    .bento-card-large {
+      grid-column: span 1;
+    }
+
+    .sidebar {
+      grid-template-columns: 1fr;
+    }
+
+    .bento-card-large .card-title {
+      font-size: 1.25rem;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 1.875rem;
+    }
+
+    .card-hero-image {
+      height: 150px;
     }
   }
 </style>
