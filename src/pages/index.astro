@@ -1,23 +1,31 @@
 ---
-import { Newspaper, Calendar, Bot } from 'lucide-astro';
+import { Newspaper, Star, BookOpen, Grid, ArrowRight, Calendar, Bot, Code } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-const allPosts = await getCollection('posts', ({ data }) => {
-  return !data.draft;
-});
+// 获取资讯
+const allNews = await getCollection('news', ({ data }) => !data.draft);
+const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const latestNews = sortedNews.slice(0, 5);
 
-const sortedPosts = allPosts.sort((a, b) => {
-  return b.data.pubDate.valueOf() - a.data.pubDate.valueOf();
-});
+// 获取教程
+const allTutorials = await getCollection('tutorials', ({ data }) => !data.draft);
+const sortedTutorials = allTutorials.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featuredTutorials = sortedTutorials.slice(0, 3);
 
-const latestPost = sortedPosts[0];
-const remainingPosts = sortedPosts.slice(1, 7);
+// 获取评测
+const allReviews = await getCollection('reviews', ({ data }) => !data.draft);
+const sortedReviews = allReviews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featuredReviews = sortedReviews.slice(0, 3);
 
-const allTags = allPosts
-  .flatMap(post => post.data.tags)
-  .filter((tag, index, self) => self.indexOf(tag) === index)
-  .slice(0, 15);
+// 获取资源
+const allResources = await getCollection('resources', ({ data }) => !data.draft);
+const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4);
+
+// 获取开源项目
+const allOpensource = await getCollection('opensource', ({ data }) => !data.draft);
+const sortedOpensource = allOpensource.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const featuredOpensource = sortedOpensource.slice(0, 3);
 ---
 
 <BaseLayout title="MosuoAI" description="AI Agent 开发者的深度指南">
@@ -39,157 +47,257 @@ const allTags = allPosts
       </div>
     </section>
 
-    <!-- Main Content: Bento Grid + Sidebar -->
-    <div class="main-layout">
-      <!-- Bento Grid Section -->
-      <section class="bento-section">
-        <div class="section-header">
-          <h2 class="section-title">最新文章</h2>
+    <!-- 资讯快报 -->
+    <section class="content-section">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <Newspaper size={24} class="section-icon" />
+          <h2 class="section-title">资讯快报</h2>
         </div>
+        <a href="/news" class="section-more">
+          查看更多 <ArrowRight size={16} />
+        </a>
+      </div>
 
-        {sortedPosts.length === 0 ? (
-          <div class="empty-state">
-            <Newspaper size={56} class="empty-icon" />
-            <p>还没有文章，敬请期待...</p>
-          </div>
-        ) : (
-          <div class="bento-grid">
-            <!-- Latest Post - Large Card (spans 2 columns) -->
-            {latestPost && (
-              <article class="bento-card bento-card-large">
-                <div class="card-glow"></div>
-                <div class="card-content">
-                  {latestPost.data.heroImage && (
-                    <div class="card-hero-image">
-                      <img src={latestPost.data.heroImage} alt={latestPost.data.title} loading="lazy" />
-                    </div>
+      {latestNews.length === 0 ? (
+        <div class="empty-state">
+          <Newspaper size={48} class="empty-icon" />
+          <p>暂无资讯，敬请期待...</p>
+        </div>
+      ) : (
+        <div class="news-list">
+          {latestNews.map((news) => (
+            <article class="news-item">
+              <a href={`/news/${news.id}`} class="news-link"></a>
+              <div class="news-content">
+                <h3 class="news-title">{news.data.title}</h3>
+                <p class="news-excerpt">{news.data.description}</p>
+                <div class="news-meta">
+                  <span class="news-date">
+                    <Calendar size={14} />
+                    {news.data.pubDate.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
+                  </span>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <!-- 精选教程 -->
+    <section class="content-section">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <BookOpen size={24} class="section-icon" />
+          <h2 class="section-title">精选教程</h2>
+        </div>
+        <a href="/tutorials" class="section-more">
+          查看更多 <ArrowRight size={16} />
+        </a>
+      </div>
+
+      {featuredTutorials.length === 0 ? (
+        <div class="empty-state">
+          <BookOpen size={48} class="empty-icon" />
+          <p>暂无教程，敬请期待...</p>
+        </div>
+      ) : (
+        <div class="card-grid">
+          {featuredTutorials.map((tutorial) => (
+            <article class="card tutorial-card">
+              <a href={`/tutorials/${tutorial.id}`} class="card-link"></a>
+              <div class="card-glow"></div>
+              <div class="card-content">
+                <div class="card-header">
+                  <span class="difficulty-badge difficulty-{tutorial.data.difficulty}">
+                    {tutorial.data.difficulty === 'beginner' && '入门'}
+                    {tutorial.data.difficulty === 'intermediate' && '进阶'}
+                    {tutorial.data.difficulty === 'advanced' && '高级'}
+                  </span>
+                </div>
+                <h3 class="card-title">{tutorial.data.title}</h3>
+                <p class="card-desc">{tutorial.data.description}</p>
+                {tutorial.data.tags && tutorial.data.tags.length > 0 && (
+                  <div class="card-tags">
+                    {tutorial.data.tags.slice(0, 3).map((tag) => (
+                      <span class="tag">#{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <!-- 精选评测 -->
+    <section class="content-section">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <Star size={24} class="section-icon" />
+          <h2 class="section-title">工具评测</h2>
+        </div>
+        <a href="/reviews" class="section-more">
+          查看更多 <ArrowRight size={16} />
+        </a>
+      </div>
+
+      {featuredReviews.length === 0 ? (
+        <div class="empty-state">
+          <Star size={48} class="empty-icon" />
+          <p>暂无评测，敬请期待...</p>
+        </div>
+      ) : (
+        <div class="card-grid">
+          {featuredReviews.map((review) => (
+            <article class="card review-card">
+              <a href={`/reviews/${review.id}`} class="card-link"></a>
+              <div class="card-glow"></div>
+              <div class="card-content">
+                <div class="card-header">
+                  <div class="rating">
+                    {'★'.repeat(Math.floor(review.data.rating))}
+                    <span class="rating-score">{review.data.rating}</span>
+                  </div>
+                </div>
+                <h3 class="card-title">{review.data.title}</h3>
+                <p class="card-desc">{review.data.description}</p>
+                {review.data.tags && review.data.tags.length > 0 && (
+                  <div class="card-tags">
+                    {review.data.tags.slice(0, 3).map((tag) => (
+                      <span class="tag">#{tag}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+
+    <!-- 开源精选 -->
+    <section class="content-section">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <Code size={24} class="section-icon" />
+          <h2 class="section-title">开源精选</h2>
+        </div>
+        <a href="/opensource" class="section-more">
+          查看更多 <ArrowRight size={16} />
+        </a>
+      </div>
+
+      {featuredOpensource.length === 0 ? (
+        <div class="empty-state">
+          <Code size={48} class="empty-icon" />
+          <p>暂无开源内容，敬请期待...</p>
+        </div>
+      ) : (
+        <div class="card-grid">
+          {featuredOpensource.map((project) => (
+            <article class="card opensource-card">
+              <a href={`/opensource/${project.id}`} class="card-link"></a>
+              <div class="card-glow"></div>
+              <div class="card-content">
+                <div class="card-header">
+                  {project.data.language && (
+                    <span class="language-badge">
+                      <span class="language-dot" style={`background: ${getLanguageColor(project.data.language)}`}></span>
+                      {project.data.language}
+                    </span>
                   )}
-                  <div class="card-meta-top">
-                    <span class="category-badge category-{latestPost.data.category}">
-                      {latestPost.data.category}
-                    </span>
-                    <span class="difficulty-badge difficulty-{latestPost.data.difficulty}">
-                      {latestPost.data.difficulty}
-                    </span>
-                  </div>
-                  <h3 class="card-title">
-                    <a href={`/posts/${latestPost.id}`}>{latestPost.data.title}</a>
-                  </h3>
-                  <p class="card-desc">{latestPost.data.description}</p>
+                </div>
+                <h3 class="card-title">{project.data.title}</h3>
+                <p class="card-desc">{project.data.description}</p>
+                {project.data.tags && project.data.tags.length > 0 && (
                   <div class="card-tags">
-                    {latestPost.data.tags.slice(0, 4).map(tag => (
-                      <span class="tag">{tag}</span>
+                    {project.data.tags.slice(0, 3).map((tag) => (
+                      <span class="tag">#{tag}</span>
                     ))}
                   </div>
-                  <div class="card-footer">
-                    <span class="card-date">
-                      <Calendar size={14} />
-                      {latestPost.data.pubDate.toLocaleDateString('zh-CN', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric'
-                      })}
-                    </span>
-                    <span class="read-more">阅读全文 →</span>
-                  </div>
-                </div>
-              </article>
-            )}
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
 
-            <!-- Remaining Posts - Small Cards -->
-            {remainingPosts.map((post) => (
-              <article class="bento-card">
-                <div class="card-glow"></div>
-                <div class="card-content">
-                  <div class="card-meta-top">
-                    <span class="category-badge category-{post.data.category}">
-                      {post.data.category}
-                    </span>
-                  </div>
-                  <h3 class="card-title">
-                    <a href={`/posts/${post.id}`}>{post.data.title}</a>
-                  </h3>
-                  <p class="card-desc">{post.data.description}</p>
-                  <div class="card-tags">
-                    {post.data.tags.slice(0, 3).map(tag => (
-                      <span class="tag">{tag}</span>
-                    ))}
-                  </div>
-                  <div class="card-footer">
-                    <span class="card-date">
-                      {post.data.pubDate.toLocaleDateString('zh-CN', {
-                        month: 'short',
-                        day: 'numeric'
-                      })}
-                    </span>
-                  </div>
-                </div>
-              </article>
-            ))}
-          </div>
-        )}
+    <!-- 资源导航 -->
+    <section class="content-section">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <Grid size={24} class="section-icon" />
+          <h2 class="section-title">资源导航</h2>
+        </div>
+        <a href="/resources" class="section-more">
+          查看更多 <ArrowRight size={16} />
+        </a>
+      </div>
 
-        {sortedPosts.length > 6 && (
-          <div class="section-footer">
-            <a href="/posts" class="btn btn-outline">
-              查看全部文章
-              <span class="btn-arrow">→</span>
+      {featuredResources.length === 0 ? (
+        <div class="empty-state">
+          <Grid size={48} class="empty-icon" />
+          <p>暂无资源，敬请期待...</p>
+        </div>
+      ) : (
+        <div class="resource-grid">
+          {featuredResources.map((resource) => (
+            <a href={resource.data.url} target="_blank" rel="noopener noreferrer" class="resource-item">
+              <div class="resource-content">
+                <h3 class="resource-title">{resource.data.title}</h3>
+                <p class="resource-desc">{resource.data.description}</p>
+              </div>
+              <ArrowRight size={16} class="resource-icon" />
             </a>
-          </div>
-        )}
-      </section>
-
-      <!-- Sidebar -->
-      <aside class="sidebar">
-        <!-- Author Card -->
-        <div class="sidebar-card author-card">
-          <Bot size={64} height={64} class="author-avatar" />
-          <h3 class="author-name">老李</h3>
-          <p class="author-bio">
-            AI Agent 开发者，热衷于探索 AI 技术的实际应用。
-            在这里分享实战经验和踩坑记录。
-          </p>
-          <div class="author-social">
-            <a href="/about" class="social-link">关于我</a>
-          </div>
+          ))}
         </div>
+      )}
+    </section>
 
-        <!-- Popular Posts -->
-        <div class="sidebar-card">
-          <h3 class="sidebar-title">热门文章</h3>
-          <ul class="popular-list">
-            {sortedPosts.slice(0, 5).map((post, index) => (
-              <li class="popular-item">
-                <span class="rank">{index + 1}</span>
-                <a href={`/posts/${post.id}`} class="popular-title">
-                  {post.data.title}
-                </a>
-              </li>
-            ))}
-          </ul>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <!-- Author Card -->
+      <div class="sidebar-card author-card">
+        <Bot size={64} class="author-avatar" />
+        <h3 class="author-name">老李</h3>
+        <p class="author-bio">
+          AI Agent 开发者，热衷于探索 AI 技术的实际应用。
+          在这里分享实战经验和踩坑记录。
+        </p>
+        <div class="author-social">
+          <a href="/about" class="social-link">关于我</a>
         </div>
-
-        <!-- Tag Cloud -->
-        <div class="sidebar-card">
-          <h3 class="sidebar-title">标签云</h3>
-          <div class="tag-cloud">
-            {allTags.map(tag => (
-              <a href={`/tags/${tag}`} class="tag-cloud-item">{tag}</a>
-            ))}
-          </div>
-        </div>
-      </aside>
-    </div>
+      </div>
+    </aside>
   </div>
 </BaseLayout>
 
-<style>
-  /* Homepage Container */
-  .homepage {
-    position: relative;
+<script>
+  function getLanguageColor(language) {
+    const colors = {
+      TypeScript: '#3178c6',
+      JavaScript: '#f7df1e',
+      Python: '#3776ab',
+      Go: '#00ADD8',
+      Rust: '#dea584',
+      Java: '#b07219',
+      CSharp: '#178600',
+      Ruby: '#701516',
+      PHP: '#4F5D95',
+      Swift: '#ffac45',
+      Kotlin: '#A97BFF',
+    };
+    return colors[language] || '#777';
   }
+</script>
 
-  /* Hero Section */
+<style>
+  .homepage { position: relative; }
+
   .hero {
     position: relative;
     text-align: center;
@@ -221,10 +329,7 @@ const allTags = allPosts
     50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
   }
 
-  .hero-content {
-    position: relative;
-    z-index: 1;
-  }
+  .hero-content { position: relative; z-index: 1; }
 
   .hero-title {
     font-size: 3.5rem;
@@ -248,178 +353,205 @@ const allTags = allPosts
     line-height: 1.7;
   }
 
-  /* Main Layout - Bento + Sidebar */
-  .main-layout {
-    display: grid;
-    grid-template-columns: 1fr 340px;
-    gap: 2rem;
-    align-items: start;
-  }
-
-  /* Bento Section */
-  .bento-section {
-    min-width: 0;
+  .content-section {
+    margin-bottom: 3rem;
   }
 
   .section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     margin-bottom: 1.5rem;
   }
 
-  .section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
+  .section-title-wrapper {
     display: flex;
     align-items: center;
     gap: 0.5rem;
   }
 
-  /* Bento Grid */
-  .bento-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.25rem;
+  .section-icon {
+    color: var(--color-primary);
   }
 
-  /* Bento Cards */
-  .bento-card {
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  .section-more {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: gap var(--transition-fast);
+  }
+
+  .section-more:hover {
+    gap: 0.5rem;
+  }
+
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .news-item {
     position: relative;
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    overflow: hidden;
+    padding: 1.25rem;
     transition: all var(--transition-base);
   }
 
-  .bento-card:hover {
-    transform: translateY(-3px);
+  .news-item:hover {
     border-color: var(--color-primary);
-    box-shadow: 0 8px 25px rgba(0, 212, 224, 0.15);
+    transform: translateX(8px);
+  }
+
+  .news-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .news-content {
+    position: relative;
+    z-index: 2;
+  }
+
+  .news-title {
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--color-text-primary);
+  }
+
+  .news-excerpt {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin-bottom: 0.5rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .news-meta {
+    font-size: 0.85rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .card {
+    position: relative;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all var(--transition-base);
+    overflow: hidden;
+  }
+
+  .card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 25px rgba(0, 212, 224, 0.12);
+  }
+
+  .card-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
   }
 
   .card-glow {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 0%, rgba(0, 212, 224, 0.1) 0%, transparent 50%);
+    background: radial-gradient(circle at 50% 0%, rgba(0, 212, 224, 0.08) 0%, transparent 50%);
     opacity: 0;
     transition: opacity var(--transition-base);
     pointer-events: none;
   }
 
-  .bento-card:hover .card-glow {
+  .card:hover .card-glow {
     opacity: 1;
-  }
-
-  /* Large Card - spans 2 columns */
-  .bento-card-large {
-    grid-column: span 2;
   }
 
   .card-content {
     position: relative;
-    z-index: 1;
-    padding: 1.5rem;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
+    z-index: 2;
   }
 
-  /* Hero Image for Large Card */
-  .card-hero-image {
-    width: 100%;
-    height: 200px;
-    margin: -1.5rem -1.5rem 1.25rem;
-    overflow: hidden;
-  }
-
-  .card-hero-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  /* Meta Top */
-  .card-meta-top {
-    display: flex;
-    gap: 0.5rem;
+  .card-header {
     margin-bottom: 0.75rem;
-    flex-wrap: wrap;
   }
 
-  .category-badge,
   .difficulty-badge {
-    padding: 0.25rem 0.6rem;
-    border-radius: 20px;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
     font-size: 0.7rem;
     font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-  }
-
-  .category-tutorial {
-    background: rgba(0, 212, 224, 0.15);
-    color: var(--color-primary);
-    border: 1px solid rgba(0, 212, 224, 0.3);
-  }
-
-  .category-review {
-    background: rgba(139, 92, 246, 0.15);
-    color: var(--color-accent);
-    border: 1px solid rgba(139, 92, 246, 0.3);
-  }
-
-  .category-case-study {
-    background: rgba(16, 185, 129, 0.15);
-    color: var(--color-success);
-    border: 1px solid rgba(16, 185, 129, 0.3);
-  }
-
-  .category-news {
-    background: rgba(59, 130, 246, 0.15);
-    color: var(--color-info);
-    border: 1px solid rgba(59, 130, 246, 0.3);
   }
 
   .difficulty-beginner {
-    background: rgba(16, 185, 129, 0.1);
-    color: var(--color-success);
-    border: 1px solid rgba(16, 185, 129, 0.2);
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
   }
 
   .difficulty-intermediate {
-    background: rgba(245, 158, 11, 0.1);
-    color: var(--color-warning);
-    border: 1px solid rgba(245, 158, 11, 0.2);
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
   }
 
   .difficulty-advanced {
-    background: rgba(239, 68, 68, 0.1);
-    color: var(--color-error);
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
   }
 
-  /* Card Title */
+  .language-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    padding: 0.2rem 0.5rem;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 12px;
+    color: var(--color-text-secondary);
+  }
+
+  .language-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    display: inline-block;
+  }
+
   .card-title {
-    margin-bottom: 0.75rem;
-    font-size: 1.15rem;
+    font-size: 1.1rem;
     font-weight: 600;
-    line-height: 1.4;
-    flex-shrink: 0;
-  }
-
-  .bento-card-large .card-title {
-    font-size: 1.5rem;
-  }
-
-  .card-title a {
+    margin-bottom: 0.5rem;
     color: var(--color-text-primary);
-    transition: color var(--transition-fast);
   }
 
-  .card-title a:hover {
-    color: var(--color-primary);
-  }
-
-  /* Card Description */
   .card-desc {
     color: var(--color-text-secondary);
     font-size: 0.9rem;
@@ -429,104 +561,108 @@ const allTags = allPosts
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
-    flex-grow: 1;
   }
 
-  .bento-card-large .card-desc {
-    font-size: 0.95rem;
-    -webkit-line-clamp: 3;
-  }
-
-  /* Card Tags */
   .card-tags {
     display: flex;
     gap: 0.4rem;
     flex-wrap: wrap;
-    margin-bottom: 1rem;
   }
 
   .tag {
     background: rgba(0, 212, 224, 0.1);
     color: var(--color-primary);
-    padding: 0.2rem 0.6rem;
+    padding: 0.2rem 0.5rem;
     border-radius: 12px;
     font-size: 0.75rem;
     font-weight: 500;
     border: 1px solid rgba(0, 212, 224, 0.2);
-    transition: all var(--transition-fast);
   }
 
-  .bento-card:hover .tag {
-    background: rgba(0, 212, 224, 0.15);
+  .rating {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: #fbbf24;
+    font-size: 0.9rem;
   }
 
-  /* Card Footer */
-  .card-footer {
+  .rating-score {
+    font-weight: 600;
+    margin-left: 0.25rem;
+  }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+  }
+
+  .resource-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding-top: 0.75rem;
-    border-top: 1px solid var(--color-border);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem;
+    transition: all var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .resource-item:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+  }
+
+  .resource-content {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .resource-title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 0.25rem;
+  }
+
+  .resource-desc {
     font-size: 0.85rem;
+    color: var(--color-text-secondary);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
 
-  .card-date {
-    color: var(--color-text-muted);
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-  }
-
-  .card-date svg {
+  .resource-icon {
+    color: var(--color-primary);
     flex-shrink: 0;
   }
 
-  .read-more {
-    color: var(--color-primary);
-    font-weight: 500;
-    font-size: 0.85rem;
-  }
-
-  .icon {
-    font-size: 0.85rem;
-  }
-
-  /* Section Footer */
-  .section-footer {
-    text-align: center;
-    margin-top: 2rem;
-  }
-
-  /* Sidebar */
   .sidebar {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    position: fixed;
+    top: 100px;
+    right: 20px;
+    width: 280px;
   }
 
   .sidebar-card {
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: 1.25rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
   }
 
-  .sidebar-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  /* Author Card */
   .author-card {
     text-align: center;
   }
 
   .author-avatar {
-    color: var(--color-text-primary);
-    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+    margin-bottom: 1rem;
   }
 
   .author-name {
@@ -545,7 +681,6 @@ const allTags = allPosts
   .author-social {
     display: flex;
     justify-content: center;
-    gap: 0.75rem;
   }
 
   .social-link {
@@ -555,6 +690,7 @@ const allTags = allPosts
     border-radius: var(--radius-md);
     font-size: 0.85rem;
     font-weight: 500;
+    text-decoration: none;
     transition: all var(--transition-fast);
   }
 
@@ -563,91 +699,9 @@ const allTags = allPosts
     color: white;
   }
 
-  /* Popular List */
-  .popular-list {
-    list-style: none;
-  }
-
-  .popular-item {
-    display: flex;
-    align-items: flex-start;
-    gap: 0.75rem;
-    padding: 0.6rem 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-
-  .popular-item:last-child {
-    border-bottom: none;
-  }
-
-  .rank {
-    flex-shrink: 0;
-    width: 20px;
-    height: 20px;
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-secondary);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-  }
-
-  .popular-item:nth-child(1) .rank {
-    background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-    color: white;
-  }
-
-  .popular-item:nth-child(2) .rank {
-    background: linear-gradient(135deg, #9ca3af 0%, #6b7280 100%);
-    color: white;
-  }
-
-  .popular-item:nth-child(3) .rank {
-    background: linear-gradient(135deg, #b45309 0%, #92400e 100%);
-    color: white;
-  }
-
-  .popular-title {
-    color: var(--color-text-primary);
-    font-size: 0.9rem;
-    line-height: 1.4;
-    transition: color var(--transition-fast);
-  }
-
-  .popular-title:hover {
-    color: var(--color-primary);
-  }
-
-  /* Tag Cloud */
-  .tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
-  }
-
-  .tag-cloud-item {
-    background: rgba(0, 212, 224, 0.1);
-    color: var(--color-primary);
-    padding: 0.3rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    border: 1px solid rgba(0, 212, 224, 0.2);
-    transition: all var(--transition-fast);
-  }
-
-  .tag-cloud-item:hover {
-    background: var(--color-primary);
-    color: white;
-    transform: translateY(-1px);
-  }
-
-  /* Empty State */
   .empty-state {
     text-align: center;
-    padding: 4rem 2rem;
+    padding: 3rem 2rem;
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
@@ -661,56 +715,13 @@ const allTags = allPosts
 
   .empty-state p {
     color: var(--color-text-secondary);
-    font-size: 1rem;
   }
 
-  /* Buttons */
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.5rem;
-    border-radius: var(--radius-md);
-    font-weight: 600;
-    font-size: 0.9rem;
-    transition: all var(--transition-base);
-    cursor: pointer;
-    border: none;
-  }
-
-  .btn-outline {
-    background: transparent;
-    color: var(--color-primary);
-    border: 2px solid var(--color-primary);
-  }
-
-  .btn-outline:hover {
-    background: var(--color-primary);
-    color: white;
-  }
-
-  .btn-arrow {
-    transition: transform var(--transition-fast);
-  }
-
-  .btn:hover .btn-arrow {
-    transform: translateX(4px);
-  }
-
-  /* Responsive */
   @media (max-width: 1024px) {
-    .main-layout {
-      grid-template-columns: 1fr;
-    }
-
     .sidebar {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1rem;
-    }
-
-    .sidebar-card {
-      padding: 1rem;
+      position: static;
+      width: 100%;
+      margin-top: 2rem;
     }
   }
 
@@ -731,30 +742,14 @@ const allTags = allPosts
       font-size: 0.95rem;
     }
 
-    .bento-grid {
+    .card-grid {
       grid-template-columns: 1fr;
     }
 
-    .bento-card-large {
-      grid-column: span 1;
-    }
-
-    .sidebar {
-      grid-template-columns: 1fr;
-    }
-
-    .bento-card-large .card-title {
-      font-size: 1.25rem;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .hero-title {
-      font-size: 1.875rem;
-    }
-
-    .card-hero-image {
-      height: 150px;
+    .section-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1rem;
     }
   }
 </style>

@@ -87,7 +87,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .header-icon {
-    color: var(--primary-light);
+    color: var(--color-primary);
     margin-bottom: 1rem;
     animation: float 3s ease-in-out infinite;
   }
@@ -100,7 +100,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .header h1 {
     font-size: 2.5rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--primary-light) 0%, var(--accent) 100%);
+    background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-accent) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -109,8 +109,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .section {
     margin-bottom: 2.5rem;
     padding: 2rem;
-    background: var(--bg-card);
-    border: 1px solid var(--border);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
     position: relative;
     overflow: hidden;
@@ -123,12 +123,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+    background: linear-gradient(90deg, var(--color-primary) 0%, var(--color-accent) 100%);
     opacity: 0.5;
   }
 
   .section-icon {
-    color: var(--primary-light);
+    color: var(--color-primary);
     margin-bottom: 1rem;
   }
 
@@ -136,11 +136,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 1.5rem;
     font-weight: 700;
     margin-bottom: 1rem;
-    color: var(--text);
+    color: var(--color-text-primary);
   }
 
   .section p {
-    color: var(--text-muted);
+    color: var(--color-text-secondary);
     line-height: 1.8;
     font-size: 1rem;
   }
@@ -153,21 +153,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   }
 
   .card {
-    background: var(--bg-card-hover);
-    border: 1px solid var(--border);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     padding: 1.5rem;
     transition: all 0.3s ease;
   }
 
   .card:hover {
-    border-color: var(--primary);
+    border-color: var(--color-primary);
     transform: translateY(-4px);
     box-shadow: var(--shadow-md), 0 0 20px rgba(124, 58, 237, 0.15);
   }
 
   .card-icon {
-    color: var(--primary-light);
+    color: var(--color-primary);
     margin-bottom: 0.75rem;
   }
 
@@ -175,11 +175,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     font-size: 1.1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
-    color: var(--text);
+    color: var(--color-text-primary);
   }
 
   .card p {
-    color: var(--text-dim);
+    color: var(--color-text-secondary);
     font-size: 0.9rem;
     line-height: 1.5;
   }

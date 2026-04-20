@@ -5,10 +5,8 @@ pubDate: 2026-04-20
 updatedDate: 2026-04-20
 heroImage: "/images/openclaw-hero.jpg"
 tags: ["AI Agent", "OpenClaw", "开发工具", "自动化"]
-category: "tutorial"
-difficulty: "beginner"
+category: "news"
 draft: false
-noindex: false
 ---
 
 # OpenClaw 项目介绍

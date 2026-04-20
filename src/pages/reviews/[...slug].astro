@@ -1,0 +1,502 @@
+---
+import { Star, ThumbsUp, ThumbsDown, Calendar, ArrowLeft, ArrowRight, Tag } from 'lucide-astro';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import { slug } from 'github-slugger';
+
+const allReviews = await getCollection('reviews');
+
+function getReviewFromSlug(slugStr: string) {
+  return allReviews.find((review) => review.slug === slugStr);
+}
+
+export async function getStaticPaths() {
+  const reviews = await getCollection('reviews', ({ data }) => !data.draft);
+  return reviews.map((item) => ({
+    params: { slug: item.slug },
+    props: { item },
+  }));
+}
+
+const { slug: slugParam } = Astro.params;
+const review = getReviewFromSlug(slugParam);
+
+if (!review) {
+  return Astro.redirect('/404');
+}
+
+const { Content } = await render(review);
+
+// 提取标题用于目录
+const headings: Array<{ depth: number; slug: string; text: string }> = [];
+const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+let match;
+while ((match = headingRegex.exec(review.body)) !== null) {
+  const depth = match[1].length;
+  const text = match[2].trim();
+  headings.push({
+    depth,
+    slug: slug(text),
+    text,
+  });
+}
+
+// 获取上一篇和下一篇
+const sortedReviews = allReviews
+  .filter((r) => !r.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const currentIndex = sortedReviews.findIndex((r) => r.slug === review.slug);
+const prevReview = currentIndex > 0 ? sortedReviews[currentIndex - 1] : null;
+const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[currentIndex + 1] : null;
+---
+
+<BaseLayout
+  title={review.data.title}
+  description={review.data.description}
+  image={review.data.heroImage}
+  article={{
+    publishedTime: review.data.pubDate.toISOString(),
+    modifiedTime: review.data.updatedDate?.toISOString(),
+  }}
+>
+  <article class="review-article">
+    <header class="article-header">
+      <a href="/reviews" class="back-link">
+        <ArrowLeft size={16} />
+        返回评测列表
+      </a>
+
+      <div class="rating-banner">
+        <div class="rating-score">
+          <span class="score">{review.data.rating}</span>
+          <span class="out-of">/5</span>
+        </div>
+        <div class="rating-stars">
+          {[...Array(5)].map((_, i) => (
+            <Star
+              size={20}
+              class={i < review.data.rating ? 'filled' : 'empty'}
+              fill={i < review.data.rating ? 'currentColor' : 'none'}
+            />
+          ))}
+        </div>
+      </div>
+
+      <h1 class="article-title">{review.data.title}</h1>
+      <p class="article-description">{review.data.description}</p>
+
+      <div class="article-meta">
+        <time datetime={review.data.pubDate.toISOString()} class="meta-item">
+          <Calendar size={14} />
+          {review.data.pubDate.toLocaleDateString('zh-CN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </time>
+      </div>
+
+      {review.data.heroImage && (
+        <div class="article-hero">
+          <img src={review.data.heroImage} alt={review.data.title} />
+        </div>
+      )}
+    </header>
+
+    <!-- 优缺点速览 -->
+    {(review.data.pros?.length > 0 || review.data.cons?.length > 0) && (
+      <div class="pros-cons-summary">
+        {review.data.pros?.length > 0 && (
+          <div class="pros-section">
+            <div class="section-label">
+              <ThumbsUp size={18} />
+              优点
+            </div>
+            <ul class="pros-list">
+              {review.data.pros.map((pro) => (
+                <li>{pro}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+        {review.data.cons?.length > 0 && (
+          <div class="cons-section">
+            <div class="section-label">
+              <ThumbsDown size={18} />
+              不足
+            </div>
+            <ul class="cons-list">
+              {review.data.cons.map((con) => (
+                <li>{con}</li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    )}
+
+    <div class="article-content-wrapper">
+      <div class="article-body">
+        <Content />
+      </div>
+
+      <aside class="article-sidebar">
+        <TableOfContents headings={headings} />
+      </aside>
+    </div>
+
+    <footer class="article-footer">
+      {review.data.verdict && (
+        <div class="verdict-box">
+          <h3>评测总结</h3>
+          <p>{review.data.verdict}</p>
+        </div>
+      )}
+
+      {(prevReview || nextReview) && (
+        <nav class="article-nav">
+          {prevReview && (
+            <a href={`/reviews/${prevReview.slug}`} class="nav-item nav-prev">
+              <span class="nav-label">
+                <ArrowLeft size={14} />
+                上一篇
+              </span>
+              <span class="nav-title">{prevReview.data.title}</span>
+            </a>
+          )}
+          {nextReview && (
+            <a href={`/reviews/${nextReview.slug}`} class="nav-item nav-next">
+              <span class="nav-label">
+                下一篇
+                <ArrowRight size={14} />
+              </span>
+              <span class="nav-title">{nextReview.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )}
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .review-article {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .article-header {
+    margin-bottom: var(--space-10);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: var(--space-4);
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .rating-banner {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    padding: var(--space-4);
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.1) 0%, rgba(251, 191, 36, 0.05) 100%);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+    border-radius: var(--radius-lg);
+    margin-bottom: var(--space-5);
+    width: fit-content;
+  }
+
+  .rating-score {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+  }
+
+  .score {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #fbbf24;
+    line-height: 1;
+  }
+
+  .out-of {
+    font-size: 1rem;
+    color: var(--color-text-muted);
+  }
+
+  .rating-stars {
+    display: flex;
+    gap: 2px;
+    color: #fbbf24;
+  }
+
+  .rating-stars .empty {
+    color: var(--color-text-muted);
+    opacity: 0.3;
+  }
+
+  .article-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+
+  .article-description {
+    font-size: 1.1rem;
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin-bottom: var(--space-5);
+  }
+
+  .article-meta {
+    display: flex;
+    gap: var(--space-4);
+    flex-wrap: wrap;
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .article-hero {
+    margin: var(--space-6) 0;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+  }
+
+  .article-hero img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  /* 优缺点速览 */
+  .pros-cons-summary {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-6);
+    margin-bottom: var(--space-10);
+  }
+
+  .pros-section, .cons-section {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+  }
+
+  .pros-section {
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  .cons-section {
+    border-color: rgba(245, 158, 11, 0.3);
+  }
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9rem;
+    margin-bottom: var(--space-4);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .pros-section .section-label {
+    color: #10b981;
+  }
+
+  .cons-section .section-label {
+    color: #f59e0b;
+  }
+
+  .pros-list, .cons-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .pros-list li, .cons-list li {
+    font-size: 0.9rem;
+    color: var(--color-text-secondary);
+    padding: 0.4rem 0;
+    padding-left: 1.5rem;
+    position: relative;
+    line-height: 1.5;
+  }
+
+  .pros-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: 600;
+  }
+
+  .cons-list li::before {
+    content: '×';
+    position: absolute;
+    left: 0;
+    color: #f59e0b;
+    font-weight: 600;
+  }
+
+  /* 文章正文 */
+  .article-content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: var(--space-10);
+    align-items: start;
+  }
+
+  .article-body {
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+  }
+
+  .article-body :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: var(--space-10) 0 var(--space-4);
+  }
+
+  .article-body :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: var(--space-8) 0 var(--space-3);
+  }
+
+  .article-body :global(p) {
+    margin-bottom: var(--space-5);
+  }
+
+  .article-body :global(a) {
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin-bottom: var(--space-5);
+    padding-left: var(--space-6);
+  }
+
+  .article-body :global(img) {
+    max-width: 100%;
+    height: auto;
+    border-radius: var(--radius-lg);
+    margin: var(--space-6) 0;
+  }
+
+  /* 评测总结 */
+  .verdict-box {
+    background: linear-gradient(135deg, rgba(0, 212, 224, 0.1) 0%, rgba(0, 212, 224, 0.05) 100%);
+    border: 1px solid rgba(0, 212, 224, 0.2);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    margin-bottom: var(--space-8);
+  }
+
+  .verdict-box h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    margin-bottom: var(--space-3);
+  }
+
+  .verdict-box p {
+    color: var(--color-text-secondary);
+    line-height: 1.7;
+    margin: 0;
+  }
+
+  /* 上下篇导航 */
+  .article-footer {
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .article-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    text-decoration: none;
+  }
+
+  .nav-item:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-tertiary);
+  }
+
+  .nav-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 4px;
+  }
+
+  .nav-title {
+    font-size: 0.9375rem;
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1024px) {
+    .article-content-wrapper {
+      grid-template-columns: 1fr;
+    }
+
+    .article-sidebar {
+      order: -1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .article-title {
+      font-size: 1.5rem;
+    }
+
+    .pros-cons-summary {
+      grid-template-columns: 1fr;
+    }
+
+    .rating-score .score {
+      font-size: 2rem;
+    }
+  }
+</style>

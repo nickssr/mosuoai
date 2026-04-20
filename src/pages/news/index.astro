@@ -1,0 +1,255 @@
+---
+import { Newspaper, Calendar, ArrowRight } from 'lucide-astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allNews = await getCollection('news', ({ data }) => !data.draft);
+const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+
+// 分类中文名
+const categoryNames: Record<string, string> = {
+  news: '资讯',
+  announcement: '公告',
+  update: '更新',
+};
+---
+
+<BaseLayout title="资讯快报" description="AI Agent 领域最新资讯和动态">
+  <div class="news-page">
+    <header class="page-header">
+      <Newspaper size={64} class="header-icon" />
+      <h1 class="page-title">资讯快报</h1>
+      <p class="page-subtitle">追踪 AI Agent 领域的最新动态</p>
+    </header>
+
+    {sortedNews.length === 0 ? (
+      <div class="empty-state">
+        <Newspaper size={64} class="empty-icon" />
+        <p>暂无资讯，敬请期待...</p>
+      </div>
+    ) : (
+      <div class="news-list">
+        {sortedNews.map((news) => (
+          <article class="news-item">
+            <a href={`/news/${news.id}`} class="news-link"></a>
+            <div class="news-content">
+              <div class="news-header">
+                <span class="category-badge category-{news.data.category}">
+                  {categoryNames[news.data.category]}
+                </span>
+                <time datetime={news.data.pubDate.toISOString()} class="news-date">
+                  <Calendar size={14} />
+                  {news.data.pubDate.toLocaleDateString('zh-CN', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                  })}
+                </time>
+              </div>
+              <h2 class="news-title">{news.data.title}</h2>
+              <p class="news-excerpt">{news.data.description}</p>
+              <div class="news-footer">
+                <div class="news-tags">
+                  {news.data.tags.slice(0, 4).map((tag) => (
+                    <span class="tag">#{tag}</span>
+                  ))}
+                </div>
+                <span class="read-more">
+                  阅读更多 <ArrowRight size={14} />
+                </span>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+    )}
+  </div>
+</BaseLayout>
+
+<style>
+  .news-page {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+
+  .header-icon {
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+
+  .page-subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.125rem;
+  }
+
+  .news-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+  }
+
+  .news-item {
+    position: relative;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    transition: all var(--transition-base);
+    overflow: hidden;
+  }
+
+  .news-item:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 212, 224, 0.1);
+  }
+
+  .news-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  .news-header {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
+    margin-bottom: var(--space-3);
+  }
+
+  .category-badge {
+    padding: 0.25rem 0.6rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    z-index: 2;
+  }
+
+  .category-news {
+    background: rgba(59, 130, 246, 0.15);
+    color: #3b82f6;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  .category-announcement {
+    background: rgba(139, 92, 246, 0.15);
+    color: #8b5cf6;
+    border: 1px solid rgba(139, 92, 246, 0.3);
+  }
+
+  .category-update {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .news-date {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--color-text-muted);
+    z-index: 2;
+  }
+
+  .news-title {
+    font-size: 1.375rem;
+    font-weight: 600;
+    margin-bottom: var(--space-3);
+    color: var(--color-text-primary);
+    line-height: 1.4;
+    z-index: 2;
+    position: relative;
+  }
+
+  .news-excerpt {
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    margin-bottom: var(--space-4);
+    z-index: 2;
+    position: relative;
+  }
+
+  .news-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--color-border);
+    z-index: 2;
+    position: relative;
+  }
+
+  .news-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    background: rgba(0, 212, 224, 0.1);
+    color: var(--color-primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 212, 224, 0.2);
+  }
+
+  .read-more {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    color: var(--color-primary);
+    font-weight: 500;
+    font-size: 0.875rem;
+    transition: gap var(--transition-fast);
+  }
+
+  .news-item:hover .read-more {
+    gap: 0.5rem;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: var(--space-16) var(--space-8);
+    background: var(--color-bg-secondary);
+    border: 1px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    color: var(--color-text-secondary);
+  }
+
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 1.875rem;
+    }
+
+    .news-item {
+      padding: var(--space-5);
+    }
+
+    .news-title {
+      font-size: 1.125rem;
+    }
+  }
+</style>

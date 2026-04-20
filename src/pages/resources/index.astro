@@ -1,0 +1,360 @@
+---
+import { ExternalLink, Tag, Grid, Wrench, LayoutGrid, Globe, BookOpen, Users } from 'lucide-astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const allResources = await getCollection('resources', ({ data }) => !data.draft);
+
+// 分类配置
+const categoryConfig = {
+  tools: { label: '工具', icon: Wrench, color: '#00D4E0' },
+  frameworks: { label: '框架', icon: LayoutGrid, color: '#8B5CF6' },
+  platforms: { label: '平台', icon: Globe, color: '#3B82F6' },
+  learning: { label: '学习', icon: BookOpen, color: '#F59E0B' },
+  community: { label: '社区', icon: Users, color: '#10B981' },
+};
+
+// 按分类分组
+const groupedResources = Object.entries(categoryConfig).map(([key, config]) => ({
+  key,
+  ...config,
+  items: allResources.filter((r) => r.data.category === key),
+})).filter((group) => group.items.length > 0);
+
+// Featured 资源
+const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 5);
+---
+
+<BaseLayout title="资源导航" description="精选 AI Agent 开发工具和资源">
+  <div class="resources-page">
+    <header class="page-header">
+      <Grid size={64} class="header-icon" />
+      <h1 class="page-title">资源导航</h1>
+      <p class="page-subtitle">精选 AI Agent 开发工具、框架和学习资源</p>
+    </header>
+
+    <!-- Featured 资源 -->
+    {featuredResources.length > 0 && (
+      <section class="featured-section">
+        <h2 class="section-title">
+          <Grid size={20} />
+          精选资源
+        </h2>
+        <div class="featured-grid">
+          {featuredResources.map((resource) => {
+            const IconComponent = categoryConfig[resource.data.category]?.icon || ExternalLink;
+            return (
+              <a href={resource.data.url} target="_blank" rel="noopener noreferrer" class="featured-card">
+                <div class="card-glow"></div>
+                <div class="card-content">
+                  <div class="card-header">
+                    <IconComponent size={24} class="card-icon" style={`color: ${categoryConfig[resource.data.category]?.color}`} />
+                    <ExternalLink size={16} class="external-icon" />
+                  </div>
+                  <h3 class="card-title">{resource.data.title}</h3>
+                  <p class="card-desc">{resource.data.description}</p>
+                  <div class="card-tags">
+                    {resource.data.tags.slice(0, 3).map((tag) => (
+                      <span class="tag">#{tag}</span>
+                    ))}
+                  </div>
+                </div>
+              </a>
+            );
+          })}
+        </div>
+      </section>
+    )}
+
+    <!-- 分类资源 -->
+    <section class="categories-section">
+      {groupedResources.map((group) => {
+        const IconComponent = group.icon;
+        return (
+          <div class="category-group">
+            <h2 class="category-title">
+              <IconComponent size={20} style={`color: ${group.color}`} />
+              {group.label}
+              <span class="category-count">{group.items.length}</span>
+            </h2>
+            <div class="resource-grid">
+              {group.items.map((resource) => (
+                <a href={resource.data.url} target="_blank" rel="noopener noreferrer" class="resource-card">
+                  <div class="resource-content">
+                    <div class="resource-header">
+                      <h3 class="resource-title">{resource.data.title}</h3>
+                      <ExternalLink size={14} class="link-icon" />
+                    </div>
+                    <p class="resource-desc">{resource.data.description}</p>
+                    {resource.data.tags.length > 0 && (
+                      <div class="resource-tags">
+                        {resource.data.tags.slice(0, 4).map((tag) => (
+                          <span class="tag">{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </a>
+              ))}
+            </div>
+          </div>
+        );
+      })}
+    </section>
+  </div>
+</BaseLayout>
+
+<style>
+  .resources-page {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: var(--space-12);
+  }
+
+  .header-icon {
+    color: var(--color-primary);
+    margin-bottom: 1rem;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .page-title {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: var(--space-4);
+    color: var(--color-text-primary);
+  }
+
+  .page-subtitle {
+    color: var(--color-text-secondary);
+    font-size: 1.125rem;
+  }
+
+  /* Featured Section */
+  .featured-section {
+    margin-bottom: var(--space-12);
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--space-6);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-primary);
+  }
+
+  .featured-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-5);
+  }
+
+  .featured-card {
+    position: relative;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-5);
+    transition: all var(--transition-base);
+    overflow: hidden;
+    text-decoration: none;
+  }
+
+  .featured-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-3px);
+    box-shadow: 0 12px 30px rgba(0, 212, 224, 0.15);
+  }
+
+  .card-glow {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 0%, rgba(0, 212, 224, 0.08) 0%, transparent 50%);
+    opacity: 0;
+    transition: opacity var(--transition-base);
+    pointer-events: none;
+  }
+
+  .featured-card:hover .card-glow {
+    opacity: 1;
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--space-3);
+  }
+
+  .card-icon {
+    color: var(--color-primary);
+  }
+
+  .external-icon {
+    color: var(--color-text-muted);
+    opacity: 0;
+    transition: opacity var(--transition-fast);
+  }
+
+  .featured-card:hover .external-icon {
+    opacity: 1;
+  }
+
+  .card-title {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: var(--space-2);
+  }
+
+  .card-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: var(--space-3);
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    background: rgba(0, 212, 224, 0.1);
+    color: var(--color-primary);
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 212, 224, 0.2);
+  }
+
+  /* Categories Section */
+  .categories-section {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-10);
+  }
+
+  .category-group {
+    margin-bottom: var(--space-4);
+  }
+
+  .category-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: var(--space-5);
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-primary);
+  }
+
+  .category-icon {
+    color: var(--color-primary);
+  }
+
+  .category-count {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.125rem 0.5rem;
+    border-radius: 12px;
+    margin-left: var(--space-2);
+  }
+
+  .resource-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .resource-card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-4);
+    transition: all var(--transition-fast);
+    text-decoration: none;
+  }
+
+  .resource-card:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-tertiary);
+    transform: translateY(-1px);
+  }
+
+  .resource-content {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .resource-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--space-2);
+  }
+
+  .resource-title {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    flex: 1;
+  }
+
+  .link-icon {
+    color: var(--color-text-muted);
+    flex-shrink: 0;
+  }
+
+  .resource-desc {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .resource-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-top: var(--space-1);
+  }
+
+  .resource-tags .tag {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.4rem;
+  }
+
+  @media (max-width: 768px) {
+    .page-title {
+      font-size: 1.875rem;
+    }
+
+    .featured-grid,
+    .resource-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
