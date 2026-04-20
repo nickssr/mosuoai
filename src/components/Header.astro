@@ -1,5 +1,5 @@
 ---
-import { Bot, Search, Sun, Moon, Menu, X } from 'lucide-astro';
+import { Search, Sun, Moon, Menu, X } from 'lucide-astro';
 
 const navLinks = [
   { href: '/tutorials', label: '教程' },
@@ -12,7 +12,7 @@ const navLinks = [
 <header class="header">
   <div class="nav">
     <a href="/" class="logo">
-      <Bot size={28} class="logo-icon" />
+      <img src="/logo.jpg" alt="MosuoAI Logo" class="logo-img" />
       <span class="logo-text">MosuoAI</span>
     </a>
 
@@ -110,12 +110,22 @@ const navLinks = [
     color: var(--color-primary);
   }
 
-  .logo-icon {
-    color: var(--color-text-primary);
+  .logo-img {
+    height: 36px;
+    width: auto;
+    transition: transform var(--transition-fast), filter var(--transition-fast);
+  }
+
+  .logo:hover .logo-img {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  .logo-text {
     transition: color var(--transition-fast);
   }
 
-  .logo:hover .logo-icon {
+  .logo:hover .logo-text {
     color: var(--color-primary);
   }
 
@@ -305,6 +315,14 @@ const navLinks = [
 
     .nav {
       padding: var(--space-3) var(--space-4);
+    }
+
+    .logo-img {
+      height: 32px;
+    }
+
+    .logo-text {
+      font-size: 1.1rem;
     }
   }
 </style>
