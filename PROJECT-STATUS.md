@@ -1,7 +1,8 @@
 # MosuoAI 网站项目进度报告
 
 **创建时间：** 2026-04-21 11:05  
-**最后更新：** 2026-04-21 14:45  
+**最后更新：** 2026-04-21 19:20  
+**当前状态：** Phase 1-5 完成，等待内容填充  
 **项目地址：** https://github.com/nickssr/mosuoai  
 **线上地址：** https://mosuoai.com
 
@@ -267,12 +268,30 @@ git push
 - [ ] 案例分析板块（Phase 2）
 - [ ] 开源板块内容填充
 
-### 当前状态
+### 当前状态（2026-04-21 19:20）
+
+#### 已完成
 - ✅ 主题设计完成（6 板块架构）
 - ✅ 首页布局完成（Hero + 双栏 + 学习路径）
-- ✅ 示例内容：教程 3 篇、评测 2 篇、资讯 3 篇
 - ✅ 导航菜单：资讯 | 评测 | 教程 | 开源 | 资源
-- ✅ 所有卡片支持点击跳转
+- ✅ 所有链接修复（首页→栏目页→详情页）
+- ✅ 资讯栏目：9 篇真实行业资讯（基于 Exa 搜索）
+- ✅ 评测栏目：2 篇工具评测
+- ✅ 教程栏目：3 篇 OpenClaw 教程
+- ✅ 视觉优化（LOGO、Favicon、Hero 背景色）
+- ✅ 页脚优化（单行布局）
+
+#### 待完成
+- [ ] 开源栏目内容（5 篇）
+- [ ] 资源栏目内容（5 篇）
+- [ ] 搜索功能测试与优化
+- [ ] 社区功能（Phase 2）
+- [ ] 学习路径详细规划
+
+#### 技术债务
+- ⚠️ news 集合 category 字段限制过严（只有 news/announcement/update）
+- ⚠️ 部分页面构建警告（路由冲突）
+- ⚠️ 学习路径集合无内容（paths 目录为空）
 
 ---
 
@@ -359,3 +378,79 @@ git push
 ---
 
 *最后同步时间：2026-04-21 11:05*
+
+---
+
+## 🔄 重启指南（新会话继续）
+
+### 快速恢复工作
+
+1. **读取项目状态**
+   ```bash
+   cat /root/.openclaw/workspace-coder/projects/mosuoai/PROJECT-STATUS.md
+   ```
+
+2. **检查当前状态**
+   ```bash
+   cd /root/.openclaw/workspace-coder/projects/mosuoai
+   npm run build  # 测试构建
+   git log --oneline -5  # 查看最近提交
+   ```
+
+3. **内容创作进度**
+   - 资讯栏目：已完成 9 篇 ✅
+   - 评测栏目：已完成 2 篇，还需 3 篇
+   - 教程栏目：已完成 3 篇，还需 2 篇
+   - 开源栏目：需创作 5 篇
+   - 资源栏目：需创作 5 篇
+
+4. **常用命令**
+   ```bash
+   # 本地开发
+   npm run dev
+   
+   # 构建测试
+   npm run build
+   
+   # 提交推送
+   git add -A
+   git commit -m "feat: xxx"
+   git push
+   
+   # 搜索资讯（Exa）
+   source ~/.agent-reach-venv/bin/activate
+   mcporter call 'exa.web_search_exa(query: "xxx", numResults: 10)'
+   ```
+
+### 重要文件位置
+
+| 文件 | 路径 |
+|------|------|
+| 项目状态 | `projects/mosuoai/PROJECT-STATUS.md` |
+| 资讯内容 | `projects/mosuoai/src/content/news/` |
+| 评测内容 | `projects/mosuoai/src/content/reviews/` |
+| 教程内容 | `projects/mosuoai/src/content/tutorials/` |
+| 开源内容 | `projects/mosuoai/src/content/opensource/` |
+| 资源内容 | `projects/mosuoai/src/content/resources/` |
+| 主题配置 | `projects/mosuoai/src/styles/variables.css` |
+| 布局组件 | `projects/mosuoai/src/layouts/BaseLayout.astro` |
+
+### 技术栈摘要
+
+- **框架：** Astro v6.1.8
+- **部署：** Cloudflare Pages
+- **样式：** 原生 CSS（CSS 变量）
+- **图标：** Lucide Icons
+- **代码高亮：** Expressive Code
+- **搜索：** Exa AI（已配置）
+- **域名：** mosuoai.com
+
+### 已知问题
+
+1. ⚠️ news 集合 category 字段限制过严（只有 news/announcement/update）
+2. ⚠️ 部分页面构建警告（路由冲突）
+3. ⚠️ 学习路径集合无内容（paths 目录为空）
+
+---
+
+*最后同步时间：2026-04-21 19:20*
