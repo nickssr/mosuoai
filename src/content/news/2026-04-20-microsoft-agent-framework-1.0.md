@@ -4,7 +4,7 @@ description: '微软发布 Agent Framework 1.0 正式版，统一 Semantic Kerne
 pubDate: 2026-04-20
 author: 摩索 AI
 tags: ['Microsoft', 'Agent Framework', '多 Agent', '开源框架']
-category: 'product'
+category: 'news'
 heroImage: '/images/news/microsoft-agent-framework.svg'
 ---
 

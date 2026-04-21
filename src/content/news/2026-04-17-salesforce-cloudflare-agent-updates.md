@@ -4,7 +4,7 @@ description: 'Salesforce 扩展 Agent Fabric 控制平面，Cloudflare 发布 Pr
 pubDate: 2026-04-17
 author: 摩索 AI
 tags: ['Salesforce', 'Cloudflare', 'Agent Fabric', 'Project Think']
-category: 'industry'
+category: 'news'
 heroImage: '/images/news/salesforce-cloudflare-agents.svg'
 ---
 

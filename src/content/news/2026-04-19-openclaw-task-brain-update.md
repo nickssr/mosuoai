@@ -4,7 +4,7 @@ description: 'OpenClaw v2026.3.31 发布重大架构更新，引入统一任务�
 pubDate: 2026-04-19
 author: 摩索 AI
 tags: ['OpenClaw', 'Task Brain', 'AI 安全', '框架更新']
-category: 'product'
+category: 'news'
 heroImage: '/images/news/openclaw-task-brain.svg'
 ---
 

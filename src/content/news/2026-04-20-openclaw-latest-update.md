@@ -4,7 +4,7 @@ description: 'OpenClaw 框架迎来重要版本更新，技能加载机制、记
 pubDate: 2026-04-20
 author: 摩索 AI
 tags: ['OpenClaw', '框架更新', '技能系统']
-category: 'product'
+category: 'news'
 heroImage: '/images/news/openclaw-update.svg'
 ---
 
