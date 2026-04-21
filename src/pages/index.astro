@@ -34,28 +34,206 @@ const popularTags = Array.from(allTags).slice(0, 10);
 ---
 
 <BaseLayout title="MosuoAI" description="AI Agent 开发者的深度指南">
-  <div class="home-layout">
-    <main class="main-content">
-      <!-- Hero Section -->
-      <section class="hero">
-      <div class="hero-bg">
-        <div class="hero-glow"></div>
-      </div>
-      <div class="hero-content">
-        <h1 class="hero-title">
-          <span class="text-gradient">MosuoAI</span>
-        </h1>
-        <p class="hero-subtitle">AI Agent 开发者的深度指南</p>
-        <p class="hero-desc">
-          探索 AI Agent 开发的无限可能，分享 OpenClaw、Hermes Agent 等工具的实战经验。
-          从入门到精通，陪你走好每一步。
-        </p>
-      </div>
-    </section>
+  <!-- Hero 区（全宽，独立） -->
+  <section class="hero-section">
+    <div class="hero-bg">
+      <div class="hero-glow"></div>
+    </div>
+    <div class="hero-content">
+      <h1 class="hero-title">
+        <span class="text-gradient">MosuoAI</span>
+      </h1>
+      <p class="hero-subtitle">AI Agent 开发者的深度指南</p>
+      <p class="hero-desc">
+        探索 AI Agent 开发的无限可能，分享 OpenClaw、Hermes Agent 等工具的实战经验。
+        从入门到精通，陪你走好每一步。
+      </p>
+    </div>
+  </section>
 
-    <!-- 侧边栏区域（全宽） -->
-    <section class="sidebar-section">
-      <div class="sidebar-content">
+  <div class="home-layout">
+    <!-- 双栏内容区 -->
+    <div class="content-wrapper">
+      <!-- 主内容区 -->
+      <main class="main-content">
+        <!-- 资讯快报 -->
+        <section class="content-section">
+          <div class="section-header">
+            <div class="section-title-wrapper">
+              <Newspaper size={24} class="section-icon" />
+              <h2 class="section-title">资讯快报</h2>
+            </div>
+            <a href="/news" class="section-more">
+              查看更多 <ArrowRight size={16} />
+            </a>
+          </div>
+
+          {latestNews.length === 0 ? (
+            <div class="empty-state">
+              <Newspaper size={48} class="empty-icon" />
+              <p>暂无资讯，敬请期待...</p>
+            </div>
+          ) : (
+            <div class="news-list">
+              {latestNews.map((news) => (
+                <article class="news-item">
+                  <a href={`/news/${news.id}`} class="news-link"></a>
+                  <div class="news-content">
+                    <h3 class="news-title">{news.data.title}</h3>
+                    <p class="news-excerpt">{news.data.description}</p>
+                    <div class="news-meta">
+                      <span class="news-date">
+                        <Calendar size={14} />
+                        {news.data.pubDate.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
+                      </span>
+                    </div>
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <!-- 精选教程 -->
+        <section class="content-section">
+          <div class="section-header">
+            <div class="section-title-wrapper">
+              <BookOpen size={24} class="section-icon" />
+              <h2 class="section-title">精选教程</h2>
+            </div>
+            <a href="/tutorials" class="section-more">
+              查看更多 <ArrowRight size={16} />
+            </a>
+          </div>
+
+          {featuredTutorials.length === 0 ? (
+            <div class="empty-state">
+              <BookOpen size={48} class="empty-icon" />
+              <p>暂无教程，敬请期待...</p>
+            </div>
+          ) : (
+            <div class="card-grid">
+              {featuredTutorials.map((tutorial) => (
+                <article class="card tutorial-card">
+                  <a href={`/tutorials/${tutorial.id}`} class="card-link"></a>
+                  <div class="card-glow"></div>
+                  <div class="card-content">
+                    <div class="card-header">
+                      <span class="difficulty-badge difficulty-{tutorial.data.difficulty}">
+                        {tutorial.data.difficulty === 'beginner' && '入门'}
+                        {tutorial.data.difficulty === 'intermediate' && '进阶'}
+                        {tutorial.data.difficulty === 'advanced' && '高级'}
+                      </span>
+                    </div>
+                    <h3 class="card-title">{tutorial.data.title}</h3>
+                    <p class="card-desc">{tutorial.data.description}</p>
+                    {tutorial.data.tags && tutorial.data.tags.length > 0 && (
+                      <div class="card-tags">
+                        {tutorial.data.tags.slice(0, 3).map((tag) => (
+                          <span class="tag">#{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <!-- 精选评测 -->
+        <section class="content-section">
+          <div class="section-header">
+            <div class="section-title-wrapper">
+              <Star size={24} class="section-icon" />
+              <h2 class="section-title">工具评测</h2>
+            </div>
+            <a href="/reviews" class="section-more">
+              查看更多 <ArrowRight size={16} />
+            </a>
+          </div>
+
+          {featuredReviews.length === 0 ? (
+            <div class="empty-state">
+              <Star size={48} class="empty-icon" />
+              <p>暂无评测，敬请期待...</p>
+            </div>
+          ) : (
+            <div class="card-grid">
+              {featuredReviews.map((review) => (
+                <article class="card review-card">
+                  <a href={`/reviews/${review.id}`} class="card-link"></a>
+                  <div class="card-glow"></div>
+                  <div class="card-content">
+                    <div class="card-header">
+                      <div class="rating">
+                        {'★'.repeat(Math.floor(review.data.rating))}
+                        <span class="rating-score">{review.data.rating}</span>
+                      </div>
+                    </div>
+                    <h3 class="card-title">{review.data.title}</h3>
+                    <p class="card-desc">{review.data.description}</p>
+                    {review.data.tags && review.data.tags.length > 0 && (
+                      <div class="card-tags">
+                        {review.data.tags.slice(0, 3).map((tag) => (
+                          <span class="tag">#{tag}</span>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </article>
+              ))}
+            </div>
+          )}
+        </section>
+
+        <!-- 开源精选 -->
+        <section class="content-section">
+          <div class="section-header">
+            <div class="section-title-wrapper">
+              <Bot size={24} class="section-icon" />
+              <h2 class="section-title">开源精选</h2>
+            </div>
+            <a href="/resources" class="section-more">
+              查看更多 <ArrowRight size={16} />
+            </a>
+          </div>
+
+          <div class="resource-grid">
+            <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener noreferrer" class="resource-item">
+              <div class="resource-content">
+                <h3 class="resource-title">Claude Code</h3>
+                <p class="resource-desc">Anthropic 官方 CLI 工具</p>
+              </div>
+              <ArrowRight size={16} class="resource-icon" />
+            </a>
+            <a href="https://github.com/anthropics/open-claw" target="_blank" rel="noopener noreferrer" class="resource-item">
+              <div class="resource-content">
+                <h3 class="resource-title">OpenClaw</h3>
+                <p class="resource-desc">开源 Claude Code 封装</p>
+              </div>
+              <ArrowRight size={16} class="resource-icon" />
+            </a>
+            <a href="https://github.com/hermes-agent" target="_blank" rel="noopener noreferrer" class="resource-item">
+              <div class="resource-content">
+                <h3 class="resource-title">Hermes Agent</h3>
+                <p class="resource-desc">灵活的 AI Agent 框架</p>
+              </div>
+              <ArrowRight size={16} class="resource-icon" />
+            </a>
+            <a href="https://github.com/mosuoai" target="_blank" rel="noopener noreferrer" class="resource-item">
+              <div class="resource-content">
+                <h3 class="resource-title">MosuoAI</h3>
+                <p class="resource-desc">本站开源项目</p>
+              </div>
+              <ArrowRight size={16} class="resource-icon" />
+            </a>
+          </div>
+        </section>
+      </main>
+
+      <!-- 右侧边栏 -->
+      <aside class="sidebar">
         <!-- 热门标签 -->
         <div class="sidebar-card">
           <h3 class="sidebar-title">
@@ -92,185 +270,10 @@ const popularTags = Array.from(allTags).slice(0, 10);
             )}
           </div>
         </div>
-      </div>
-    </section>
+      </aside>
+    </div>
 
-    <!-- 资讯快报 -->
-    <section class="content-section">
-      <div class="section-header">
-        <div class="section-title-wrapper">
-          <Newspaper size={24} class="section-icon" />
-          <h2 class="section-title">资讯快报</h2>
-        </div>
-        <a href="/news" class="section-more">
-          查看更多 <ArrowRight size={16} />
-        </a>
-      </div>
-
-      {latestNews.length === 0 ? (
-        <div class="empty-state">
-          <Newspaper size={48} class="empty-icon" />
-          <p>暂无资讯，敬请期待...</p>
-        </div>
-      ) : (
-        <div class="news-list">
-          {latestNews.map((news) => (
-            <article class="news-item">
-              <a href={`/news/${news.id}`} class="news-link"></a>
-              <div class="news-content">
-                <h3 class="news-title">{news.data.title}</h3>
-                <p class="news-excerpt">{news.data.description}</p>
-                <div class="news-meta">
-                  <span class="news-date">
-                    <Calendar size={14} />
-                    {news.data.pubDate.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
-                  </span>
-                </div>
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
-    </section>
-
-    <!-- 精选教程 -->
-    <section class="content-section">
-      <div class="section-header">
-        <div class="section-title-wrapper">
-          <BookOpen size={24} class="section-icon" />
-          <h2 class="section-title">精选教程</h2>
-        </div>
-        <a href="/tutorials" class="section-more">
-          查看更多 <ArrowRight size={16} />
-        </a>
-      </div>
-
-      {featuredTutorials.length === 0 ? (
-        <div class="empty-state">
-          <BookOpen size={48} class="empty-icon" />
-          <p>暂无教程，敬请期待...</p>
-        </div>
-      ) : (
-        <div class="card-grid">
-          {featuredTutorials.map((tutorial) => (
-            <article class="card tutorial-card">
-              <a href={`/tutorials/${tutorial.id}`} class="card-link"></a>
-              <div class="card-glow"></div>
-              <div class="card-content">
-                <div class="card-header">
-                  <span class="difficulty-badge difficulty-{tutorial.data.difficulty}">
-                    {tutorial.data.difficulty === 'beginner' && '入门'}
-                    {tutorial.data.difficulty === 'intermediate' && '进阶'}
-                    {tutorial.data.difficulty === 'advanced' && '高级'}
-                  </span>
-                </div>
-                <h3 class="card-title">{tutorial.data.title}</h3>
-                <p class="card-desc">{tutorial.data.description}</p>
-                {tutorial.data.tags && tutorial.data.tags.length > 0 && (
-                  <div class="card-tags">
-                    {tutorial.data.tags.slice(0, 3).map((tag) => (
-                      <span class="tag">#{tag}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
-    </section>
-
-    <!-- 精选评测 -->
-    <section class="content-section">
-      <div class="section-header">
-        <div class="section-title-wrapper">
-          <Star size={24} class="section-icon" />
-          <h2 class="section-title">工具评测</h2>
-        </div>
-        <a href="/reviews" class="section-more">
-          查看更多 <ArrowRight size={16} />
-        </a>
-      </div>
-
-      {featuredReviews.length === 0 ? (
-        <div class="empty-state">
-          <Star size={48} class="empty-icon" />
-          <p>暂无评测，敬请期待...</p>
-        </div>
-      ) : (
-        <div class="card-grid">
-          {featuredReviews.map((review) => (
-            <article class="card review-card">
-              <a href={`/reviews/${review.id}`} class="card-link"></a>
-              <div class="card-glow"></div>
-              <div class="card-content">
-                <div class="card-header">
-                  <div class="rating">
-                    {'★'.repeat(Math.floor(review.data.rating))}
-                    <span class="rating-score">{review.data.rating}</span>
-                  </div>
-                </div>
-                <h3 class="card-title">{review.data.title}</h3>
-                <p class="card-desc">{review.data.description}</p>
-                {review.data.tags && review.data.tags.length > 0 && (
-                  <div class="card-tags">
-                    {review.data.tags.slice(0, 3).map((tag) => (
-                      <span class="tag">#{tag}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
-    </section>
-
-    <!-- 开源精选 -->
-    <section class="content-section">
-      <div class="section-header">
-        <div class="section-title-wrapper">
-          <Bot size={24} class="section-icon" />
-          <h2 class="section-title">开源精选</h2>
-        </div>
-        <a href="/resources" class="section-more">
-          查看更多 <ArrowRight size={16} />
-        </a>
-      </div>
-
-      <div class="resource-grid">
-        <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener noreferrer" class="resource-item">
-          <div class="resource-content">
-            <h3 class="resource-title">Claude Code</h3>
-            <p class="resource-desc">Anthropic 官方 CLI 工具</p>
-          </div>
-          <ArrowRight size={16} class="resource-icon" />
-        </a>
-        <a href="https://github.com/anthropics/open-claw" target="_blank" rel="noopener noreferrer" class="resource-item">
-          <div class="resource-content">
-            <h3 class="resource-title">OpenClaw</h3>
-            <p class="resource-desc">开源 Claude Code 封装</p>
-          </div>
-          <ArrowRight size={16} class="resource-icon" />
-        </a>
-        <a href="https://github.com/hermes-agent" target="_blank" rel="noopener noreferrer" class="resource-item">
-          <div class="resource-content">
-            <h3 class="resource-title">Hermes Agent</h3>
-            <p class="resource-desc">灵活的 AI Agent 框架</p>
-          </div>
-          <ArrowRight size={16} class="resource-icon" />
-        </a>
-        <a href="https://github.com/mosuoai" target="_blank" rel="noopener noreferrer" class="resource-item">
-          <div class="resource-content">
-            <h3 class="resource-title">MosuoAI</h3>
-            <p class="resource-desc">本站开源项目</p>
-          </div>
-          <ArrowRight size={16} class="resource-icon" />
-        </a>
-      </div>
-    </section>
-
-    <!-- 学习路径（页面底部） -->
+    <!-- 学习路径（页面底部，全宽） -->
     <section class="learning-paths-section">
       <div class="section-header">
         <div class="section-title-wrapper">
@@ -310,29 +313,95 @@ const popularTags = Array.from(allTags).slice(0, 10);
         </div>
       )}
     </section>
-    </main>
   </div>
 </BaseLayout>
 
 <style>
+  /* Hero 区（全宽，独立） */
+  .hero-section {
+    position: relative;
+    text-align: center;
+    padding: 5rem 2rem 4rem;
+    margin-bottom: 3rem;
+    overflow: hidden;
+    background: linear-gradient(135deg, rgba(0, 212, 224, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(0, 212, 224, 0.12) 0%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title {
+    font-size: 3.5rem;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .hero-desc {
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    line-height: 1.7;
+  }
+
+  /* 主布局容器 */
   .home-layout {
     max-width: 1280px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 0 2rem 2rem;
+  }
+
+  /* 双栏内容区 */
+  .content-wrapper {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 2rem;
+    align-items: start;
   }
 
   .main-content {
     min-width: 0;
   }
 
-  /* 侧边栏区域（全宽） */
-  .sidebar-section {
-    margin-bottom: 3rem;
-  }
-
-  .sidebar-content {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+  /* 右侧边栏 */
+  .sidebar {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
     gap: 1.5rem;
   }
 
@@ -411,108 +480,7 @@ const popularTags = Array.from(allTags).slice(0, 10);
     font-size: 0.9rem;
   }
 
-  @media (max-width: 768px) {
-    .sidebar-content {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  /* 学习路径区域 */
-  .learning-paths-section {
-    margin-bottom: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .paths-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
-  }
-
-  .path-card {
-    position: relative;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    transition: all 0.3s ease-in-out;
-    overflow: hidden;
-  }
-
-  .path-card:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(0, 212, 224, 0.15);
-  }
-
-  @media (max-width: 1024px) {
-    .paths-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 640px) {
-    .paths-grid {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .hero {
-    position: relative;
-    text-align: center;
-    padding: 4rem 0 3rem;
-    margin-bottom: 2rem;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(0, 212, 224, 0.12) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    animation: pulse 4s ease-in-out infinite;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
-    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
-  }
-
-  .hero-content { position: relative; z-index: 1; }
-
-  .hero-title {
-    font-size: 3.5rem;
-    font-weight: 800;
-    margin-bottom: 0.75rem;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-subtitle {
-    font-size: 1.5rem;
-    color: var(--color-text-secondary);
-    margin-bottom: 1rem;
-    font-weight: 600;
-  }
-
-  .hero-desc {
-    max-width: 600px;
-    margin: 0 auto;
-    color: var(--color-text-secondary);
-    font-size: 1.05rem;
-    line-height: 1.7;
-  }
-
+  /* 内容区块 */
   .content-section {
     margin-bottom: 3rem;
   }
@@ -876,9 +844,60 @@ const popularTags = Array.from(allTags).slice(0, 10);
     color: var(--color-text-secondary);
   }
 
+  /* 学习路径区域 */
+  .learning-paths-section {
+    margin-top: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .paths-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  .path-card {
+    position: relative;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  .path-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 212, 224, 0.15);
+  }
+
+  /* 响应式 */
+  @media (max-width: 1024px) {
+    .content-wrapper {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+
+    .sidebar-card {
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .paths-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
   @media (max-width: 768px) {
-    .hero {
-      padding: 2.5rem 0 2rem;
+    .hero-section {
+      padding: 3rem 1rem 2rem;
     }
 
     .hero-title {
@@ -893,6 +912,18 @@ const popularTags = Array.from(allTags).slice(0, 10);
       font-size: 0.95rem;
     }
 
+    .home-layout {
+      padding: 0 1rem 1rem;
+    }
+
+    .sidebar {
+      flex-direction: column;
+    }
+
+    .sidebar-card {
+      min-width: 100%;
+    }
+
     .card-grid {
       grid-template-columns: 1fr;
     }
@@ -901,6 +932,16 @@ const popularTags = Array.from(allTags).slice(0, 10);
       flex-direction: column;
       align-items: flex-start;
       gap: 1rem;
+    }
+
+    .resource-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .paths-grid {
+      grid-template-columns: 1fr;
     }
   }
 </style>
