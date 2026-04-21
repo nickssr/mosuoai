@@ -8,6 +8,7 @@ category: 'setup'
 difficulty: 'beginner'
 duration: '15 分钟'
 order: 100
+heroImage: '/images/tutorials/default-cover.svg'
 ---
 
 ## OpenClaw 是什么？

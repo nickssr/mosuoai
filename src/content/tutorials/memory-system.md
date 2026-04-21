@@ -6,6 +6,7 @@ tags: ['OpenClaw', '记忆系统', '配置']
 category: 'memory'
 difficulty: 'intermediate'
 duration: '45 分钟'
+heroImage: '/images/tutorials/default-cover.svg'
 ---
 
 ## 记忆系统概述
