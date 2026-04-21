@@ -72,6 +72,7 @@ const categoryNames: Record<string, string> = {
 <BaseLayout
   title={news.data.title}
   description={news.data.description}
+  image={news.data.heroImage}
   article={{
     publishedTime: news.data.pubDate.toISOString(),
     modifiedTime: news.data.updatedDate?.toISOString(),
