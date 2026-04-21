@@ -22,7 +22,7 @@ const {
 // 如果没有提供图片，使用默认 OG 图片
 const ogImage = image || '/og-default.svg';
 
-const siteName = '摸索 AI';
+const siteName = '摩索 AI';
 const twitterHandle = '@mosuoai';
 
 function generateJSONLD() {
@@ -73,6 +73,7 @@ function generateJSONLD() {
 <!-- 搜索引擎优化 -->
 <meta name="robots" content="index, follow" />
 <meta name="googlebot" content="index, follow" />
+<meta name="application-name" content="摩索 AI" />
 
 <!-- 作者 -->
 {article?.authors?.map((author) => <meta name="author" content={author} />)}

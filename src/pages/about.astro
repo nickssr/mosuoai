@@ -1,20 +1,28 @@
 ---
-import { Sparkles, Hand, Target, BookOpen, HandHelping, Bot, FlaskConical, Rocket, User, Mail } from 'lucide-astro';
+import { Sparkles, Hand, Target, BookOpen, HandHelping, Bot, FlaskConical, Rocket, User, Mail, Newspaper, FolderGit2, Library, Info } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="关于" description="关于摸索 AI - 记录 AI Agent 开发的探索之路">
+<BaseLayout title="关于" description="关于摩索 AI - 记录 AI Agent 开发的探索之路">
   <article class="about">
     <header class="header">
       <Sparkles size={64} class="header-icon" />
-      <h1>关于摸索 AI</h1>
+      <h1>关于摩索 AI</h1>
     </header>
+
+    <section class="section">
+      <Hand size={32} class="section-icon" />
+      <h2>品牌寓意</h2>
+      <p class="story-text">
+        "摩索"二字，取自"揣摩技术，探索前沿"。我们希望成为 AI Agent 时代每一位开发者的同行者与索引者。
+      </p>
+    </section>
 
     <section class="section">
       <Hand size={32} class="section-icon" />
       <h2>这里是哪里？</h2>
       <p>
-        摸索 AI 是一个记录 AI Agent 开发探索之路的地方。这里分享 OpenClaw、Hermes Agent
+        摩索 AI 是一个记录 AI Agent 开发探索之路的地方。这里分享 OpenClaw、Hermes Agent
         等工具的实战经验、教程和心得。
       </p>
     </section>
@@ -33,24 +41,34 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2>内容方向</h2>
       <div class="grid">
         <div class="card">
-          <HandHelping size={32} class="card-icon" />
-          <h3>OpenClaw 教程</h3>
-          <p>安装、配置、Skill 开发、部署</p>
-        </div>
-        <div class="card">
-          <Bot size={32} class="card-icon" />
-          <h3>Hermes Agent</h3>
-          <p>使用指南、实战案例</p>
+          <Newspaper size={32} class="card-icon" />
+          <h3>资讯</h3>
+          <p>AI Agent 领域最新动态和前沿资讯</p>
         </div>
         <div class="card">
           <FlaskConical size={32} class="card-icon" />
-          <h3>AI 工具评测</h3>
-          <p>各种 AI 开发工具的对比和推荐</p>
+          <h3>评测</h3>
+          <p>各种 AI 开发工具的深度评测和对比</p>
         </div>
         <div class="card">
-          <Rocket size={32} class="card-icon" />
-          <h3>项目实战</h3>
-          <p>从零到一构建 AI Agent 项目</p>
+          <BookOpen size={32} class="card-icon" />
+          <h3>教程</h3>
+          <p>OpenClaw、Hermes Agent 等工具的实战教程</p>
+        </div>
+        <div class="card">
+          <FolderGit2 size={32} class="card-icon" />
+          <h3>开源</h3>
+          <p>开源项目分享和代码实战</p>
+        </div>
+        <div class="card">
+          <Library size={32} class="card-icon" />
+          <h3>资源</h3>
+          <p>精选学习资源和工具推荐</p>
+        </div>
+        <div class="card">
+          <Info size={32} class="card-icon" />
+          <h3>关于</h3>
+          <p>关于我们和联系方式</p>
         </div>
       </div>
     </section>
@@ -143,6 +161,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     color: var(--color-text-secondary);
     line-height: 1.8;
     font-size: 1rem;
+  }
+
+  .story-text {
+    font-size: 1.1rem;
+    line-height: 1.8;
   }
 
   .grid {
