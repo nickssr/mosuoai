@@ -321,8 +321,9 @@ const popularTags = Array.from(allTags).slice(0, 10);
   .hero-section {
     position: relative;
     text-align: center;
+    /* 使用负 margin 抵消父容器 padding，实现全宽效果 */
+    margin: calc(var(--space-8) * -1) calc(var(--space-6) * -1) 3rem calc(var(--space-6) * -1);
     padding: 5rem 2rem 4rem;
-    margin-bottom: 3rem;
     overflow: hidden;
     background: linear-gradient(135deg, rgba(0, 212, 224, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
   }
@@ -399,7 +400,8 @@ const popularTags = Array.from(allTags).slice(0, 10);
   /* 右侧边栏 */
   .sidebar {
     position: sticky;
-    top: 2rem;
+    /* Header 高度约 60-70px，加上一些间距 */
+    top: calc(70px + var(--space-4));
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
