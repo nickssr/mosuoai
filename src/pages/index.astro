@@ -28,9 +28,10 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
 ---
 
 <BaseLayout title="MosuoAI" description="AI Agent 开发者的深度指南">
-  <div class="homepage">
-    <!-- Hero Section -->
-    <section class="hero">
+  <div class="home-layout">
+    <main class="main-content">
+      <!-- Hero Section -->
+      <section class="hero">
       <div class="hero-bg">
         <div class="hero-glow"></div>
       </div>
@@ -249,22 +250,9 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
         </div>
       )}
     </section>
+    </main>
 
-    <!-- Sidebar -->
     <aside class="sidebar">
-      <!-- Author Card -->
-      <div class="sidebar-card author-card">
-        <Bot size={64} class="author-avatar" />
-        <h3 class="author-name">老李</h3>
-        <p class="author-bio">
-          AI Agent 开发者，热衷于探索 AI 技术的实际应用。
-          在这里分享实战经验和踩坑记录。
-        </p>
-        <div class="author-social">
-          <a href="/about" class="social-link">关于我</a>
-        </div>
-      </div>
-
       <!-- 热门标签 -->
       <div class="sidebar-card">
         <h3 class="sidebar-title">
@@ -285,7 +273,33 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
 </BaseLayout>
 
 <style>
-  .homepage { position: relative; }
+  .home-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  .main-content {
+    min-width: 0;
+  }
+
+  .sidebar {
+    position: static;
+    width: 280px;
+  }
+
+  @media (max-width: 1024px) {
+    .home-layout {
+      grid-template-columns: 1fr;
+    }
+
+    .sidebar {
+      display: none;
+    }
+  }
 
   .hero {
     position: relative;
@@ -644,13 +658,6 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
     flex-shrink: 0;
   }
 
-  .sidebar {
-    position: fixed;
-    top: 100px;
-    right: 20px;
-    width: 280px;
-  }
-
   .sidebar-card {
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
@@ -751,14 +758,6 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
 
   .empty-state p {
     color: var(--color-text-secondary);
-  }
-
-  @media (max-width: 1024px) {
-    .sidebar {
-      position: static;
-      width: 100%;
-      margin-top: 2rem;
-    }
   }
 
   @media (max-width: 768px) {
