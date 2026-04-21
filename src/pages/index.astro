@@ -1,30 +1,36 @@
 ---
-import { Newspaper, Star, BookOpen, Grid, ArrowRight, Calendar, Bot, Map, Flame, Tag } from 'lucide-astro';
+import { Newspaper, Star, BookOpen, Grid, ArrowRight, Calendar, Bot, Map, Flame, Tag, ExternalLink } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
 // 获取学习路径
 const allPaths = await getCollection('paths', ({ data }) => !data.draft);
-const sortedPaths = allPaths.slice(0, 3);
+const featuredPaths = allPaths.slice(0, 4);
 
 // 获取资讯
 const allNews = await getCollection('news', ({ data }) => !data.draft);
 const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const latestNews = sortedNews.slice(0, 5);
+const latestNews = sortedNews.slice(0, 6);
 
 // 获取教程
 const allTutorials = await getCollection('tutorials', ({ data }) => !data.draft);
 const sortedTutorials = allTutorials.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const featuredTutorials = sortedTutorials.slice(0, 3);
+const featuredTutorials = sortedTutorials.slice(0, 6);
 
 // 获取评测
 const allReviews = await getCollection('reviews', ({ data }) => !data.draft);
 const sortedReviews = allReviews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const featuredReviews = sortedReviews.slice(0, 3);
+const featuredReviews = sortedReviews.slice(0, 6);
 
 // 获取资源
 const allResources = await getCollection('resources', ({ data }) => !data.draft);
 const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4);
+
+// 获取热门标签
+const allTags = new Set();
+allTutorials.forEach((t) => t.data.tags?.forEach((tag) => allTags.add(tag)));
+allReviews.forEach((r) => r.data.tags?.forEach((tag) => allTags.add(tag)));
+const popularTags = Array.from(allTags).slice(0, 10);
 ---
 
 <BaseLayout title="MosuoAI" description="AI Agent 开发者的深度指南">
@@ -47,45 +53,46 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
       </div>
     </section>
 
-    <!-- 学习路径 -->
-    <section class="content-section">
-      <div class="section-header">
-        <div class="section-title-wrapper">
-          <Map size={24} class="section-icon" />
-          <h2 class="section-title">学习路径</h2>
+    <!-- 侧边栏区域（全宽） -->
+    <section class="sidebar-section">
+      <div class="sidebar-content">
+        <!-- 热门标签 -->
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">
+            <Tag size={18} />
+            热门标签
+          </h3>
+          <div class="tag-cloud">
+            {popularTags.length === 0 ? (
+              <span class="tag-sm">OpenClaw</span>
+            ) : (
+              popularTags.map((tag) => (
+                <span class="tag-sm">#{tag}</span>
+              ))
+            )}
+          </div>
         </div>
-        <a href="/paths" class="section-more">
-          查看更多 <ArrowRight size={16} />
-        </a>
-      </div>
 
-      {sortedPaths.length === 0 ? (
-        <div class="empty-state">
-          <Map size={48} class="empty-icon" />
-          <p>学习路径即将上线</p>
+        <!-- 资源导航精选 -->
+        <div class="sidebar-card">
+          <h3 class="sidebar-title">
+            <ExternalLink size={18} />
+            资源导航精选
+          </h3>
+          <div class="resource-nav">
+            {featuredResources.length === 0 ? (
+              <p class="empty-resource">暂无推荐资源</p>
+            ) : (
+              featuredResources.map((resource) => (
+                <a href={resource.data.url} target="_blank" rel="noopener noreferrer" class="resource-nav-item">
+                  <span class="resource-nav-title">{resource.data.title}</span>
+                  <ArrowRight size={14} />
+                </a>
+              ))
+            )}
+          </div>
         </div>
-      ) : (
-        <div class="card-grid">
-          {sortedPaths.map((path) => (
-            <article class="card path-card">
-              <a href={`/paths/${path.slug}`} class="card-link"></a>
-              <div class="card-glow"></div>
-              <div class="card-content">
-                <div class="card-header">
-                  <span class="level-badge level-{path.data.level}">
-                    {path.data.level === 'beginner' ? '入门' : path.data.level === 'intermediate' ? '进阶' : '高级'}
-                  </span>
-                  {path.data.duration && (
-                    <span class="duration-badge">{path.data.duration}</span>
-                  )}
-                </div>
-                <h3 class="card-title">{path.data.title}</h3>
-                <p class="card-desc">{path.data.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
+      </div>
     </section>
 
     <!-- 资讯快报 -->
@@ -219,64 +226,96 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
       )}
     </section>
 
-    <!-- 资源导航 -->
+    <!-- 开源精选 -->
     <section class="content-section">
       <div class="section-header">
         <div class="section-title-wrapper">
-          <Grid size={24} class="section-icon" />
-          <h2 class="section-title">资源导航</h2>
+          <Bot size={24} class="section-icon" />
+          <h2 class="section-title">开源精选</h2>
         </div>
         <a href="/resources" class="section-more">
           查看更多 <ArrowRight size={16} />
         </a>
       </div>
 
-      {featuredResources.length === 0 ? (
+      <div class="resource-grid">
+        <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener noreferrer" class="resource-item">
+          <div class="resource-content">
+            <h3 class="resource-title">Claude Code</h3>
+            <p class="resource-desc">Anthropic 官方 CLI 工具</p>
+          </div>
+          <ArrowRight size={16} class="resource-icon" />
+        </a>
+        <a href="https://github.com/anthropics/open-claw" target="_blank" rel="noopener noreferrer" class="resource-item">
+          <div class="resource-content">
+            <h3 class="resource-title">OpenClaw</h3>
+            <p class="resource-desc">开源 Claude Code 封装</p>
+          </div>
+          <ArrowRight size={16} class="resource-icon" />
+        </a>
+        <a href="https://github.com/hermes-agent" target="_blank" rel="noopener noreferrer" class="resource-item">
+          <div class="resource-content">
+            <h3 class="resource-title">Hermes Agent</h3>
+            <p class="resource-desc">灵活的 AI Agent 框架</p>
+          </div>
+          <ArrowRight size={16} class="resource-icon" />
+        </a>
+        <a href="https://github.com/mosuoai" target="_blank" rel="noopener noreferrer" class="resource-item">
+          <div class="resource-content">
+            <h3 class="resource-title">MosuoAI</h3>
+            <p class="resource-desc">本站开源项目</p>
+          </div>
+          <ArrowRight size={16} class="resource-icon" />
+        </a>
+      </div>
+    </section>
+
+    <!-- 学习路径（页面底部） -->
+    <section class="learning-paths-section">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <Map size={24} class="section-icon" />
+          <h2 class="section-title">学习路径</h2>
+        </div>
+        <a href="/paths" class="section-more">
+          查看更多 <ArrowRight size={16} />
+        </a>
+      </div>
+
+      {featuredPaths.length === 0 ? (
         <div class="empty-state">
-          <Grid size={48} class="empty-icon" />
-          <p>暂无资源，敬请期待...</p>
+          <Map size={48} class="empty-icon" />
+          <p>学习路径即将上线</p>
         </div>
       ) : (
-        <div class="resource-grid">
-          {featuredResources.map((resource) => (
-            <a href={resource.data.url} target="_blank" rel="noopener noreferrer" class="resource-item">
-              <div class="resource-content">
-                <h3 class="resource-title">{resource.data.title}</h3>
-                <p class="resource-desc">{resource.data.description}</p>
+        <div class="paths-grid">
+          {featuredPaths.map((path) => (
+            <article class="path-card">
+              <a href={`/paths/${path.slug}`} class="card-link"></a>
+              <div class="card-glow"></div>
+              <div class="card-content">
+                <div class="card-header">
+                  <span class="level-badge level-{path.data.level}">
+                    {path.data.level === 'beginner' ? '入门' : path.data.level === 'intermediate' ? '进阶' : '高级'}
+                  </span>
+                  {path.data.duration && (
+                    <span class="duration-badge">{path.data.duration}</span>
+                  )}
+                </div>
+                <h3 class="card-title">{path.data.title}</h3>
+                <p class="card-desc">{path.data.description}</p>
               </div>
-              <ArrowRight size={16} class="resource-icon" />
-            </a>
+            </article>
           ))}
         </div>
       )}
     </section>
     </main>
-
-    <aside class="sidebar">
-      <!-- 热门标签 -->
-      <div class="sidebar-card">
-        <h3 class="sidebar-title">
-          <Tag size={18} />
-          热门标签
-        </h3>
-        <div class="tag-cloud">
-          <span class="tag-sm">OpenClaw</span>
-          <span class="tag-sm">AI Agent</span>
-          <span class="tag-sm">记忆系统</span>
-          <span class="tag-sm">Skill 开发</span>
-          <span class="tag-sm">主动性</span>
-          <span class="tag-sm">集成</span>
-        </div>
-      </div>
-    </aside>
   </div>
 </BaseLayout>
 
 <style>
   .home-layout {
-    display: grid;
-    grid-template-columns: 1fr 280px;
-    gap: 2rem;
     max-width: 1280px;
     margin: 0 auto;
     padding: 2rem;
@@ -286,18 +325,136 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
     min-width: 0;
   }
 
-  .sidebar {
-    position: static;
-    width: 280px;
+  /* 侧边栏区域（全宽） */
+  .sidebar-section {
+    margin-bottom: 3rem;
+  }
+
+  .sidebar-content {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+
+  .sidebar-card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-sm {
+    background: rgba(0, 212, 224, 0.1);
+    color: var(--color-primary);
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 212, 224, 0.2);
+    transition: all var(--transition-fast);
+  }
+
+  .tag-sm:hover {
+    background: rgba(0, 212, 224, 0.2);
+    border-color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .resource-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .resource-nav-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    background: var(--color-bg-tertiary);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    color: var(--color-text-primary);
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: all var(--transition-fast);
+  }
+
+  .resource-nav-item:hover {
+    background: rgba(0, 212, 224, 0.1);
+    transform: translateX(4px);
+  }
+
+  .resource-nav-item svg {
+    color: var(--color-primary);
+    flex-shrink: 0;
+  }
+
+  .empty-resource {
+    color: var(--color-text-secondary);
+    font-size: 0.9rem;
+  }
+
+  @media (max-width: 768px) {
+    .sidebar-content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* 学习路径区域 */
+  .learning-paths-section {
+    margin-bottom: 2rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-border);
+  }
+
+  .paths-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.25rem;
+  }
+
+  .path-card {
+    position: relative;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.3s ease-in-out;
+    overflow: hidden;
+  }
+
+  .path-card:hover {
+    border-color: var(--color-primary);
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 12px 30px rgba(0, 212, 224, 0.15);
   }
 
   @media (max-width: 1024px) {
-    .home-layout {
-      grid-template-columns: 1fr;
+    .paths-grid {
+      grid-template-columns: repeat(2, 1fr);
     }
+  }
 
-    .sidebar {
-      display: none;
+  @media (max-width: 640px) {
+    .paths-grid {
+      grid-template-columns: 1fr;
     }
   }
 
@@ -656,47 +813,6 @@ const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4
   .resource-icon {
     color: var(--color-primary);
     flex-shrink: 0;
-  }
-
-  .sidebar-card {
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .sidebar-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--color-text-primary);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tag-sm {
-    background: rgba(0, 212, 224, 0.1);
-    color: var(--color-primary);
-    padding: 0.25rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    border: 1px solid rgba(0, 212, 224, 0.2);
-    transition: all var(--transition-fast);
-  }
-
-  .tag-sm:hover {
-    background: rgba(0, 212, 224, 0.2);
-    border-color: var(--color-primary);
-    cursor: pointer;
   }
 
   .author-card {
