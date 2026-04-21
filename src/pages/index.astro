@@ -320,14 +320,15 @@ const popularTags = Array.from(allTags).slice(0, 10);
   .hero-section {
     position: relative;
     text-align: center;
-    /* 使用负 margin 抵消父容器 padding，实现全宽效果 */
-    margin: calc(var(--space-8) * -1) calc(var(--space-6) * -1) 3rem calc(var(--space-6) * -1);
+    /* 使用 100vw 和负 margin 实现真正的全宽效果 */
+    width: 100vw;
+    margin-left: calc((100vw - 100%) / -2);
+    margin-top: calc(var(--space-8) * -1);
+    margin-bottom: 3rem;
     padding: 5rem 2rem 4rem;
     overflow: hidden;
     /* 背景渐变，使用更明显的色彩 */
     background: linear-gradient(135deg, rgba(0, 212, 224, 0.08) 0%, rgba(0, 212, 224, 0.02) 50%, transparent 100%);
-    /* 确保背景覆盖整个区域 */
-    background-clip: padding-box;
   }
 
   .hero-bg {
