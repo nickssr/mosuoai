@@ -324,7 +324,10 @@ const popularTags = Array.from(allTags).slice(0, 10);
     margin: calc(var(--space-8) * -1) calc(var(--space-6) * -1) 3rem calc(var(--space-6) * -1);
     padding: 5rem 2rem 4rem;
     overflow: hidden;
-    background: linear-gradient(135deg, rgba(0, 212, 224, 0.05) 0%, rgba(0, 0, 0, 0) 100%);
+    /* 背景渐变，使用更明显的色彩 */
+    background: linear-gradient(135deg, rgba(0, 212, 224, 0.08) 0%, rgba(0, 212, 224, 0.02) 50%, transparent 100%);
+    /* 确保背景覆盖整个区域 */
+    background-clip: padding-box;
   }
 
   .hero-bg {
