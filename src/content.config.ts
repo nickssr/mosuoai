@@ -66,20 +66,23 @@ const resources = defineCollection({
   }),
 });
 
-// 开源集合（板块 5：框架开源）
-const opensource = defineCollection({
-  loader: glob({ pattern: '**/*.md', base: './src/content/opensource' }),
+// 学习路径集合
+const paths = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/paths' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    pubDate: z.date(),
-    updatedDate: z.date().optional(),
-    heroImage: z.string().optional(),
-    tags: z.array(z.string()).default([]),
-    github: z.string().url().optional(),
-    stars: z.number().optional(),
-    language: z.string().optional(),
+    icon: z.string().optional(),
+    color: z.string().default('#00D4E0'),
+    duration: z.string().optional(),
+    level: z.enum(['beginner', 'intermediate', 'advanced']).default('beginner'),
+    steps: z.array(z.object({
+      title: z.string(),
+      description: z.string().optional(),
+      content: z.array(z.string()).optional(),
+    })).optional(),
     draft: z.boolean().default(false),
+    noindex: z.boolean().default(false),
   }),
 });
 
@@ -87,6 +90,6 @@ export const collections = {
   'news': news,
   'reviews': reviews,
   'tutorials': tutorials,
-  'opensource': opensource,
   'resources': resources,
+  'paths': paths,
 };

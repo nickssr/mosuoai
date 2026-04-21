@@ -1,5 +1,5 @@
 ---
-import { Star, ThumbsUp, ThumbsDown, Calendar, ArrowLeft, ArrowRight, Tag } from 'lucide-astro';
+import { Star, ThumbsUp, ThumbsDown, Calendar, ArrowLeft, ArrowRight, Tag, Clock } from 'lucide-astro';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
@@ -27,6 +27,11 @@ if (!review) {
 }
 
 const { Content } = await render(review);
+
+// 计算阅读时长
+const textContent = review.body.replace(/[#*_`~\[\]()]/g, '').trim();
+const wordCount = textContent.length;
+const readingTime = Math.ceil(wordCount / 200) || 1;
 
 // 提取标题用于目录
 const headings: Array<{ depth: number; slug: string; text: string }> = [];
@@ -95,6 +100,10 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
             day: 'numeric',
           })}
         </time>
+        <span class="meta-item">
+          <Clock size={14} />
+          {readingTime} 分钟阅读
+        </span>
       </div>
 
       {review.data.heroImage && (

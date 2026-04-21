@@ -26,16 +26,13 @@ const navLinks = [
     </nav>
 
     <div class="nav-actions">
-      <!-- 搜索框预留 -->
-      <div class="search-container">
-        <button class="search-btn" aria-label="搜索">
-          <Search size={18} class="search-icon" />
-        </button>
-        <input type="text" class="search-input" placeholder="搜索文章..." disabled />
-      </div>
+      <!-- 搜索按钮 -->
+      <button class="search-btn" onclick="openSearch()" aria-label="搜索">
+        <Search size={18} class="search-icon" />
+      </button>
 
-      <!-- 主题切换预留 -->
-      <button class="theme-toggle" aria-label="切换主题">
+      <!-- 主题切换按钮 -->
+      <button class="theme-toggle" id="theme-toggle" aria-label="切换主题">
         <Sun size={18} class="sun-icon" />
         <Moon size={18} class="moon-icon" />
       </button>
@@ -74,6 +71,27 @@ const navLinks = [
       mobileMenu?.classList.remove('open');
       header?.classList.remove('mobile-menu-open');
     });
+  });
+
+  // 主题切换功能
+  const themeToggle = document.getElementById('theme-toggle') as HTMLButtonElement;
+  const html = document.documentElement;
+
+  // 检查本地存储的主题
+  const savedTheme = localStorage.getItem('theme');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (savedTheme === 'light') {
+    html.setAttribute('data-theme', 'light');
+  } else if (savedTheme === 'dark' || prefersDark) {
+    html.setAttribute('data-theme', 'dark');
+  }
+
+  themeToggle?.addEventListener('click', () => {
+    const currentTheme = html.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    html.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
   });
 </script>
 
@@ -171,13 +189,7 @@ const navLinks = [
     gap: var(--space-4);
   }
 
-  /* 搜索框预留 */
-  .search-container {
-    display: flex;
-    align-items: center;
-    gap: var(--space-2);
-  }
-
+  /* 搜索按钮 */
   .search-btn {
     display: flex;
     align-items: center;
@@ -187,31 +199,25 @@ const navLinks = [
     background: var(--color-bg-tertiary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
-    cursor: not-allowed;
-    opacity: 0.5;
+    cursor: pointer;
     transition: all var(--transition-fast);
   }
 
   .search-btn:hover {
-    border-color: var(--color-border-light);
+    border-color: var(--color-primary);
+    background: var(--color-bg-secondary);
   }
 
   .search-icon {
     color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
   }
 
-  .search-input {
-    display: none;
-    width: 200px;
-    padding: var(--space-2) var(--space-3);
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    color: var(--color-text-primary);
-    font-size: 0.875rem;
+  .search-btn:hover .search-icon {
+    color: var(--color-primary);
   }
 
-  /* 主题切换预留 */
+  /* 主题切换 */
   .theme-toggle {
     display: flex;
     align-items: center;
@@ -222,21 +228,34 @@ const navLinks = [
     border: 1px solid var(--color-border);
     border-radius: var(--radius-md);
     cursor: pointer;
-    opacity: 0.5;
     transition: all var(--transition-fast);
   }
 
   .theme-toggle:hover {
-    border-color: var(--color-border-light);
-    opacity: 0.7;
+    border-color: var(--color-primary);
+    background: var(--color-bg-secondary);
   }
 
   .sun-icon,
   .moon-icon {
     color: var(--color-text-secondary);
+    transition: all var(--transition-fast);
+  }
+
+  .sun-icon {
+    display: none;
   }
 
   .moon-icon {
+    display: block;
+  }
+
+  /* 亮色模式下的图标显示 */
+  [data-theme="light"] .sun-icon {
+    display: block;
+  }
+
+  [data-theme="light"] .moon-icon {
     display: none;
   }
 

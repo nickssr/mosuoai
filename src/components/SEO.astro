@@ -14,10 +14,13 @@ interface Props {
 const {
   title,
   description = '摸索 AI - AI Agent 教程与实战',
-  image = '/og-image.png',
+  image,
   article,
   canonicalURL = Astro.url.href,
 } = Astro.props;
+
+// 如果没有提供图片，使用默认 OG 图片
+const ogImage = image || '/og-default.svg';
 
 const siteName = '摸索 AI';
 const twitterHandle = '@mosuoai';
@@ -28,7 +31,7 @@ function generateJSONLD() {
     '@type': article ? 'Article' : 'WebPage',
     headline: title,
     description,
-    image: new URL(image, Astro.url.origin).href,
+    image: new URL(ogImage, Astro.url.origin).href,
     url: canonicalURL,
     mainEntityOfPage: {
       '@type': 'WebPage',
@@ -50,7 +53,7 @@ function generateJSONLD() {
         name: siteName,
         logo: {
           '@type': 'ImageObject',
-          url: new URL('/logo.png', Astro.url.origin).href,
+          url: new URL('/logo.jpg', Astro.url.origin).href,
         },
       },
     };
@@ -78,7 +81,7 @@ function generateJSONLD() {
 <meta property="og:type" content={article ? 'article' : 'website'} />
 <meta property="og:title" content={`${title} | ${siteName}`} />
 <meta property="og:description" content={description} />
-<meta property="og:image" content={new URL(image, Astro.url.origin).href} />
+<meta property="og:image" content={new URL(ogImage, Astro.url.origin).href} />
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:site_name" content={siteName} />
 <meta property="og:locale" content="zh_CN" />
@@ -100,7 +103,7 @@ function generateJSONLD() {
 <meta name="twitter:creator" content={twitterHandle} />
 <meta name="twitter:title" content={`${title} | ${siteName}`} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(image, Astro.url.origin).href} />
+<meta name="twitter:image" content={new URL(ogImage, Astro.url.origin).href} />
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

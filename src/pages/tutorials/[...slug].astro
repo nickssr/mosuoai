@@ -1,5 +1,5 @@
 ---
-import { Calendar, User, Tag, ArrowLeft } from 'lucide-astro';
+import { Calendar, User, Tag, ArrowLeft, Clock } from 'lucide-astro';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
@@ -13,6 +13,22 @@ export async function getStaticPaths() {
 
 const { tutorial } = Astro.props;
 const { Content } = await render(tutorial);
+
+// 计算阅读时间（中文字数 / 300 字每分钟）
+function calculateReadingTime(content: string): number {
+  // 移除代码块和 frontmatter
+  const text = content.replace(/```[\s\S]*?```/g, '').replace(/---[\s\S]*?---/g, '');
+  // 计算中文字符数（包括标点）
+  const chineseChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  // 计算英文单词数
+  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
+  // 总字数估算
+  const totalChars = chineseChars + englishWords;
+  // 阅读时间（向上取整）
+  return Math.ceil(totalChars / 300) || 1;
+}
+
+const readingTime = calculateReadingTime(tutorial.body);
 ---
 
 <BaseLayout
@@ -40,8 +56,8 @@ const { Content } = await render(tutorial);
             {tutorial.data.pubDate.toLocaleDateString('zh-CN')}
           </span>
           <span class="meta-item">
-            <User size={16} class="icon" />
-            {tutorial.data.author}
+            <Clock size={16} class="icon" />
+            约 {readingTime} 分钟阅读
           </span>
         </div>
         {tutorial.data.tags && tutorial.data.tags.length > 0 && (

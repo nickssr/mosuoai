@@ -2,6 +2,7 @@
 import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import Search from '../components/Search.astro';
 import '../styles/variables.css';
 
 interface Props {
@@ -38,6 +39,7 @@ const {
   </head>
   <body>
     <Header />
+    <Search />
     <main class="main">
       <slot />
     </main>
