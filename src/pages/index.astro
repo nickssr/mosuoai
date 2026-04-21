@@ -1,7 +1,11 @@
 ---
-import { Newspaper, Star, BookOpen, Grid, ArrowRight, Calendar, Bot, Code } from 'lucide-astro';
+import { Newspaper, Star, BookOpen, Grid, ArrowRight, Calendar, Bot, Map, Flame, Tag } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
+
+// 获取学习路径
+const allPaths = await getCollection('paths', ({ data }) => !data.draft);
+const sortedPaths = allPaths.slice(0, 3);
 
 // 获取资讯
 const allNews = await getCollection('news', ({ data }) => !data.draft);
@@ -21,11 +25,6 @@ const featuredReviews = sortedReviews.slice(0, 3);
 // 获取资源
 const allResources = await getCollection('resources', ({ data }) => !data.draft);
 const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4);
-
-// 获取开源项目
-const allOpensource = await getCollection('opensource', ({ data }) => !data.draft);
-const sortedOpensource = allOpensource.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const featuredOpensource = sortedOpensource.slice(0, 3);
 ---
 
 <BaseLayout title="MosuoAI" description="AI Agent 开发者的深度指南">
@@ -45,6 +44,47 @@ const featuredOpensource = sortedOpensource.slice(0, 3);
           从入门到精通，陪你走好每一步。
         </p>
       </div>
+    </section>
+
+    <!-- 学习路径 -->
+    <section class="content-section">
+      <div class="section-header">
+        <div class="section-title-wrapper">
+          <Map size={24} class="section-icon" />
+          <h2 class="section-title">学习路径</h2>
+        </div>
+        <a href="/paths" class="section-more">
+          查看更多 <ArrowRight size={16} />
+        </a>
+      </div>
+
+      {sortedPaths.length === 0 ? (
+        <div class="empty-state">
+          <Map size={48} class="empty-icon" />
+          <p>学习路径即将上线</p>
+        </div>
+      ) : (
+        <div class="card-grid">
+          {sortedPaths.map((path) => (
+            <article class="card path-card">
+              <a href={`/paths/${path.slug}`} class="card-link"></a>
+              <div class="card-glow"></div>
+              <div class="card-content">
+                <div class="card-header">
+                  <span class="level-badge level-{path.data.level}">
+                    {path.data.level === 'beginner' ? '入门' : path.data.level === 'intermediate' ? '进阶' : '高级'}
+                  </span>
+                  {path.data.duration && (
+                    <span class="duration-badge">{path.data.duration}</span>
+                  )}
+                </div>
+                <h3 class="card-title">{path.data.title}</h3>
+                <p class="card-desc">{path.data.description}</p>
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
     </section>
 
     <!-- 资讯快报 -->
@@ -178,54 +218,6 @@ const featuredOpensource = sortedOpensource.slice(0, 3);
       )}
     </section>
 
-    <!-- 开源精选 -->
-    <section class="content-section">
-      <div class="section-header">
-        <div class="section-title-wrapper">
-          <Code size={24} class="section-icon" />
-          <h2 class="section-title">开源精选</h2>
-        </div>
-        <a href="/opensource" class="section-more">
-          查看更多 <ArrowRight size={16} />
-        </a>
-      </div>
-
-      {featuredOpensource.length === 0 ? (
-        <div class="empty-state">
-          <Code size={48} class="empty-icon" />
-          <p>暂无开源内容，敬请期待...</p>
-        </div>
-      ) : (
-        <div class="card-grid">
-          {featuredOpensource.map((project) => (
-            <article class="card opensource-card">
-              <a href={`/opensource/${project.id}`} class="card-link"></a>
-              <div class="card-glow"></div>
-              <div class="card-content">
-                <div class="card-header">
-                  {project.data.language && (
-                    <span class="language-badge">
-                      <span class="language-dot" style={`background: ${getLanguageColor(project.data.language)}`}></span>
-                      {project.data.language}
-                    </span>
-                  )}
-                </div>
-                <h3 class="card-title">{project.data.title}</h3>
-                <p class="card-desc">{project.data.description}</p>
-                {project.data.tags && project.data.tags.length > 0 && (
-                  <div class="card-tags">
-                    {project.data.tags.slice(0, 3).map((tag) => (
-                      <span class="tag">#{tag}</span>
-                    ))}
-                  </div>
-                )}
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
-    </section>
-
     <!-- 资源导航 -->
     <section class="content-section">
       <div class="section-header">
@@ -272,28 +264,25 @@ const featuredOpensource = sortedOpensource.slice(0, 3);
           <a href="/about" class="social-link">关于我</a>
         </div>
       </div>
+
+      <!-- 热门标签 -->
+      <div class="sidebar-card">
+        <h3 class="sidebar-title">
+          <Tag size={18} />
+          热门标签
+        </h3>
+        <div class="tag-cloud">
+          <span class="tag-sm">OpenClaw</span>
+          <span class="tag-sm">AI Agent</span>
+          <span class="tag-sm">记忆系统</span>
+          <span class="tag-sm">Skill 开发</span>
+          <span class="tag-sm">主动性</span>
+          <span class="tag-sm">集成</span>
+        </div>
+      </div>
     </aside>
   </div>
 </BaseLayout>
-
-<script>
-  function getLanguageColor(language) {
-    const colors = {
-      TypeScript: '#3178c6',
-      JavaScript: '#f7df1e',
-      Python: '#3776ab',
-      Go: '#00ADD8',
-      Rust: '#dea584',
-      Java: '#b07219',
-      CSharp: '#178600',
-      Ruby: '#701516',
-      PHP: '#4F5D95',
-      Swift: '#ffac45',
-      Kotlin: '#A97BFF',
-    };
-    return colors[language] || '#777';
-  }
-</script>
 
 <style>
   .homepage { position: relative; }
@@ -525,24 +514,38 @@ const featuredOpensource = sortedOpensource.slice(0, 3);
     border: 1px solid rgba(239, 68, 68, 0.3);
   }
 
-  .language-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.75rem;
-    font-weight: 500;
-    padding: 0.2rem 0.5rem;
-    background: var(--color-bg-tertiary);
-    border: 1px solid var(--color-border);
+  .level-badge {
+    padding: 0.2rem 0.6rem;
     border-radius: 12px;
-    color: var(--color-text-secondary);
+    font-size: 0.7rem;
+    font-weight: 600;
   }
 
-  .language-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    display: inline-block;
+  .level-beginner {
+    background: rgba(16, 185, 129, 0.15);
+    color: #10b981;
+    border: 1px solid rgba(16, 185, 129, 0.3);
+  }
+
+  .level-intermediate {
+    background: rgba(245, 158, 11, 0.15);
+    color: #f59e0b;
+    border: 1px solid rgba(245, 158, 11, 0.3);
+  }
+
+  .level-advanced {
+    background: rgba(239, 68, 68, 0.15);
+    color: #ef4444;
+    border: 1px solid rgba(239, 68, 68, 0.3);
+  }
+
+  .duration-badge {
+    background: var(--color-bg-tertiary);
+    color: var(--color-text-secondary);
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
   }
 
   .card-title {
@@ -654,6 +657,39 @@ const featuredOpensource = sortedOpensource.slice(0, 3);
     border-radius: var(--radius-lg);
     padding: 1.5rem;
     margin-bottom: 1.5rem;
+  }
+
+  .sidebar-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--color-text-primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-sm {
+    background: rgba(0, 212, 224, 0.1);
+    color: var(--color-primary);
+    padding: 0.25rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 212, 224, 0.2);
+    transition: all var(--transition-fast);
+  }
+
+  .tag-sm:hover {
+    background: rgba(0, 212, 224, 0.2);
+    border-color: var(--color-primary);
+    cursor: pointer;
   }
 
   .author-card {

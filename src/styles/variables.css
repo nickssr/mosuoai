@@ -62,7 +62,7 @@
 
   /* 过渡 */
   --transition-fast: 150ms ease;
-  --transition-base: 250ms ease;
+  --transition-base: 0.3s ease-in-out;
   --transition-slow: 400ms ease;
 }
 
