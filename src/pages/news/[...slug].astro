@@ -14,13 +14,13 @@ interface Props {
 const allNews = await getCollection('news');
 
 function getNewsFromSlug(slugStr: string) {
-  return allNews.find((news) => news.slug === slugStr);
+  return allNews.find((news) => news.id === slugStr);
 }
 
 export async function getStaticPaths() {
   const news = await getCollection('news', ({ data }) => !data.draft);
   return news.map((item) => ({
-    params: { slug: item.slug },
+    params: { slug: item.id },
     props: { news: item },
   }));
 }
@@ -57,7 +57,7 @@ while ((match = headingRegex.exec(news.body)) !== null) {
 const sortedNews = allNews
   .filter((n) => !n.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const currentIndex = sortedNews.findIndex((n) => n.slug === news.slug);
+const currentIndex = sortedNews.findIndex((n) => n.slug === news.id);
 const prevNews = currentIndex > 0 ? sortedNews[currentIndex - 1] : null;
 const nextNews = currentIndex < sortedNews.length - 1 ? sortedNews[currentIndex + 1] : null;
 

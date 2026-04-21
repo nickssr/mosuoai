@@ -8,13 +8,13 @@ import { slug } from 'github-slugger';
 const allReviews = await getCollection('reviews');
 
 function getReviewFromSlug(slugStr: string) {
-  return allReviews.find((review) => review.slug === slugStr);
+  return allReviews.find((review) => review.id === slugStr);
 }
 
 export async function getStaticPaths() {
   const reviews = await getCollection('reviews', ({ data }) => !data.draft);
   return reviews.map((item) => ({
-    params: { slug: item.slug },
+    params: { slug: item.id },
     props: { item },
   }));
 }
@@ -51,7 +51,7 @@ while ((match = headingRegex.exec(review.body)) !== null) {
 const sortedReviews = allReviews
   .filter((r) => !r.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const currentIndex = sortedReviews.findIndex((r) => r.slug === review.slug);
+const currentIndex = sortedReviews.findIndex((r) => r.slug === review.id);
 const prevReview = currentIndex > 0 ? sortedReviews[currentIndex - 1] : null;
 const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[currentIndex + 1] : null;
 ---
