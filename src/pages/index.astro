@@ -76,7 +76,7 @@ const popularTags = Array.from(allTags).slice(0, 10);
             <div class="news-list">
               {latestNews.map((news) => (
                 <article class="news-item">
-                  <a href={`/news/${news.slug}`} class="news-link"></a>
+                  <a href={`/news/${news.id}`} class="news-link"></a>
                   <div class="news-content">
                     <h3 class="news-title">{news.data.title}</h3>
                     <p class="news-excerpt">{news.data.description}</p>
@@ -114,7 +114,7 @@ const popularTags = Array.from(allTags).slice(0, 10);
             <div class="card-grid">
               {featuredTutorials.map((tutorial) => (
                 <article class="card tutorial-card">
-                  <a href={`/tutorials/${tutorial.slug}`} class="card-link"></a>
+                  <a href={`/tutorials/${tutorial.id}`} class="card-link"></a>
                   <div class="card-glow"></div>
                   <div class="card-content">
                     <div class="card-header">
@@ -161,7 +161,7 @@ const popularTags = Array.from(allTags).slice(0, 10);
             <div class="card-grid">
               {featuredReviews.map((review) => (
                 <article class="card review-card">
-                  <a href={`/reviews/${review.slug}`} class="card-link"></a>
+                  <a href={`/reviews/${review.id}`} class="card-link"></a>
                   <div class="card-glow"></div>
                   <div class="card-content">
                     <div class="card-header">
