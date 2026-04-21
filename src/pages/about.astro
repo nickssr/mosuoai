@@ -6,8 +6,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 <BaseLayout title="关于" description="关于摩索 AI - 记录 AI Agent 开发的探索之路">
   <article class="about">
     <header class="header">
-      <Sparkles size={64} class="header-icon" />
-      <h1>关于摩索 AI</h1>
+      <div class="logo-section">
+        <img src="/logo.png" alt="摩索 AI Logo" class="about-logo" />
+        <h1>关于 摩索 AI</h1>
+      </div>
     </header>
 
     <section class="section">
@@ -104,15 +106,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin-bottom: 3rem;
   }
 
-  .header-icon {
-    color: var(--color-primary);
-    margin-bottom: 1rem;
-    animation: float 3s ease-in-out infinite;
+  .logo-section {
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
-  @keyframes float {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-10px); }
+  .about-logo {
+    height: 80px;
+    width: auto;
+    margin-bottom: 1rem;
   }
 
   .header h1 {
