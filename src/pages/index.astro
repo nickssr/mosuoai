@@ -1,5 +1,5 @@
 ---
-import { ArrowRight, Calendar, Star, BookOpen, Newspaper } from 'lucide-astro';
+import { Calendar } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
@@ -108,6 +108,33 @@ const defaultThumb = '/og-default.svg';
         ))}
       </div>
     </main>
+
+    <!-- 右侧边栏 -->
+    <aside class="sidebar">
+      <!-- 热门标签 -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-title">热门标签</h3>
+        <div class="tag-cloud">
+          {Array.from(new Set(articles.flatMap((a) => a.tags ?? [])))
+            .slice(0, 20)
+            .map((tag) => (
+              <a href={`/tags/${tag}`} class="tag-pill">
+                {tag}
+              </a>
+            ))}
+        </div>
+      </div>
+
+      <!-- 资源导航精选 -->
+      <div class="sidebar-section">
+        <h3 class="sidebar-title">资源导航精选</h3>
+        <ul class="resource-list">
+          <li><a href="/resources/ai-tools" class="resource-link">AI 工具合集</a></li>
+          <li><a href="/resources/prompts" class="resource-link">Prompt 模板库</a></li>
+          <li><a href="/resources/newsletter" class="resource-link">AI 资讯订阅</a></li>
+        </ul>
+      </div>
+    </aside>
   </div>
 </BaseLayout>
 
@@ -177,13 +204,108 @@ const defaultThumb = '/og-default.svg';
 
   /* 主布局 */
   .home-layout {
-    max-width: 900px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem 2rem;
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    align-items: start;
   }
 
   .main-content {
     min-width: 0;
+  }
+
+  /* 侧边栏 */
+  .sidebar {
+    position: sticky;
+    top: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .sidebar-section {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+  }
+
+  .sidebar-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* 标签云 */
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all var(--transition-base);
+  }
+
+  .tag-pill:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: rgba(0, 212, 224, 0.05);
+  }
+
+  /* 资源列表 */
+  .resource-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .resource-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+  }
+
+  .resource-link::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-border);
+    flex-shrink: 0;
+    transition: background var(--transition-base);
+  }
+
+  .resource-link:hover {
+    color: var(--color-primary);
+    background: rgba(0, 212, 224, 0.04);
+  }
+
+  .resource-link:hover::before {
+    background: var(--color-primary);
   }
 
   /* 统一文章列表 */
@@ -318,7 +440,12 @@ const defaultThumb = '/og-default.svg';
     }
 
     .home-layout {
+      grid-template-columns: 1fr;
       padding: 0 1rem 1rem;
+    }
+
+    .sidebar {
+      position: static;
     }
 
     .article-card {
