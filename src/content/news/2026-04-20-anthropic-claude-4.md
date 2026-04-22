@@ -5,7 +5,7 @@ pubDate: 2026-04-20
 author: 摩索 AI
 tags: ['Anthropic', 'Claude 4', '工具使用', 'Agent']
 category: 'news'
-heroImage: '/og-default.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 核心亮点

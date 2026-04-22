@@ -5,7 +5,7 @@ pubDate: 2026-04-19
 author: 摩索 AI
 tags: ['AI 安全', 'NIST', '企业级', '标准']
 category: 'news'
-heroImage: '/og-default.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 核心内容

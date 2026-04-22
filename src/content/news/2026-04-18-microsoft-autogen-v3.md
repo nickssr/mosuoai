@@ -5,7 +5,7 @@ pubDate: 2026-04-18
 author: 摩索 AI
 tags: ['微软', 'AutoGen', '多 Agent', '编排']
 category: 'news'
-heroImage: '/og-default.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 核心亮点
