@@ -73,7 +73,7 @@ const readingTime = calculateReadingTime(tutorial.body);
         )}
       </div>
     </header>
-    <div class="article-layout">
+    <div class="content-wrapper">
       <div class="content">
         <Content />
       </div>
@@ -225,16 +225,28 @@ const readingTime = calculateReadingTime(tutorial.body);
     border: 1px solid rgba(124, 58, 237, 0.3);
   }
 
-  .article-layout {
-    display: grid;
-    grid-template-columns: 1fr 280px;
-    gap: var(--space-10);
-    align-items: start;
+  .content-wrapper {
+    position: relative;
   }
 
   .content {
+    max-width: 800px;
+    margin: 0 auto;
     font-size: 1.05rem;
     line-height: 1.8;
+  }
+
+  .article-sidebar {
+    position: fixed;
+    right: max(2rem, calc((100vw - 800px) / 2 - 300px));
+    top: 6rem;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 10;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
   }
 
   .content :global(h2) {
@@ -408,13 +420,10 @@ const readingTime = calculateReadingTime(tutorial.body);
     color: var(--text-dim);
   }
 
-  /* 边栏样式 */
-  .article-sidebar {
-    position: sticky;
-    top: 2rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+  @media (max-width: 1200px) {
+    .article-sidebar {
+      display: none;
+    }
   }
 
   .sidebar-section {
@@ -495,15 +504,6 @@ const readingTime = calculateReadingTime(tutorial.body);
 
   .resource-link:hover::before {
     background: var(--primary-light);
-  }
-
-  @media (max-width: 1024px) {
-    .article-layout {
-      grid-template-columns: 1fr;
-    }
-    .article-sidebar {
-      order: -1;
-    }
   }
 
   @media (max-width: 768px) {
