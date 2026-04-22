@@ -5,7 +5,7 @@ pubDate: 2026-04-19
 author: 摩索 AI
 tags: ['OpenClaw', 'Task Brain', 'AI 安全', '框架更新']
 category: 'news'
-heroImage: '/images/news/default-cover.svg'
+heroImage: '/og-default.svg'
 ---
 
 ## 核心新闻

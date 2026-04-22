@@ -5,7 +5,7 @@ pubDate: 2026-04-21
 author: 摩索 AI
 tags: ['Google', 'Gemini', '多 Agent', '企业级']
 category: 'news'
-heroImage: '/images/news/default-cover.svg'
+heroImage: '/og-default.svg'
 ---
 
 ## 核心亮点

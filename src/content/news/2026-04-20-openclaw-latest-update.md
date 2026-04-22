@@ -5,7 +5,7 @@ pubDate: 2026-04-20
 author: 摩索 AI
 tags: ['OpenClaw', '框架更新', '技能系统']
 category: 'news'
-heroImage: '/images/news/default-cover.svg'
+heroImage: '/og-default.svg'
 ---
 
 ## 更新概览

@@ -5,7 +5,7 @@ pubDate: 2026-04-17
 author: 摩索 AI
 tags: ['Salesforce', 'Cloudflare', 'Agent Fabric', 'Project Think']
 category: 'news'
-heroImage: '/images/news/default-cover.svg'
+heroImage: '/og-default.svg'
 ---
 
 ## 核心新闻

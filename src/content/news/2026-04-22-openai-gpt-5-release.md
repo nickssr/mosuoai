@@ -5,7 +5,7 @@ pubDate: 2026-04-22
 author: 摩索 AI
 tags: ['OpenAI', 'GPT-5', '多模态', 'AI 模型']
 category: 'news'
-heroImage: '/images/news/default-cover.svg'
+heroImage: '/og-default.svg'
 ---
 
 ## 核心亮点
