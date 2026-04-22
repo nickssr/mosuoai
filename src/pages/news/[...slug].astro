@@ -57,7 +57,7 @@ while ((match = headingRegex.exec(news.body)) !== null) {
 const sortedNews = allNews
   .filter((n) => !n.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const currentIndex = sortedNews.findIndex((n) => n.slug === news.id);
+const currentIndex = sortedNews.findIndex((n) => n.id === news.id);
 const prevNews = currentIndex > 0 ? sortedNews[currentIndex - 1] : null;
 const nextNews = currentIndex < sortedNews.length - 1 ? sortedNews[currentIndex + 1] : null;
 
