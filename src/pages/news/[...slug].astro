@@ -154,6 +154,7 @@ const categoryNames: Record<string, string> = {
   .news-article {
     max-width: 900px;
     margin: 0 auto;
+    padding: 0 1.5rem;
   }
 
   .article-header {
@@ -241,6 +242,8 @@ const categoryNames: Record<string, string> = {
     font-size: 1.0625rem;
     line-height: 1.8;
     color: var(--color-text-secondary);
+    overflow-wrap: break-word;
+    word-break: break-word;
   }
 
   .article-body :global(h2) {
@@ -273,6 +276,31 @@ const categoryNames: Record<string, string> = {
     border: none;
     border-top: 1px solid var(--color-border);
     margin: var(--space-8) 0;
+  }
+
+  /* 防止宽元素撑破容器 */
+  .article-body :global(pre),
+  .article-body :global(table),
+  .article-body :global(img),
+  .article-body :global(video),
+  .article-body :global(iframe) {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .article-body :global(pre) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .article-body :global(table) {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .article-body :global(img) {
+    height: auto;
   }
 
   .article-footer {
@@ -328,11 +356,26 @@ const categoryNames: Record<string, string> = {
   }
 
   @media (max-width: 768px) {
+    .news-article {
+      padding: 0 1rem;
+    }
     .article-title {
       font-size: 1.5rem;
     }
     .article-body {
-      font-size: 1rem;
+      font-size: 0.9375rem;
+    }
+    .article-body :global(h2) {
+      font-size: 1.25rem;
+    }
+    .article-body :global(h3) {
+      font-size: 1.1rem;
+    }
+    .article-meta {
+      font-size: 0.8rem;
+    }
+    .article-nav {
+      grid-template-columns: 1fr;
     }
   }
 </style>
