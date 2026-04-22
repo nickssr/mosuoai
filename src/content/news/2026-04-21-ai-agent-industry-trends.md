@@ -5,7 +5,7 @@ pubDate: 2026-04-21
 author: 摩索 AI
 tags: ['AI Agent', '行业趋势', '2026']
 category: 'news'
-heroImage: '/images/news/industry-trends-2026.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 核心观点

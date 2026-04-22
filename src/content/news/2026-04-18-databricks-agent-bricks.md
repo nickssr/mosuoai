@@ -5,7 +5,7 @@ pubDate: 2026-04-18
 author: 摩索 AI
 tags: ['Databricks', 'Agent Bricks', '企业平台', 'AI 治理']
 category: 'news'
-heroImage: '/images/news/databricks-agent-bricks.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 核心新闻

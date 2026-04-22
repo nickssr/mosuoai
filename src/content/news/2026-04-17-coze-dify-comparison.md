@@ -5,7 +5,7 @@ pubDate: 2026-04-17
 author: 摩索 AI
 tags: ['Coze', 'Dify', '低代码', 'Agent 平台']
 category: 'news'
-heroImage: '/images/news/coze-vs-dify.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 平台定位

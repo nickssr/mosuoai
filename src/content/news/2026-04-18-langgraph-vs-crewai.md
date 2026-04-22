@@ -5,7 +5,7 @@ pubDate: 2026-04-18
 author: 摩索 AI
 tags: ['LangGraph', 'CrewAI', '多 Agent', '框架对比']
 category: 'news'
-heroImage: '/images/news/langgraph-vs-crewai.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 背景介绍

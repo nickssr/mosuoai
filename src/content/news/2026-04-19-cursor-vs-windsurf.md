@@ -5,7 +5,7 @@ pubDate: 2026-04-19
 author: 摩索 AI
 tags: ['AI 编辑器', 'Cursor', 'Windsurf', '工具评测']
 category: 'news'
-heroImage: '/images/news/cursor-vs-windsurf.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 评测背景

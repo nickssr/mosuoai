@@ -5,7 +5,7 @@ pubDate: 2026-04-20
 author: 摩索 AI
 tags: ['Microsoft', 'Agent Framework', '多 Agent', '开源框架']
 category: 'news'
-heroImage: '/images/news/microsoft-agent-framework.svg'
+heroImage: '/images/news/default-cover.svg'
 ---
 
 ## 核心新闻
