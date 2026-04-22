@@ -1,40 +1,67 @@
 ---
-import { Newspaper, Star, BookOpen, Grid, ArrowRight, Calendar, Bot, Map, Flame, Tag, ExternalLink } from 'lucide-astro';
+import { ArrowRight, Calendar, Star, BookOpen, Newspaper } from 'lucide-astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 import { getCollection } from 'astro:content';
 
-// 获取学习路径
-const allPaths = await getCollection('paths', ({ data }) => !data.draft);
-const featuredPaths = allPaths.slice(0, 4);
-
-// 获取资讯
+// 获取所有文章
 const allNews = await getCollection('news', ({ data }) => !data.draft);
-const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const latestNews = sortedNews.slice(0, 6);
-
-// 获取教程
 const allTutorials = await getCollection('tutorials', ({ data }) => !data.draft);
-const sortedTutorials = allTutorials.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const featuredTutorials = sortedTutorials.slice(0, 6);
-
-// 获取评测
 const allReviews = await getCollection('reviews', ({ data }) => !data.draft);
-const sortedReviews = allReviews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const featuredReviews = sortedReviews.slice(0, 6);
 
-// 获取资源
-const allResources = await getCollection('resources', ({ data }) => !data.draft);
-const featuredResources = allResources.filter((r) => r.data.featured).slice(0, 4);
+// 统一合并为文章列表
+interface UnifiedArticle {
+  type: 'news' | 'tutorials' | 'reviews';
+  id: string;
+  title: string;
+  description: string;
+  pubDate: Date;
+  heroImage?: string;
+  tags?: string[];
+  categoryLabel: string;
+  categoryColor: string;
+}
 
-// 获取热门标签
-const allTags = new Set();
-allTutorials.forEach((t) => t.data.tags?.forEach((tag) => allTags.add(tag)));
-allReviews.forEach((r) => r.data.tags?.forEach((tag) => allTags.add(tag)));
-const popularTags = Array.from(allTags).slice(0, 10);
+const articles: UnifiedArticle[] = [
+  ...allNews.map((n) => ({
+    type: 'news' as const,
+    id: n.id,
+    title: n.data.title,
+    description: n.data.description,
+    pubDate: n.data.pubDate,
+    heroImage: n.data.heroImage,
+    tags: n.data.tags,
+    categoryLabel: '资讯',
+    categoryColor: '#3b82f6',
+  })),
+  ...allTutorials.map((t) => ({
+    type: 'tutorials' as const,
+    id: t.id,
+    title: t.data.title,
+    description: t.data.description,
+    pubDate: t.data.pubDate,
+    heroImage: t.data.heroImage,
+    tags: t.data.tags,
+    categoryLabel: '教程',
+    categoryColor: '#10b981',
+  })),
+  ...allReviews.map((r) => ({
+    type: 'reviews' as const,
+    id: r.id,
+    title: r.data.title,
+    description: r.data.description,
+    pubDate: r.data.pubDate,
+    heroImage: r.data.heroImage,
+    tags: r.data.tags,
+    categoryLabel: '评测',
+    categoryColor: '#f59e0b',
+  })),
+].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+
+const defaultThumb = '/og-default.svg';
 ---
 
 <BaseLayout title="MosuoAI" description="AI Agent 开发者的深度指南">
-  <!-- Hero 区（全宽，独立） -->
+  <!-- Hero 区 -->
   <section class="hero-section">
     <div class="hero-bg">
       <div class="hero-glow"></div>
@@ -51,283 +78,50 @@ const popularTags = Array.from(allTags).slice(0, 10);
   </section>
 
   <div class="home-layout">
-    <!-- 双栏内容区 -->
-    <div class="content-wrapper">
-      <!-- 主内容区 -->
-      <main class="main-content">
-        <!-- 资讯快报 -->
-        <section class="content-section">
-          <div class="section-header">
-            <div class="section-title-wrapper">
-              <Newspaper size={24} class="section-icon" />
-              <h2 class="section-title">资讯快报</h2>
+    <!-- 统一文章列表 -->
+    <main class="main-content">
+      <div class="article-list">
+        {articles.map((article) => (
+          <article class="article-card">
+            <a href={`/${article.type}/${article.id}`} class="article-card-link"></a>
+            <div class="article-card-thumb">
+              <img
+                src={article.heroImage || defaultThumb}
+                alt={article.title}
+                loading="lazy"
+              />
             </div>
-            <a href="/news" class="section-more">
-              查看更多 <ArrowRight size={16} />
-            </a>
-          </div>
-
-          {latestNews.length === 0 ? (
-            <div class="empty-state">
-              <Newspaper size={48} class="empty-icon" />
-              <p>暂无资讯，敬请期待...</p>
-            </div>
-          ) : (
-            <div class="news-list">
-              {latestNews.map((news) => (
-                <article class="news-item">
-                  <a href={`/news/${news.id}`} class="news-link"></a>
-                  <div class="news-content">
-                    <h3 class="news-title">{news.data.title}</h3>
-                    <p class="news-excerpt">{news.data.description}</p>
-                    <div class="news-meta">
-                      <span class="news-date">
-                        <Calendar size={14} />
-                        {news.data.pubDate.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
-                      </span>
-                    </div>
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
-
-        <!-- 精选教程 -->
-        <section class="content-section">
-          <div class="section-header">
-            <div class="section-title-wrapper">
-              <BookOpen size={24} class="section-icon" />
-              <h2 class="section-title">精选教程</h2>
-            </div>
-            <a href="/tutorials" class="section-more">
-              查看更多 <ArrowRight size={16} />
-            </a>
-          </div>
-
-          {featuredTutorials.length === 0 ? (
-            <div class="empty-state">
-              <BookOpen size={48} class="empty-icon" />
-              <p>暂无教程，敬请期待...</p>
-            </div>
-          ) : (
-            <div class="card-grid">
-              {featuredTutorials.map((tutorial) => (
-                <article class="card tutorial-card">
-                  <a href={`/tutorials/${tutorial.id}`} class="card-link"></a>
-                  <div class="card-glow"></div>
-                  <div class="card-content">
-                    <div class="card-header">
-                      <span class="difficulty-badge difficulty-{tutorial.data.difficulty}">
-                        {tutorial.data.difficulty === 'beginner' && '入门'}
-                        {tutorial.data.difficulty === 'intermediate' && '进阶'}
-                        {tutorial.data.difficulty === 'advanced' && '高级'}
-                      </span>
-                    </div>
-                    <h3 class="card-title">{tutorial.data.title}</h3>
-                    <p class="card-desc">{tutorial.data.description}</p>
-                    {tutorial.data.tags && tutorial.data.tags.length > 0 && (
-                      <div class="card-tags">
-                        {tutorial.data.tags.slice(0, 3).map((tag) => (
-                          <span class="tag">#{tag}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
-
-        <!-- 精选评测 -->
-        <section class="content-section">
-          <div class="section-header">
-            <div class="section-title-wrapper">
-              <Star size={24} class="section-icon" />
-              <h2 class="section-title">工具评测</h2>
-            </div>
-            <a href="/reviews" class="section-more">
-              查看更多 <ArrowRight size={16} />
-            </a>
-          </div>
-
-          {featuredReviews.length === 0 ? (
-            <div class="empty-state">
-              <Star size={48} class="empty-icon" />
-              <p>暂无评测，敬请期待...</p>
-            </div>
-          ) : (
-            <div class="card-grid">
-              {featuredReviews.map((review) => (
-                <article class="card review-card">
-                  <a href={`/reviews/${review.id}`} class="card-link"></a>
-                  <div class="card-glow"></div>
-                  <div class="card-content">
-                    <div class="card-header">
-                      <div class="rating">
-                        {'★'.repeat(Math.floor(review.data.rating))}
-                        <span class="rating-score">{review.data.rating}</span>
-                      </div>
-                    </div>
-                    <h3 class="card-title">{review.data.title}</h3>
-                    <p class="card-desc">{review.data.description}</p>
-                    {review.data.tags && review.data.tags.length > 0 && (
-                      <div class="card-tags">
-                        {review.data.tags.slice(0, 3).map((tag) => (
-                          <span class="tag">#{tag}</span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                </article>
-              ))}
-            </div>
-          )}
-        </section>
-
-        <!-- 开源精选 -->
-        <section class="content-section">
-          <div class="section-header">
-            <div class="section-title-wrapper">
-              <Bot size={24} class="section-icon" />
-              <h2 class="section-title">开源精选</h2>
-            </div>
-            <a href="/resources" class="section-more">
-              查看更多 <ArrowRight size={16} />
-            </a>
-          </div>
-
-          <div class="resource-grid">
-            <a href="https://github.com/anthropics/claude-code" target="_blank" rel="noopener noreferrer" class="resource-item">
-              <div class="resource-content">
-                <h3 class="resource-title">Claude Code</h3>
-                <p class="resource-desc">Anthropic 官方 CLI 工具</p>
+            <div class="article-card-body">
+              <div class="article-card-meta">
+                <span class="category-badge" style={{ 'background': `${article.categoryColor}20`, 'color': article.categoryColor }}>
+                  {article.categoryLabel}
+                </span>
+                <span class="date-text">
+                  <Calendar size={12} />
+                  {article.pubDate.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
+                </span>
               </div>
-              <ArrowRight size={16} class="resource-icon" />
-            </a>
-            <a href="https://github.com/anthropics/open-claw" target="_blank" rel="noopener noreferrer" class="resource-item">
-              <div class="resource-content">
-                <h3 class="resource-title">OpenClaw</h3>
-                <p class="resource-desc">开源 Claude Code 封装</p>
-              </div>
-              <ArrowRight size={16} class="resource-icon" />
-            </a>
-            <a href="https://github.com/hermes-agent" target="_blank" rel="noopener noreferrer" class="resource-item">
-              <div class="resource-content">
-                <h3 class="resource-title">Hermes Agent</h3>
-                <p class="resource-desc">灵活的 AI Agent 框架</p>
-              </div>
-              <ArrowRight size={16} class="resource-icon" />
-            </a>
-            <a href="https://github.com/mosuoai" target="_blank" rel="noopener noreferrer" class="resource-item">
-              <div class="resource-content">
-                <h3 class="resource-title">MosuoAI</h3>
-                <p class="resource-desc">本站开源项目</p>
-              </div>
-              <ArrowRight size={16} class="resource-icon" />
-            </a>
-          </div>
-        </section>
-      </main>
-
-      <!-- 右侧边栏 -->
-      <aside class="sidebar">
-        <!-- 热门标签 -->
-        <div class="sidebar-card">
-          <h3 class="sidebar-title">
-            <Tag size={18} />
-            热门标签
-          </h3>
-          <div class="tag-cloud">
-            {popularTags.length === 0 ? (
-              <span class="tag-sm">OpenClaw</span>
-            ) : (
-              popularTags.map((tag) => (
-                <span class="tag-sm">#{tag}</span>
-              ))
-            )}
-          </div>
-        </div>
-
-        <!-- 资源导航精选 -->
-        <div class="sidebar-card">
-          <h3 class="sidebar-title">
-            <ExternalLink size={18} />
-            资源导航精选
-          </h3>
-          <div class="resource-nav">
-            {featuredResources.length === 0 ? (
-              <p class="empty-resource">暂无推荐资源</p>
-            ) : (
-              featuredResources.map((resource) => (
-                <a href={resource.data.url} target="_blank" rel="noopener noreferrer" class="resource-nav-item">
-                  <span class="resource-nav-title">{resource.data.title}</span>
-                  <ArrowRight size={14} />
-                </a>
-              ))
-            )}
-          </div>
-        </div>
-      </aside>
-    </div>
-
-    <!-- 学习路径（页面底部，全宽） -->
-    <section class="learning-paths-section">
-      <div class="section-header">
-        <div class="section-title-wrapper">
-          <Map size={24} class="section-icon" />
-          <h2 class="section-title">学习路径</h2>
-        </div>
-        <a href="/paths" class="section-more">
-          查看更多 <ArrowRight size={16} />
-        </a>
+              <h3 class="article-card-title">{article.title}</h3>
+              <p class="article-card-desc">{article.description}</p>
+            </div>
+          </article>
+        ))}
       </div>
-
-      {featuredPaths.length === 0 ? (
-        <div class="empty-state">
-          <Map size={48} class="empty-icon" />
-          <p>学习路径即将上线</p>
-        </div>
-      ) : (
-        <div class="paths-grid">
-          {featuredPaths.map((path) => (
-            <article class="path-card">
-              <a href={`/paths/${path.slug}`} class="card-link"></a>
-              <div class="card-glow"></div>
-              <div class="card-content">
-                <div class="card-header">
-                  <span class="level-badge level-{path.data.level}">
-                    {path.data.level === 'beginner' ? '入门' : path.data.level === 'intermediate' ? '进阶' : '高级'}
-                  </span>
-                  {path.data.duration && (
-                    <span class="duration-badge">{path.data.duration}</span>
-                  )}
-                </div>
-                <h3 class="card-title">{path.data.title}</h3>
-                <p class="card-desc">{path.data.description}</p>
-              </div>
-            </article>
-          ))}
-        </div>
-      )}
-    </section>
+    </main>
   </div>
 </BaseLayout>
 
 <style>
-  /* Hero 区（全宽，独立） */
+  /* Hero 区 */
   .hero-section {
     position: relative;
     text-align: center;
-    /* 使用 100vw 和负 margin 实现真正的全宽效果 */
     width: 100vw;
     margin-left: calc((100vw - 100%) / -2);
     margin-top: calc(var(--space-8) * -1);
     margin-bottom: 3rem;
     padding: 5rem 2rem 4rem;
     overflow: hidden;
-    /* 背景渐变，使用更明显的色彩 */
     background: linear-gradient(135deg, rgba(0, 212, 224, 0.08) 0%, rgba(0, 212, 224, 0.02) 50%, transparent 100%);
   }
 
@@ -381,535 +175,131 @@ const popularTags = Array.from(allTags).slice(0, 10);
     line-height: 1.7;
   }
 
-  /* 主布局容器 */
+  /* 主布局 */
   .home-layout {
-    max-width: 1280px;
+    max-width: 900px;
     margin: 0 auto;
     padding: 0 2rem 2rem;
-  }
-
-  /* 双栏内容区 */
-  .content-wrapper {
-    display: grid;
-    grid-template-columns: 1fr 300px;
-    gap: 2rem;
-    align-items: start;
   }
 
   .main-content {
     min-width: 0;
   }
 
-  /* 右侧边栏 */
-  .sidebar {
-    position: sticky;
-    /* Header 高度约 60-70px，加上一些间距 */
-    top: calc(70px + var(--space-4));
+  /* 统一文章列表 */
+  .article-list {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: 1.25rem;
   }
 
-  .sidebar-card {
+  /* 文章卡片 */
+  .article-card {
+    position: relative;
+    display: flex;
+    gap: 1.25rem;
     background: var(--color-bg-secondary);
     border: 1px solid var(--color-border);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
+    padding: 1.25rem;
+    transition: all var(--transition-base);
+    overflow: hidden;
   }
 
-  .sidebar-title {
-    font-size: 1rem;
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: var(--color-text-primary);
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tag-sm {
-    background: rgba(0, 212, 224, 0.1);
-    color: var(--color-primary);
-    padding: 0.25rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 500;
-    border: 1px solid rgba(0, 212, 224, 0.2);
-    transition: all var(--transition-fast);
-  }
-
-  .tag-sm:hover {
-    background: rgba(0, 212, 224, 0.2);
+  .article-card:hover {
     border-color: var(--color-primary);
-    cursor: pointer;
-  }
-
-  .resource-nav {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .resource-nav-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0.75rem 1rem;
-    background: var(--color-bg-tertiary);
-    border-radius: var(--radius-md);
-    text-decoration: none;
-    color: var(--color-text-primary);
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: all var(--transition-fast);
-  }
-
-  .resource-nav-item:hover {
-    background: rgba(0, 212, 224, 0.1);
+    background: rgba(0, 212, 224, 0.02);
     transform: translateX(4px);
   }
 
-  .resource-nav-item svg {
-    color: var(--color-primary);
-    flex-shrink: 0;
-  }
-
-  .empty-resource {
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-  }
-
-  /* 内容区块 */
-  .content-section {
-    margin-bottom: 3rem;
-  }
-
-  .section-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1.5rem;
-  }
-
-  .section-title-wrapper {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .section-icon {
-    color: var(--color-primary);
-  }
-
-  .section-title {
-    font-size: 1.5rem;
-    font-weight: 700;
-  }
-
-  .section-more {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
-    color: var(--color-primary);
-    font-weight: 500;
-    font-size: 0.9rem;
-    transition: gap var(--transition-fast);
-  }
-
-  .section-more:hover {
-    gap: 0.5rem;
-  }
-
-  .news-list {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-
-  /* 资讯列表 - 紧凑双栏布局 */
-  .news-list {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.75rem;
-  }
-
-  .news-item {
-    position: relative;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-md);
-    padding: 0.875rem 1rem;
-    transition: all var(--transition-base);
-  }
-
-  .news-item:hover {
-    border-color: var(--color-primary);
-    background: rgba(0, 212, 224, 0.03);
-  }
-
-  .news-link {
+  .article-card-link {
     position: absolute;
     inset: 0;
     z-index: 10;
   }
 
-  .news-content {
-    position: relative;
-    z-index: 2;
-    pointer-events: none;
-  }
-
-  .news-title {
-    font-size: 0.95rem;
-    font-weight: 600;
-    margin-bottom: 0.375rem;
-    color: var(--color-text-primary);
-    line-height: 1.4;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+  /* 缩略图 */
+  .article-card-thumb {
+    flex-shrink: 0;
+    width: 160px;
+    height: 110px;
+    border-radius: var(--radius-md);
     overflow: hidden;
+    background: var(--color-bg-tertiary);
   }
 
-  .news-item:hover .news-title {
-    color: var(--color-primary);
+  .article-card-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform var(--transition-base);
   }
 
-  .news-excerpt {
-    display: none;
+  .article-card:hover .article-card-thumb img {
+    transform: scale(1.05);
   }
 
-  .news-meta {
-    font-size: 0.75rem;
-    color: var(--color-text-muted);
+  /* 卡片内容 */
+  .article-card-body {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .article-card-meta {
     display: flex;
     align-items: center;
-    gap: 0.375rem;
+    gap: 0.75rem;
+    font-size: 0.8rem;
   }
 
-  .card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.25rem;
-  }
-
-  .card {
-    position: relative;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    transition: all 0.3s ease-in-out;
-    overflow: hidden;
-  }
-
-  .card:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(0, 212, 224, 0.15);
-  }
-
-  .card-link {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-  }
-
-  .card-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 0%, rgba(0, 212, 224, 0.08) 0%, transparent 50%);
-    opacity: 0;
-    transition: opacity var(--transition-base);
-    pointer-events: none;
-  }
-
-  .card:hover .card-glow {
-    opacity: 1;
-  }
-
-  .card-content {
-    position: relative;
-    z-index: 2;
-  }
-
-  .card-header {
-    margin-bottom: 0.75rem;
-  }
-
-  .difficulty-badge {
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-  }
-
-  .difficulty-beginner {
-    background: rgba(16, 185, 129, 0.15);
-    color: #10b981;
-    border: 1px solid rgba(16, 185, 129, 0.3);
-  }
-
-  .difficulty-intermediate {
-    background: rgba(245, 158, 11, 0.15);
-    color: #f59e0b;
-    border: 1px solid rgba(245, 158, 11, 0.3);
-  }
-
-  .difficulty-advanced {
-    background: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-  }
-
-  .level-badge {
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 600;
-  }
-
-  .level-beginner {
-    background: rgba(16, 185, 129, 0.15);
-    color: #10b981;
-    border: 1px solid rgba(16, 185, 129, 0.3);
-  }
-
-  .level-intermediate {
-    background: rgba(245, 158, 11, 0.15);
-    color: #f59e0b;
-    border: 1px solid rgba(245, 158, 11, 0.3);
-  }
-
-  .level-advanced {
-    background: rgba(239, 68, 68, 0.15);
-    color: #ef4444;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-  }
-
-  .duration-badge {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-secondary);
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.7rem;
-    font-weight: 500;
-  }
-
-  .card-title {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: var(--color-text-primary);
-  }
-
-  .card-desc {
-    color: var(--color-text-secondary);
-    font-size: 0.9rem;
-    line-height: 1.5;
-    margin-bottom: 1rem;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
-  }
-
-  .card-tags {
-    display: flex;
-    gap: 0.4rem;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    background: rgba(0, 212, 224, 0.1);
-    color: var(--color-primary);
-    padding: 0.2rem 0.5rem;
+  .category-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.125rem 0.5rem;
     border-radius: 12px;
     font-size: 0.75rem;
-    font-weight: 500;
-    border: 1px solid rgba(0, 212, 224, 0.2);
+    font-weight: 600;
+    letter-spacing: 0.02em;
   }
 
-  .rating {
+  .date-text {
     display: flex;
     align-items: center;
     gap: 0.25rem;
-    color: #fbbf24;
-    font-size: 0.9rem;
+    color: var(--color-text-muted);
   }
 
-  .rating-score {
-    font-weight: 600;
-    margin-left: 0.25rem;
-  }
-
-  .resource-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 1rem;
-  }
-
-  .resource-item {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 1rem;
-    transition: all var(--transition-fast);
-    text-decoration: none;
-  }
-
-  .resource-item:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-2px);
-  }
-
-  .resource-content {
-    flex: 1;
-    min-width: 0;
-  }
-
-  .resource-title {
-    font-size: 0.95rem;
+  .article-card-title {
+    font-size: 1.125rem;
     font-weight: 600;
     color: var(--color-text-primary);
-    margin-bottom: 0.25rem;
-  }
-
-  .resource-desc {
-    font-size: 0.85rem;
-    color: var(--color-text-secondary);
+    line-height: 1.4;
+    margin: 0;
     display: -webkit-box;
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .resource-icon {
+  .article-card:hover .article-card-title {
     color: var(--color-primary);
-    flex-shrink: 0;
   }
 
-  .author-card {
-    text-align: center;
-  }
-
-  .author-avatar {
-    color: var(--color-primary);
-    margin-bottom: 1rem;
-  }
-
-  .author-name {
-    font-size: 1.1rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .author-bio {
+  .article-card-desc {
+    font-size: 0.875rem;
     color: var(--color-text-secondary);
-    font-size: 0.9rem;
     line-height: 1.6;
-    margin-bottom: 1rem;
-  }
-
-  .author-social {
-    display: flex;
-    justify-content: center;
-  }
-
-  .social-link {
-    background: var(--color-bg-tertiary);
-    color: var(--color-text-primary);
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    font-size: 0.85rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all var(--transition-fast);
-  }
-
-  .social-link:hover {
-    background: var(--color-primary);
-    color: white;
-  }
-
-  .empty-state {
-    text-align: center;
-    padding: 3rem 2rem;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-  }
-
-  .empty-icon {
-    color: var(--color-text-muted);
-    opacity: 0.5;
-    margin-bottom: 1rem;
-  }
-
-  .empty-state p {
-    color: var(--color-text-secondary);
-  }
-
-  /* 学习路径区域 */
-  .learning-paths-section {
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .paths-grid {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1.25rem;
-  }
-
-  .path-card {
-    position: relative;
-    background: var(--color-bg-secondary);
-    border: 1px solid var(--color-border);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    transition: all 0.3s ease-in-out;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
     overflow: hidden;
   }
 
-  .path-card:hover {
-    border-color: var(--color-primary);
-    transform: translateY(-6px) scale(1.02);
-    box-shadow: 0 12px 30px rgba(0, 212, 224, 0.15);
-  }
-
   /* 响应式 */
-  @media (max-width: 1024px) {
-    .content-wrapper {
-      grid-template-columns: 1fr;
-    }
-
-    .sidebar {
-      position: static;
-      flex-direction: row;
-      flex-wrap: wrap;
-    }
-
-    .sidebar-card {
-      flex: 1;
-      min-width: 250px;
-    }
-
-    .paths-grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
   @media (max-width: 768px) {
     .hero-section {
       padding: 3rem 1rem 2rem;
@@ -931,37 +321,23 @@ const popularTags = Array.from(allTags).slice(0, 10);
       padding: 0 1rem 1rem;
     }
 
-    .sidebar {
+    .article-card {
       flex-direction: column;
+      padding: 1rem;
     }
 
-    .sidebar-card {
-      min-width: 100%;
+    .article-card-thumb {
+      width: 100%;
+      height: 140px;
     }
 
-    .card-grid {
-      grid-template-columns: 1fr;
+    .article-card-title {
+      font-size: 1rem;
     }
 
-    .section-header {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1rem;
-    }
-
-    .resource-grid {
-      grid-template-columns: 1fr;
-    }
-
-    /* 资讯列表响应式 - 小屏幕单栏 */
-    .news-list {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  @media (max-width: 640px) {
-    .paths-grid {
-      grid-template-columns: 1fr;
+    .article-card-desc {
+      font-size: 0.85rem;
+      -webkit-line-clamp: 3;
     }
   }
 </style>
