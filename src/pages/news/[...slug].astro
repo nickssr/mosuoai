@@ -115,14 +115,13 @@ const categoryNames: Record<string, string> = {
     </header>
 
     <div class="article-content-wrapper">
+      <nav class="floating-toc">
+        <TableOfContents headings={headings} />
+      </nav>
       <div class="article-body">
         <Content />
       </div>
       <aside class="article-sidebar">
-        <div class="sidebar-section">
-          <h3 class="sidebar-title">目录</h3>
-          <TableOfContents headings={headings} />
-        </div>
         <div class="sidebar-section">
           <h3 class="sidebar-title">热门标签</h3>
           <div class="tag-cloud">
@@ -137,7 +136,8 @@ const categoryNames: Record<string, string> = {
           <h3 class="sidebar-title">资源导航精选</h3>
           <ul class="resource-list">
             <li><a href="/resources/ai-tools" class="resource-link">AI 工具合集</a></li>
-            <li><a href="/resources/prompts" class="resource-link">Prompt 模板库</a></li>
+            <li><a href="/resources/prompts" class="resource-link">Prompt 模板库</a>
+</li>
             <li><a href="/resources/newsletter" class="resource-link">AI 资讯订阅</a></li>
           </ul>
         </div>
@@ -266,6 +266,59 @@ const categoryNames: Record<string, string> = {
     word-break: break-word;
   }
 
+  .floating-toc {
+    position: fixed;
+    left: max(2rem, calc((100vw - 800px) / 2 - 280px));
+    top: 6rem;
+    width: 220px;
+    z-index: 10;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+  }
+
+  .floating-toc .toc-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .floating-toc .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .floating-toc .toc-item {
+    margin-bottom: 0.5rem;
+  }
+
+  .floating-toc .toc-item a {
+    display: block;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    line-height: 1.4;
+    transition: all var(--transition-fast);
+  }
+
+  .floating-toc .toc-item a:hover {
+    color: var(--color-primary);
+    background: var(--color-bg-tertiary);
+  }
+
+  .floating-toc .toc-item-nested {
+    padding-left: 0.75rem;
+  }
+
   .article-sidebar {
     position: fixed;
     right: max(2rem, calc((100vw - 800px) / 2 - 300px));
@@ -381,6 +434,9 @@ const categoryNames: Record<string, string> = {
 
   @media (max-width: 1200px) {
     .article-sidebar {
+      display: none;
+    }
+    .floating-toc {
       display: none;
     }
   }
