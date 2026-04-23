@@ -241,14 +241,14 @@ const readingTime = calculateReadingTime(tutorial.body);
   .content {
     max-width: 800px;
     margin: 0 auto;
-    font-size: 1.05rem;
+    font-size: 1rem;
     line-height: 1.8;
   }
 
   .content :global(h2) {
-    font-size: 1.65rem;
-    margin-top: 2.5rem;
-    margin-bottom: 1rem;
+    font-size: 1.75rem;
+    margin-top: 2.5em;
+    margin-bottom: 1em;
     padding-bottom: 0.75rem;
     border-bottom: 1px solid var(--border);
     font-weight: 700;
@@ -256,23 +256,23 @@ const readingTime = calculateReadingTime(tutorial.body);
   }
 
   .content :global(h3) {
-    font-size: 1.3rem;
-    margin-top: 2rem;
-    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    margin-top: 2em;
+    margin-bottom: 0.8em;
     font-weight: 600;
     color: var(--text);
   }
 
   .content :global(h4) {
-    font-size: 1.1rem;
-    margin-top: 1.5rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.25rem;
+    margin-top: 1.5em;
+    margin-bottom: 0.6em;
     font-weight: 600;
     color: var(--text);
   }
 
   .content :global(p) {
-    margin-bottom: 1.25rem;
+    margin-bottom: 1.5em;
     color: var(--text-muted);
   }
 
@@ -295,9 +295,9 @@ const readingTime = calculateReadingTime(tutorial.body);
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    padding: 1.5rem;
+    padding: 1.25em;
     overflow-x: auto;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1.5em;
     position: relative;
   }
 
@@ -320,13 +320,14 @@ const readingTime = calculateReadingTime(tutorial.body);
   }
 
   .content :global(ul), .content :global(ol) {
-    margin-bottom: 1.25rem;
-    padding-left: 1.5rem;
+    margin-bottom: 1.5em;
+    padding-left: 1.5em;
   }
 
   .content :global(li) {
-    margin-bottom: 0.6rem;
+    margin-bottom: 0.5em;
     color: var(--text-muted);
+    line-height: 1.7;
   }
 
   .content :global(li::marker) {
@@ -345,18 +346,17 @@ const readingTime = calculateReadingTime(tutorial.body);
 
   .content :global(blockquote) {
     border-left: 4px solid var(--primary);
-    padding-left: 1.25rem;
-    margin: 1.5rem 0;
+    padding: 1em 1.25em;
+    margin: 1.5em 0;
     color: var(--text-muted);
     background: var(--bg-card);
-    padding: 1rem 1.25rem;
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
   }
 
   .content :global(hr) {
     border: none;
     border-top: 1px solid var(--border);
-    margin: 2.5rem 0;
+    margin: 2em 0;
   }
 
   .content :global(table) {
@@ -444,6 +444,23 @@ const readingTime = calculateReadingTime(tutorial.body);
 
     .header h1 {
       font-size: 1.75rem;
+    }
+
+    .content {
+      font-size: 0.9375rem;
+      line-height: 1.75;
+    }
+
+    .content :global(h2) {
+      font-size: 1.5rem;
+    }
+
+    .content :global(h3) {
+      font-size: 1.25rem;
+    }
+
+    .content :global(h4) {
+      font-size: 1.1rem;
     }
 
     .meta {
