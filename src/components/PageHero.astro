@@ -1,0 +1,145 @@
+---
+/**
+ * PageHero 组件 - 统一的栏目页 Hero 区域
+ * 支持自定义标题、描述、主题色
+ */
+
+interface Props {
+  title: string;
+  description?: string;
+  /** 主题色，用于背景渐变和光晕 */
+  themeColor?: string;
+  /** 是否为首页样式（更大的 padding 和字体） */
+  isHome?: boolean;
+}
+
+const {
+  title,
+  description,
+  themeColor = '0, 212, 224', // 默认主色 RGB 值
+  isHome = false,
+} = Astro.props;
+---
+
+<section class:list={['hero-section', { 'hero-home': isHome }]}>
+  <div class="hero-bg">
+    <div class="hero-glow" style={`background: radial-gradient(circle, rgba(${themeColor}, 0.12) 0%, transparent 70%);`}></div>
+  </div>
+  <div class="hero-content">
+    <h1 class:list={['hero-title', { 'hero-title-home': isHome }]}>
+      <span class="text-gradient">{title}</span>
+    </h1>
+    {isHome && <p class="hero-subtitle">探索 · 构建 · 部署</p>}
+    {description && <p class="hero-desc">{description}</p>}
+  </div>
+</section>
+
+<style>
+  .hero-section {
+    position: relative;
+    text-align: center;
+    width: 100vw;
+    left: 50%;
+    margin-left: -50vw;
+    margin-top: calc(var(--space-8) * -1);
+    margin-bottom: 2rem;
+    padding: 4rem 2rem 3rem;
+    overflow: hidden;
+    background: linear-gradient(
+      135deg,
+      rgba(0, 212, 224, 0.08) 0%,
+      rgba(0, 212, 224, 0.02) 50%,
+      transparent 100%
+    );
+  }
+
+  .hero-home {
+    padding: 5rem 2rem 4rem;
+    margin-bottom: 3rem;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    pointer-events: none;
+  }
+
+  .hero-glow {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .hero-home .hero-glow {
+    width: 600px;
+    height: 600px;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+  }
+
+  .hero-content {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero-title {
+    font-size: 2.75rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+  }
+
+  .hero-title-home {
+    font-size: 3.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero-subtitle {
+    font-size: 1.5rem;
+    color: var(--color-text-secondary);
+    margin-bottom: 1rem;
+    font-weight: 600;
+  }
+
+  .hero-desc {
+    color: var(--color-text-secondary);
+    font-size: 1.05rem;
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.7;
+  }
+
+  @media (max-width: 768px) {
+    .hero-section {
+      padding: 2.5rem 1rem 2rem;
+    }
+
+    .hero-home {
+      padding: 3rem 1rem 2rem;
+    }
+
+    .hero-title {
+      font-size: 2rem;
+    }
+
+    .hero-title-home {
+      font-size: 2.25rem;
+    }
+
+    .hero-subtitle {
+      font-size: 1.15rem;
+    }
+
+    .hero-desc {
+      font-size: 0.95rem;
+    }
+  }
+</style>

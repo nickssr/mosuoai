@@ -1,7 +1,8 @@
 ---
-import { ExternalLink, Tag, Grid, Wrench, LayoutGrid, Globe, BookOpen, Users } from 'lucide-astro';
+import { ExternalLink, Wrench, LayoutGrid, Globe, BookOpen, Users } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
 
 const allResources = await getCollection('resources', ({ data }) => !data.draft);
 
@@ -23,21 +24,9 @@ const groupedResources = Object.entries(categoryConfig).map(([key, config]) => (
 ---
 
 <BaseLayout title="资源导航" description="精选 AI Agent 开发工具和资源">
-  <!-- Hero 区 -->
-  <section class="hero-section">
-    <div class="hero-bg">
-      <div class="hero-glow"></div>
-    </div>
-    <div class="hero-content">
-      <h1 class="hero-title">
-        <span class="text-gradient">资源导航</span>
-      </h1>
-      <p class="hero-desc">精选 AI Agent 开发工具、框架和学习资源</p>
-    </div>
-  </section>
+  <PageHero title="资源导航" description="精选 AI Agent 开发工具、框架和学习资源" />
 
   <div class="resources-page">
-    <!-- 分类资源 -->
     <section class="categories-section">
       {groupedResources.map((group) => {
         const IconComponent = group.icon;
@@ -76,61 +65,12 @@ const groupedResources = Object.entries(categoryConfig).map(([key, config]) => (
 </BaseLayout>
 
 <style>
-  /* Hero 区 */
-  .hero-section {
-    position: relative;
-    text-align: center;
-    width: 100vw;
-    margin-left: calc((100vw - 100%) / -2);
-    margin-top: calc(var(--space-8) * -1);
-    margin-bottom: 2rem;
-    padding: 4rem 2rem 3rem;
-    overflow: hidden;
-    background: linear-gradient(135deg, rgba(0, 212, 224, 0.08) 0%, rgba(0, 212, 224, 0.02) 50%, transparent 100%);
-  }
-
-  .hero-bg {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    pointer-events: none;
-  }
-
-  .hero-glow {
-    position: absolute;
-    width: 500px;
-    height: 500px;
-    background: radial-gradient(circle, rgba(0, 212, 224, 0.12) 0%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-
-  .hero-content {
-    position: relative;
-    z-index: 1;
-  }
-
-  .hero-title {
-    font-size: 2.75rem;
-    font-weight: 800;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-desc {
-    color: var(--color-text-secondary);
-    font-size: 1.05rem;
-  }
-
-  /* 主内容 */
   .resources-page {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0 2rem 2rem;
   }
 
-  /* 分类 */
   .categories-section {
     display: flex;
     flex-direction: column;
@@ -161,7 +101,6 @@ const groupedResources = Object.entries(categoryConfig).map(([key, config]) => (
     margin-left: 0.5rem;
   }
 
-  /* 资源卡片 - 一行5个 */
   .resource-grid {
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -249,14 +188,6 @@ const groupedResources = Object.entries(categoryConfig).map(([key, config]) => (
   }
 
   @media (max-width: 768px) {
-    .hero-section {
-      padding: 2.5rem 1rem 2rem;
-    }
-
-    .hero-title {
-      font-size: 2rem;
-    }
-
     .resources-page {
       padding: 0 1rem 1rem;
     }
