@@ -1,0 +1,567 @@
+---
+import { Calendar, User, ArrowLeft, ArrowRight, Tag } from 'lucide-astro';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import { slug } from 'github-slugger';
+
+interface Props {
+  params: {
+    slug: string;
+  };
+}
+
+const allOpensource = await getCollection('opensource');
+
+function getOpensourceFromSlug(slugStr: string) {
+  return allOpensource.find((item) => item.id === slugStr);
+}
+
+export async function getStaticPaths() {
+  const items = await getCollection('opensource', ({ data }) => !data.draft);
+  return items.map((item) => ({
+    params: { slug: item.id },
+    props: { opensource: item },
+  }));
+}
+
+const { slug: slugParam } = Astro.params;
+const item = getOpensourceFromSlug(slugParam);
+
+if (!item) {
+  return Astro.redirect('/opensource');
+}
+
+const { Content } = await render(item);
+
+// 提取标题用于目录
+const headings = item.body?.toc?.map((t) => ({
+  text: t.text,
+  depth: t.depth,
+  slug: slug(t.text),
+})) ?? [];
+
+// 获取上一篇和下一篇
+const sortedItems = allOpensource
+  .filter((i) => !i.data.draft)
+  .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const currentIndex = sortedItems.findIndex((i) => i.id === item.id);
+const prevItem = currentIndex < sortedItems.length - 1 ? sortedItems[currentIndex + 1] : null;
+const nextItem = currentIndex > 0 ? sortedItems[currentIndex - 1] : null;
+
+const defaultThumb = '/og-default.svg';
+---
+
+<BaseLayout title={item.data.title} description={item.data.description}>
+  <article class="news-article">
+    <header class="article-header">
+      <a href="/opensource" class="back-link">
+        <ArrowLeft size={14} />
+        返回开源
+      </a>
+      <h1 class="article-title">{item.data.title}</h1>
+      <div class="article-meta">
+        <span class="meta-item">
+          <User size={14} />
+          {item.data.author || 'MosuoAI'}
+        </span>
+        <span class="meta-item">
+          <Calendar size={14} />
+          {item.data.pubDate.toLocaleDateString('zh-CN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </span>
+      </div>
+
+      {item.data.tags && item.data.tags.length > 0 && (
+        <div class="article-tags">
+          {item.data.tags.map((tag) => (
+            <a href={`/tags/${tag}`} class="tag">
+              <Tag size={12} />
+              {tag}
+            </a>
+          ))}
+        </div>
+      )}
+
+      {item.data.heroImage && (
+        <div class="article-hero">
+          <img src={item.data.heroImage} alt={item.data.title} />
+        </div>
+      )}
+    </header>
+
+    <div class="article-content-wrapper">
+      <nav class="floating-toc">
+        <TableOfContents headings={headings} />
+      </nav>
+      <div class="article-body">
+        <Content />
+      </div>
+      <aside class="article-sidebar">
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">热门文章</h3>
+          <ul class="popular-list">
+            <li><a href="/opensource/2026-04-23-langgraph-vs-langchain" class="popular-link">LangGraph vs LangChain：Agent 开发范式之争</a></li>
+            <li><a href="/opensource/2026-04-22-mcp-protocol-guide" class="popular-link">MCP 协议完全指南</a></li>
+            <li><a href="/tutorials/2026-04-22-ai-agent-getting-started" class="popular-link">AI Agent 开发入门指南</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">热门标签</h3>
+          <div class="tag-cloud">
+            {item.data.tags?.map((tag) => (
+              <a href={`/tags/${tag}`} class="tag-pill">
+                {tag}
+              </a>
+            ))}
+          </div>
+        </div>
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">资源导航精选</h3>
+          <ul class="resource-list">
+            <li><a href="/resources/ai-tools" class="resource-link">AI 工具合集</a></li>
+            <li><a href="/resources/prompts" class="resource-link">Prompt 模板库</a></li>
+            <li><a href="/resources/newsletter" class="resource-link">AI 资讯订阅</a></li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="article-footer">
+      {(prevItem || nextItem) && (
+        <nav class="article-nav">
+          {prevItem && (
+            <a href={`/opensource/${prevItem.id}`} class="nav-item nav-prev">
+              <span class="nav-label">
+                <ArrowLeft size={14} />
+                上一篇
+              </span>
+              <span class="nav-title">{prevItem.data.title}</span>
+            </a>
+          )}
+          {nextItem && (
+            <a href={`/opensource/${nextItem.id}`} class="nav-item nav-next">
+              <span class="nav-label">
+                下一篇
+                <ArrowRight size={14} />
+              </span>
+              <span class="nav-title">{nextItem.data.title}</span>
+            </a>
+          )}
+        </nav>
+      )}
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  .news-article {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .article-header {
+    margin-bottom: var(--space-10);
+  }
+
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: var(--space-4);
+    transition: color var(--transition-fast);
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .article-title {
+    font-size: 2.25rem;
+    font-weight: 700;
+    line-height: 1.3;
+    margin-bottom: var(--space-5);
+    color: var(--color-text-primary);
+  }
+
+  .article-meta {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-2);
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-4);
+  }
+
+  .meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .article-tags {
+    display: flex;
+    gap: var(--space-2);
+    flex-wrap: wrap;
+    margin-bottom: var(--space-6);
+  }
+
+  .tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: rgba(0, 212, 224, 0.1);
+    color: var(--color-primary);
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    border: 1px solid rgba(0, 212, 224, 0.2);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .tag:hover {
+    background: rgba(0, 212, 224, 0.2);
+    border-color: var(--color-primary);
+  }
+
+  .article-hero {
+    margin-top: var(--space-6);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .article-hero img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .article-content-wrapper {
+    position: relative;
+  }
+
+  .article-body {
+    max-width: 800px;
+    margin: 0 auto;
+    font-size: 1.0625rem;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  .floating-toc {
+    position: fixed;
+    left: max(2rem, calc((100vw - 800px) / 2 - 280px));
+    top: 6rem;
+    width: 220px;
+    z-index: 10;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+
+  .floating-toc:hover {
+    opacity: 1;
+  }
+
+  .floating-toc .toc-title {
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-text-muted);
+    margin-bottom: 0.4rem;
+    padding-bottom: 0.3rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .floating-toc .toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .floating-toc .toc-item {
+    margin-bottom: 0.2rem;
+  }
+
+  .floating-toc .toc-item a {
+    display: block;
+    font-size: 0.72rem;
+    color: var(--color-text-muted);
+    padding: 0.15rem 0.4rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    line-height: 1.2;
+    transition: all var(--transition-fast);
+  }
+
+  .floating-toc .toc-item a:hover {
+    color: var(--color-primary);
+    background: rgba(0, 212, 224, 0.08);
+  }
+
+  .floating-toc .toc-item-nested {
+    padding-left: 0.5rem;
+  }
+
+  .article-sidebar {
+    position: fixed;
+    right: max(2rem, calc((100vw - 800px) / 2 - 300px));
+    top: 6rem;
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    z-index: 10;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+  }
+
+  .article-body :global(h2) {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: var(--space-10) 0 var(--space-4);
+    padding-top: var(--space-2);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .article-body :global(h3) {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-text-primary);
+    margin: var(--space-8) 0 var(--space-3);
+  }
+
+  .article-body :global(p) {
+    margin-bottom: var(--space-5);
+  }
+
+  .article-body :global(ul),
+  .article-body :global(ol) {
+    margin-bottom: var(--space-5);
+    padding-left: var(--space-6);
+  }
+
+  .article-body :global(hr) {
+    border: none;
+    border-top: 1px solid var(--color-border);
+    margin: var(--space-8) 0;
+  }
+
+  .article-body :global(pre),
+  .article-body :global(table),
+  .article-body :global(img),
+  .article-body :global(video),
+  .article-body :global(iframe) {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .article-body :global(pre) {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .article-body :global(table) {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .article-body :global(img) {
+    height: auto;
+  }
+
+  .article-footer {
+    margin-top: var(--space-12);
+    padding-top: var(--space-8);
+    border-top: 1px solid var(--color-border);
+  }
+
+  .article-nav {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-4);
+  }
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding: var(--space-5);
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+    text-decoration: none;
+  }
+
+  .nav-item:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-tertiary);
+  }
+
+  .nav-label {
+    font-size: 0.75rem;
+    color: var(--color-text-muted);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  .nav-title {
+    font-size: 0.9375rem;
+    color: var(--color-text-primary);
+    font-weight: 500;
+  }
+
+  @media (max-width: 1200px) {
+    .article-sidebar {
+      display: none;
+    }
+    .floating-toc {
+      display: none;
+    }
+  }
+
+  /* 边栏样式 */
+  .sidebar-section {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+  }
+
+  .sidebar-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--color-text-primary);
+    margin: 0 0 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .tag-pill {
+    display: inline-block;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.78rem;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    border-radius: 100px;
+    text-decoration: none;
+    transition: all var(--transition-base);
+  }
+
+  .tag-pill:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: rgba(0, 212, 224, 0.05);
+  }
+
+  .resource-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .resource-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    padding: 0.4rem 0.5rem;
+    border-radius: var(--radius-md);
+    transition: all var(--transition-base);
+  }
+
+  .resource-link::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--color-border);
+    flex-shrink: 0;
+    transition: background var(--transition-base);
+  }
+
+  .resource-link:hover {
+    color: var(--color-primary);
+    background: rgba(0, 212, 224, 0.04);
+  }
+
+  .resource-link:hover::before {
+    background: var(--color-primary);
+  }
+
+  .popular-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .popular-link {
+    display: block;
+    padding: 0.4rem 0.5rem;
+    color: var(--color-text-secondary);
+    font-size: 0.8rem;
+    line-height: 1.4;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .popular-link:hover {
+    color: var(--color-primary);
+    background: rgba(0, 212, 224, 0.06);
+  }
+
+  @media (max-width: 768px) {
+    .news-article {
+      padding: 0 1rem;
+    }
+    .article-title {
+      font-size: 1.5rem;
+    }
+    .article-body {
+      font-size: 0.9375rem;
+    }
+    .article-body :global(h2) {
+      font-size: 1.25rem;
+    }
+    .article-body :global(h3) {
+      font-size: 1.1rem;
+    }
+    .article-meta {
+      font-size: 0.8rem;
+    }
+    .article-nav {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
