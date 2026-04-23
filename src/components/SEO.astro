@@ -53,7 +53,7 @@ function generateJSONLD() {
         name: siteName,
         logo: {
           '@type': 'ImageObject',
-          url: new URL('/logo.png', Astro.url.origin).href,
+          url: new URL('/logo.svg', Astro.url.origin).href,
         },
       },
     };
