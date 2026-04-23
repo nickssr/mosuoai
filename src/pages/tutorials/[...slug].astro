@@ -116,6 +116,7 @@ const readingTime = calculateReadingTime(tutorial.body);
 </BaseLayout>
 
 <style>
+  /* 教程页特有样式：头部设计 */
   .tutorial {
     max-width: 800px;
     margin: 0 auto;
@@ -242,19 +243,6 @@ const readingTime = calculateReadingTime(tutorial.body);
     margin: 0 auto;
     font-size: 1.05rem;
     line-height: 1.8;
-  }
-
-  .article-sidebar {
-    position: fixed;
-    right: max(2rem, calc((100vw - 800px) / 2 - 300px));
-    top: 6rem;
-    width: 260px;
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    z-index: 10;
-    max-height: calc(100vh - 8rem);
-    overflow-y: auto;
   }
 
   .content :global(h2) {
@@ -428,115 +416,25 @@ const readingTime = calculateReadingTime(tutorial.body);
     color: var(--text-dim);
   }
 
-  @media (max-width: 1200px) {
-    .article-sidebar {
-      display: none;
-    }
-  }
-
-  .sidebar-section {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-lg);
-    padding: 1.25rem;
-  }
-
-  .sidebar-title {
-    font-size: 0.95rem;
-    font-weight: 700;
-    color: var(--text);
-    margin: 0 0 1rem;
-    padding-bottom: 0.75rem;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .tag-cloud {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-  }
-
-  .tag-pill {
-    display: inline-block;
-    padding: 0.2rem 0.6rem;
-    font-size: 0.78rem;
-    color: var(--text-muted);
-    background: var(--bg-card-hover);
-    border: 1px solid var(--border);
-    border-radius: 100px;
-    text-decoration: none;
-    transition: all var(--transition-base);
-  }
-
-  .tag-pill:hover {
+  /* 教程页侧边栏使用紫色主题 */
+  .article-sidebar .tag-pill:hover {
     color: var(--primary-light);
     border-color: var(--primary-light);
     background: rgba(124, 58, 237, 0.1);
   }
 
-  .resource-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
+  .article-sidebar .popular-link:hover {
+    color: var(--primary-light);
+    background: rgba(124, 58, 237, 0.06);
   }
 
-  .resource-link {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: var(--text-muted);
-    text-decoration: none;
-    font-size: 0.875rem;
-    padding: 0.4rem 0.5rem;
-    border-radius: var(--radius-md);
-    transition: all var(--transition-base);
-  }
-
-  .resource-link::before {
-    content: '';
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: var(--border);
-    flex-shrink: 0;
-    transition: background var(--transition-base);
-  }
-
-  .resource-link:hover {
+  .article-sidebar .resource-link:hover {
     color: var(--primary-light);
     background: rgba(124, 58, 237, 0.05);
   }
 
-  .resource-link:hover::before {
+  .article-sidebar .resource-link:hover::before {
     background: var(--primary-light);
-  }
-
-  .popular-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-  }
-
-  .popular-link {
-    display: block;
-    padding: 0.4rem 0.5rem;
-    color: var(--text-muted);
-    font-size: 0.8rem;
-    line-height: 1.4;
-    border-radius: var(--radius-sm);
-    text-decoration: none;
-    transition: all var(--transition-fast);
-  }
-
-  .popular-link:hover {
-    color: var(--primary-light);
-    background: rgba(124, 58, 237, 0.06);
   }
 
   @media (max-width: 768px) {
