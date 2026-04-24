@@ -511,7 +511,7 @@
   content: counter(ol-counter);
   position: absolute;
   left: 0;
-  top: 0.15em;
+  top: 0.25em;
   width: 1.4em;
   height: 1.4em;
   display: flex;
