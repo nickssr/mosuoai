@@ -43,10 +43,6 @@ npm run build
 - **本仓库**：网站完整内容（主题 + 文章 + 配置）
 - **主题仓库**：[MosuoAI-Theme](https://github.com/nickssr/MosuoAI-Theme) - 纯净主题模板
 
-## ✍️ 内容发布
-
-内容由 CE Agent 负责创作和发布，详见内容发布指南。
-
 ## 📄 License
 
 MIT License
