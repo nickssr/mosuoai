@@ -9,7 +9,7 @@
 .page-layout {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 0 2rem 2rem;
+  padding: var(--space-8) 2rem 2rem;
   display: grid;
   grid-template-columns: 1fr 280px;
   gap: 2rem;
@@ -251,7 +251,7 @@
 .article-page {
   max-width: 900px;
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: var(--space-8) 1.5rem;
 }
 
 .article-header {
@@ -906,7 +906,7 @@
 @media (max-width: 768px) {
   .page-layout {
     grid-template-columns: 1fr;
-    padding: 0 1rem 1rem;
+    padding: var(--space-6) 1rem 1rem;
   }
 
   .sidebar {
@@ -934,7 +934,7 @@
 
   /* 文章详情页响应式 */
   .article-page {
-    padding: 0 1rem;
+    padding: var(--space-6) 1rem;
   }
 
   .article-title {
