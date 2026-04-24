@@ -361,20 +361,6 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
     margin: 0;
   }
 
-  /* 评测页特有样式覆盖 */
-  .article-body :global(a) {
-    color: var(--color-primary);
-    text-decoration: underline;
-    text-underline-offset: 2px;
-  }
-
-  .article-body :global(img) {
-    max-width: 100%;
-    height: auto;
-    border-radius: var(--radius-lg);
-    margin: var(--space-6) 0;
-  }
-
   @media (max-width: 768px) {
     .pros-cons-summary {
       grid-template-columns: 1fr;
