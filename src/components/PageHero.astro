@@ -44,7 +44,8 @@ const {
     margin-top: calc(var(--space-8) * -1);
     margin-bottom: 2rem;
     padding: 4rem 2rem 3rem;
-    overflow: hidden;
+    overflow-x: hidden;
+    min-height: 180px;
     background: linear-gradient(
       135deg,
       rgba(0, 212, 224, 0.08) 0%,
@@ -56,6 +57,7 @@ const {
   .hero-home {
     padding: 5rem 2rem 4rem;
     margin-bottom: 3rem;
+    min-height: 220px;
   }
 
   .hero-bg {
@@ -120,10 +122,12 @@ const {
   @media (max-width: 768px) {
     .hero-section {
       padding: 2.5rem 1rem 2rem;
+      min-height: 140px;
     }
 
     .hero-home {
       padding: 3rem 1rem 2rem;
+      min-height: 160px;
     }
 
     .hero-title {
