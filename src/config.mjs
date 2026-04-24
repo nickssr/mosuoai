@@ -3,7 +3,7 @@
 export const siteConfig = {
   // 基本信息
   name: 'MosuoAI',
-  description: '技术博客与知识分享平台',
+  description: '探索 AI 技术，分享知识洞见',
   url: 'https://your-domain.com',
   
   // SEO
