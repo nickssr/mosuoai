@@ -577,10 +577,6 @@
   margin-bottom: 0;
 }
 
-.article-body :global(blockquote p:last-child) {
-  margin-bottom: 0;
-}
-
 /* -------------------------------------------
    代码样式 - 行内代码与代码块区分
    ------------------------------------------- */
@@ -634,16 +630,6 @@
   background: rgba(255, 255, 255, 0.05);
   padding: 0.15em 0.5em;
   border-radius: var(--radius-sm);
-}
-
-/* 代码块复制按钮区域预留 */
-.article-body :global(pre[data-lang])::after {
-  content: '';
-  position: absolute;
-  top: 0.4em;
-  right: 0.6em;
-  width: 0;
-  height: 0;
 }
 
 /* 当有语言标签时调整 */
@@ -759,7 +745,6 @@
 
 .article-body :global(pre),
 .article-body :global(table),
-.article-body :global(img),
 .article-body :global(video),
 .article-body :global(iframe) {
   max-width: 100%;

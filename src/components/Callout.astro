@@ -249,25 +249,25 @@ const currentConfig = config[type];
     }
   }
 
-  /* 暗色模式适配 */
-  :global(html.dark) .callout {
+  /* 暗色模式适配 - 使用 data-theme 属性 */
+  :global([data-theme="light"]) .callout {
     box-shadow:
-      0 1px 3px rgba(0, 0, 0, 0.2),
+      0 1px 3px rgba(0, 0, 0, 0.05),
       0 4px 12px var(--shadow-color);
   }
 
-  :global(html.dark) .callout:hover {
+  :global([data-theme="light"]) .callout:hover {
     box-shadow:
-      0 4px 8px rgba(0, 0, 0, 0.3),
+      0 4px 8px rgba(0, 0, 0, 0.08),
       0 8px 24px var(--shadow-color);
   }
 
-  :global(html.dark) .callout-content :global(code) {
-    background: rgba(255, 255, 255, 0.1);
+  :global([data-theme="light"]) .callout-content :global(code) {
+    background: rgba(0, 0, 0, 0.05);
   }
 
-  :global(html.dark) .callout-content :global(pre) {
-    background: rgba(0, 0, 0, 0.3);
-    border-color: rgba(255, 255, 255, 0.1);
+  :global([data-theme="light"]) .callout-content :global(pre) {
+    background: rgba(0, 0, 0, 0.03);
+    border-color: rgba(0, 0, 0, 0.08);
   }
 </style>
