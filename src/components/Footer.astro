@@ -3,65 +3,366 @@ const currentYear = new Date().getFullYear();
 ---
 
 <footer class="footer">
-  <div class="footer-content">
-    <p class="copyright">© {currentYear} 摩索 AI</p>
-    <nav class="footer-links">
-      <!-- 关于页面链接先注释掉，但保留页面 -->
-      <!-- <a href="/about">关于</a> -->
-      <a href="/rss.xml">RSS</a>
-      <a href="/sitemap.xml">Sitemap</a>
-    </nav>
+  <!-- 顶部光带 -->
+  <div class="footer-glow-line"></div>
+
+  <div class="footer-container">
+    <!-- 主内容区 -->
+    <div class="footer-main">
+      <!-- 品牌区域 -->
+      <div class="footer-brand">
+        <a href="/" class="brand-logo">
+          <span class="logo-icon">
+            <svg viewBox="0 0 32 32" fill="none" class="brand-svg">
+              <path d="M16 2L28 9V23L16 30L4 23V9L16 2Z" stroke="currentColor" stroke-width="1.5" fill="none"/>
+              <circle cx="16" cy="16" r="6" fill="currentColor" opacity="0.3"/>
+              <circle cx="16" cy="16" r="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="logo-text">摩索 AI</span>
+        </a>
+        <p class="brand-tagline">探索 AI 技术，分享知识洞见</p>
+      </div>
+
+      <!-- 链接区域 -->
+      <div class="footer-links">
+        <a href="/" class="footer-link">首页</a>
+        <span class="link-dot">·</span>
+        <a href="/about" class="footer-link">关于</a>
+        <span class="link-dot">·</span>
+        <a href="/posts" class="footer-link">文章</a>
+        <span class="link-dot">·</span>
+        <a href="/rss.xml" class="footer-link">RSS</a>
+        <span class="link-dot">·</span>
+        <a href="https://github.com/nickssr/mosuoai" target="_blank" rel="noopener noreferrer" class="footer-link github-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" class="link-icon">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          GitHub
+        </a>
+      </div>
+    </div>
+
+    <!-- 分隔线 -->
+    <div class="footer-divider"></div>
+
+    <!-- 底部信息 -->
+    <div class="footer-bottom">
+      <p class="copyright">
+        © {currentYear} <a href="/" class="copyright-link">摩索 AI</a>. All rights reserved.
+      </p>
+      <div class="tech-info">
+        <span class="tech-item">
+          <span class="tech-label">Theme</span>
+          <a href="https://github.com/nickssr/mosuoai" target="_blank" rel="noopener noreferrer" class="tech-badge">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="badge-icon">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            MosuoAI
+          </a>
+        </span>
+        <span class="tech-sep">×</span>
+        <span class="tech-item">
+          <span class="tech-label">Built with</span>
+          <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="tech-badge astro">
+            <svg viewBox="0 0 24 24" fill="currentColor" class="badge-icon">
+              <path d="M8.462 19.706c-.988-.134-1.611-.583-1.853-1.27-.137-.386-.107-.612.167-1.261.328-.776.396-1.107.396-1.936 0-.707.008-.785.129-.999.152-.269.453-.47.814-.544.247-.051.314-.042.552.063.378.163.644.552.749 1.096.079.407.031 1.34-.108 2.1-.184 1.005-.247 1.401-.247 1.552 0 .239.13.584.291.771.231.269.7.396 1.23.332.437-.053.724-.184.964-.44.234-.251.339-.468.432-.889.102-.461.134-1.052.134-2.474 0-1.391.016-1.544.167-1.913.123-.3.39-.541.731-.662.227-.081.31-.081.535 0 .34.121.609.362.731.662.151.369.167.522.167 1.913 0 1.422.032 2.013.134 2.474.093.421.198.638.432.889.24.256.527.387.964.44.53.064.999-.063 1.23-.332.161-.187.291-.532.291-.771 0-.151-.063-.547-.247-1.552-.139-.76-.187-1.693-.108-2.1.105-.544.371-.933.749-1.096.238-.105.305-.114.552-.063.361.074.662.275.814.544.121.214.129.292.129.999 0 .829.068 1.16.396 1.936.274.649.304.875.167 1.261-.242.687-.865 1.136-1.853 1.27-.493.067-1.12.024-1.597-.109-.561-.156-.897-.359-1.308-.792-.235-.249-.423-.416-.48-.426-.081-.014-.158.047-.352.276-.29.347-.624.581-1.064.744-.544.201-1.365.266-2.024.162-.561-.088-.89-.209-1.28-.461-.176-.114-.397-.297-.492-.407-.147-.171-.186-.195-.274-.166-.059.019-.249.187-.422.374-.411.444-.757.654-1.321.802-.476.125-1.102.167-1.594.099z"/>
+            </svg>
+            Astro
+          </a>
+        </span>
+      </div>
+    </div>
   </div>
 </footer>
 
 <style>
   .footer {
-    border-top: 1px solid var(--color-border);
-    background: var(--color-bg-secondary);
-    padding: var(--space-8) var(--space-6);
+    border-top: 1px solid rgba(0, 212, 224, 0.1);
+    background: linear-gradient(180deg, rgba(8, 12, 18, 0.98) 0%, rgba(4, 8, 14, 0.99) 100%);
+    padding: var(--space-10) var(--space-6) var(--space-6);
     margin-top: auto;
+    position: relative;
+    overflow: hidden;
   }
 
-  .footer-content {
-    max-width: 1280px;
+  /* 顶部光带 */
+  .footer-glow-line {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, var(--color-primary) 50%, transparent 100%);
+    opacity: 0.6;
+  }
+
+  .footer-container {
+    max-width: 1200px;
     margin: 0 auto;
+    position: relative;
+  }
+
+  .footer-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-8);
+  }
+
+  /* Brand Section */
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+  }
+
+  .brand-logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3);
+    text-decoration: none;
+    color: var(--color-text);
+    transition: transform 0.3s ease;
+  }
+
+  .brand-logo:hover {
+    transform: translateX(4px);
+  }
+
+  .logo-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2rem;
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, rgba(0, 212, 224, 0.12) 0%, rgba(0, 212, 224, 0.04) 100%);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 212, 224, 0.15);
+  }
+
+  .brand-svg {
+    width: 24px;
+    height: 24px;
+    color: var(--color-primary);
+    filter: drop-shadow(0 0 6px rgba(0, 212, 224, 0.4));
+  }
+
+  .logo-text {
+    font-size: 1.25rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, var(--color-text) 0%, var(--color-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .brand-tagline {
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+    margin: 0;
+    padding-left: 52px;
+  }
+
+  /* Links */
+  .footer-links {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3);
     flex-wrap: wrap;
+    justify-content: flex-end;
+  }
+
+  .footer-link {
+    color: var(--color-text-secondary);
+    font-size: 0.875rem;
+    text-decoration: none;
+    transition: color 0.2s ease;
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .footer-link:hover {
+    color: var(--color-primary);
+  }
+
+  .link-dot {
+    color: var(--color-border);
+    font-size: 0.75rem;
+    opacity: 0.6;
+  }
+
+  .github-link {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+
+  .link-icon {
+    width: 16px;
+    height: 16px;
+    opacity: 0.8;
+  }
+
+  .footer-link:hover .link-icon {
+    opacity: 1;
+  }
+
+  /* Divider */
+  .footer-divider {
+    height: 1px;
+    background: linear-gradient(90deg, transparent 0%, rgba(0, 212, 224, 0.15) 50%, transparent 100%);
+    margin: var(--space-6) 0;
+  }
+
+  /* Bottom Section */
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--space-3);
   }
 
   .copyright {
     color: var(--color-text-muted);
-    font-size: 0.9rem;
+    font-size: 0.8rem;
+    margin: 0;
   }
 
-  .footer-links {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-  }
-
-  .footer-links a {
+  .copyright-link {
     color: var(--color-text-secondary);
-    font-size: 0.9rem;
+    text-decoration: none;
     transition: color 0.2s ease;
   }
 
-  .footer-links a:hover {
+  .copyright-link:hover {
     color: var(--color-primary);
   }
 
-  /* 移动端 */
+  .tech-info {
+    display: flex;
+    align-items: center;
+    gap: var(--space-4);
+    font-size: 0.8rem;
+  }
+
+  .tech-item {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--color-text-muted);
+  }
+
+  .tech-label {
+    opacity: 0.6;
+    font-size: 0.75rem;
+  }
+
+  .tech-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1-5);
+    padding: var(--space-1) var(--space-3);
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    color: var(--color-text-secondary);
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.75rem;
+    transition: all 0.25s ease;
+  }
+
+  .tech-badge:hover {
+    background: rgba(0, 212, 224, 0.08);
+    border-color: rgba(0, 212, 224, 0.2);
+    color: var(--color-primary);
+    transform: translateY(-1px);
+  }
+
+  .tech-badge.astro:hover {
+    background: rgba(255, 109, 53, 0.08);
+    border-color: rgba(255, 109, 53, 0.2);
+    color: #FF6D35;
+  }
+
+  .badge-icon {
+    width: 14px;
+    height: 14px;
+    opacity: 0.7;
+  }
+
+  .tech-badge:hover .badge-icon {
+    opacity: 1;
+  }
+
+  .tech-sep {
+    color: var(--color-border);
+    opacity: 0.4;
+    font-size: 0.65rem;
+  }
+
+  /* Responsive */
   @media (max-width: 768px) {
-    .footer-content {
+    .footer {
+      padding: var(--space-8) var(--space-5) var(--space-5);
+    }
+
+    .footer-main {
       flex-direction: column;
-      gap: 1rem;
+      align-items: center;
+      text-align: center;
+      gap: var(--space-6);
+    }
+
+    .footer-brand {
+      align-items: center;
+    }
+
+    .brand-tagline {
+      padding-left: 0;
     }
 
     .footer-links {
-      gap: 1.5rem;
+      justify-content: center;
+    }
+
+    .footer-bottom {
+      flex-direction: column;
+      text-align: center;
+      gap: var(--space-3);
+    }
+  }
+
+  @media (max-width: 480px) {
+    .footer-links {
+      gap: var(--space-1);
+    }
+
+    .link-dot {
+      display: none;
+    }
+
+    .footer-link {
+      padding: var(--space-1) var(--space-3);
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .footer-link:hover {
+      background: rgba(0, 212, 224, 0.08);
+      border-color: rgba(0, 212, 224, 0.2);
+    }
+
+    .tech-info {
+      flex-direction: column;
+      gap: var(--space-2);
+    }
+
+    .tech-sep {
+      display: none;
     }
   }
 </style>
