@@ -1,200 +1,52 @@
-# MosuoAI 🚀
+# MosuoAI 网站
 
-A modern, feature-rich Astro blog theme designed for tech content creators.
+MosuoAI 网站（mosuoai.com）- AI Agent 技术博客
 
-![MosuoAI Theme](./public/og-default.svg)
+## 📝 网站信息
 
-## ✨ Features
+- **线上地址**：https://mosuoai.com/
+- **定位**：AI Agent 资讯、教程、评测、开源、资源一站式内容平台
+- **Slogan**：探索 AI 技术，分享知识洞见
 
-- 🎨 **Beautiful Design**: Modern dark/light theme with smooth transitions
-- 📱 **Responsive**: Mobile-first design that works on all devices
-- 🚀 **Fast**: Built with Astro for optimal performance
-- 🎯 **SEO Optimized**: Full SEO support with Open Graph and Twitter cards
-- 📝 **Content Types**: Support for News, Tutorials, Reviews, Open Source, and Resources
-- 🔍 **Search**: Built-in search functionality
-- 📖 **Table of Contents**: Auto-generated TOC for articles
-- 🌓 **Theme Toggle**: Dark/Light mode with system preference detection
-- 💅 **Syntax Highlighting**: Beautiful code blocks with language labels
-- 📊 **Popular Articles**: Dynamic popular articles widget
-- 🏷️ **Tags**: Tag-based content organization
+## 🚀 技术栈
 
-## 🎯 Quick Start
+- **框架**：Astro v6.1.8
+- **部署**：GitHub + Cloudflare Pages
+- **样式**：原生 CSS（CSS 变量系统）
+- **图标**：Lucide Icons
 
-### 1. Use this template
+## 📂 内容栏目
 
-Click the **"Use this template"** button on GitHub to create your own repository.
+| 栏目 | 目录 | 说明 |
+|------|------|------|
+| 资讯 | `src/content/news/` | 行业资讯、新闻动态 |
+| 教程 | `src/content/tutorials/` | 技术教程、学习指南 |
+| 评测 | `src/content/reviews/` | 产品评测、工具对比 |
+| 开源 | `src/content/opensource/` | 开源项目介绍 |
+| 资源 | `src/content/resources/` | 资源推荐、工具合集 |
 
-### 2. Clone and install
+## 🛠️ 开发命令
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+# 安装依赖
 npm install
-```
 
-### 3. Configure
-
-Edit `src/config.mjs` to customize your site:
-
-```javascript
-export const siteConfig = {
-  name: 'Your Site Name',
-  description: 'Your site description',
-  url: 'https://your-domain.com',
-  twitter: '@yourhandle',
-  navLinks: [
-    { label: '首页', href: '/' },
-    { label: '资讯', href: '/news' },
-    // Add your own links
-  ],
-};
-```
-
-### 4. Add content
-
-Create articles in `src/content/`:
-
-```
-src/content/
-├── news/
-│   └── my-first-article.md
-├── tutorials/
-│   └── getting-started.md
-└── config.ts
-```
-
-### 5. Run locally
-
-```bash
+# 本地开发
 npm run dev
-```
 
-Visit `http://localhost:4321` to see your site.
-
-### 6. Build for production
-
-```bash
+# 构建
 npm run build
 ```
 
-## 📁 Project Structure
+## 📦 仓库说明
 
-```
-/
-├── public/
-│   ├── favicon.svg
-│   └── og-default.svg
-├── src/
-│   ├── components/
-│   │   ├── Header.astro
-│   │   ├── Footer.astro
-│   │   ├── SEO.astro
-│   │   ├── Search.astro
-│   │   └── PopularArticles.astro
-│   ├── content/
-│   │   ├── news/
-│   │   ├── tutorials/
-│   │   ├── reviews/
-│   │   ├── opensource/
-│   │   └── resources/
-│   ├── layouts/
-│   │   └── BaseLayout.astro
-│   ├── pages/
-│   │   ├── index.astro
-│   │   ├── news/
-│   │   ├── tutorials/
-│   │   └── ...
-│   ├── styles/
-│   │   ├── common.css
-│   │   └── variables.css
-│   └── config.mjs
-├── astro.config.mjs
-├── package.json
-└── README.md
-```
+- **本仓库**：网站完整内容（主题 + 文章 + 配置）
+- **主题仓库**：[MosuoAI-Theme](https://github.com/nickssr/MosuoAI-Theme) - 纯净主题模板
 
-## 🎨 Customization
+## ✍️ 内容发布
 
-### Theme Colors
-
-Edit `src/styles/variables.css` to change the color scheme:
-
-```css
-:root {
-  --color-primary: #00d4e0;
-  --color-accent: #8b5cf6;
-  /* ... */
-}
-```
-
-### Fonts
-
-The theme uses Inter for text and JetBrains Mono for code. To change fonts, edit `src/styles/variables.css`:
-
-```css
-:root {
-  --font-sans: "Inter", sans-serif;
-  --font-mono: "JetBrains Mono", monospace;
-}
-```
-
-### Navigation
-
-Edit `src/config.mjs` to change navigation links:
-
-```javascript
-navLinks: [
-  { label: '首页', href: '/' },
-  { label: '博客', href: '/blog' },
-  { label: '关于', href: '/about' },
-],
-```
-
-## 📝 Content Schema
-
-Each content type has its own schema defined in `src/content/config.ts`. Here's an example article:
-
-```markdown
----
-title: "My First Article"
-description: "A brief description"
-pubDate: 2026-04-24
-tags: ["tutorial", "getting-started"]
-image: "/images/cover.jpg"
----
-
-Your content here...
-```
-
-## 🚀 Deployment
-
-### Cloudflare Pages (Recommended)
-
-1. Push your repository to GitHub
-2. Connect to Cloudflare Pages
-3. Set build command: `npm run build`
-4. Set output directory: `dist`
-
-### Other Platforms
-
-MosuoAI works with any static hosting platform:
-- Netlify
-- Vercel
-- GitHub Pages
-- AWS S3
-- etc.
+内容由 CE Agent 负责创作和发布，详见内容发布指南。
 
 ## 📄 License
 
-MIT License - feel free to use this theme for any purpose.
-
-## 🙏 Credits
-
-Built with:
-- [Astro](https://astro.build/)
-- [Lucide Icons](https://lucide.dev/)
-- [Expressive Code](https://expressive-code.com/)
-
----
-
-Made with ❤️ by MosuoAI
+MIT License
