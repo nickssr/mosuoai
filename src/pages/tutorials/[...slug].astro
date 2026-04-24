@@ -77,7 +77,6 @@ const readingTime = calculateReadingTime(tutorial.body);
         <Content />
       </div>
       <aside class="article-sidebar">
-        <div class="sidebar-section">
           <h3 class="sidebar-title">热门文章</h3>
           <ul class="popular-list">
             <li><a href="/news/2026-04-22-openai-agents-sdk-evolution" class="popular-link">OpenAI 发布 Agents SDK 重大更新</a></li>
@@ -85,7 +84,6 @@ const readingTime = calculateReadingTime(tutorial.body);
             <li><a href="/reviews/cursor-ai-review" class="popular-link">Cursor AI 编辑器评测</a></li>
           </ul>
         </div>
-        <div class="sidebar-section">
           <h3 class="sidebar-title">热门标签</h3>
           <div class="tag-cloud">
             {tutorial.data.tags?.map((tag) => (
@@ -95,7 +93,6 @@ const readingTime = calculateReadingTime(tutorial.body);
             ))}
           </div>
         </div>
-        <div class="sidebar-section">
       </aside>
     </div>
 
