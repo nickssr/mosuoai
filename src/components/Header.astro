@@ -1,13 +1,8 @@
 ---
 import { Search, Sun, Moon, Menu, X } from 'lucide-astro';
+import { siteConfig } from '../config.mjs';
 
-const navLinks = [
-  { href: '/news', label: '资讯' },
-  { href: '/reviews', label: '评测' },
-  { href: '/tutorials', label: '教程' },
-  { href: '/opensource', label: '开源' },
-  { href: '/resources', label: '资源' },
-];
+const navLinks = siteConfig.navLinks.filter(link => link.href !== '/');
 ---
 
 <header class="header">

@@ -3,6 +3,7 @@ import SEO from '../components/SEO.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import Search from '../components/Search.astro';
+import { siteConfig } from '../config.mjs';
 import '../styles/variables.css';
 import '../styles/common.css';
 
@@ -20,7 +21,7 @@ interface Props {
 
 const {
   title,
-  description = '摸索 AI - AI Agent 教程与实战',
+  description = siteConfig.description,
   image,
   article,
   canonicalURL,

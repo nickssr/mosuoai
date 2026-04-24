@@ -1,15 +1,17 @@
 {
-  "name": "mosuoai",
+  "name": "mosuoai-template",
   "type": "module",
-  "version": "0.0.1",
-  "engines": {
-    "node": ">=22.12.0"
-  },
+  "version": "1.0.0",
+  "description": "MosuoAI - A modern Astro blog theme for tech content",
   "scripts": {
     "dev": "astro dev",
+    "start": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   },
   "dependencies": {
     "@expressive-code/core": "^0.41.7",
@@ -19,7 +21,19 @@
     "astro": "^6.1.8",
     "astro-expressive-code": "^0.41.7",
     "astro-icon": "^1.1.5",
-    "lucide-astro": "^0.556.0",
-    "pagefind": "^1.5.2"
-  }
+    "lucide-astro": "^0.469.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.1",
+    "typescript": "^5.7.2"
+  },
+  "keywords": [
+    "astro",
+    "blog",
+    "theme",
+    "template",
+    "tech-blog"
+  ],
+  "author": "MosuoAI",
+  "license": "MIT"
 }
