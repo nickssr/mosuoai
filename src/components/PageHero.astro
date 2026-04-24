@@ -38,15 +38,11 @@ const {
   .hero-section {
     position: relative;
     text-align: center;
-    /* 全屏宽度实现：使用 transform 代替 margin 负值，避免 100vw 溢出问题 */
-    width: 100vw;
-    max-width: 100%;
-    left: 50%;
-    transform: translateX(-50%);
+    /* 修复：使用 100% 代替 100vw，避免水平滚动条 */
+    width: 100%;
     margin-top: var(--space-8);
     margin-bottom: 2rem;
     padding: 4rem 2rem 3rem;
-    overflow-x: hidden;
     min-height: 180px;
     background: linear-gradient(
       135deg,

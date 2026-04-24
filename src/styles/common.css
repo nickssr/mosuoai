@@ -14,7 +14,6 @@
   grid-template-columns: 1fr 280px;
   gap: 2rem;
   align-items: start;
-  overflow-x: hidden;
 }
 
 .main-content {
