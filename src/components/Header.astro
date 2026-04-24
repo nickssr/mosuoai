@@ -251,11 +251,11 @@ const navLinks = [
   }
 
   /* 亮色模式下的图标显示 */
-  [data-theme="light"] .sun-icon {
+  :global([data-theme="light"]) .sun-icon {
     display: block;
   }
 
-  [data-theme="light"] .moon-icon {
+  :global([data-theme="light"]) .moon-icon {
     display: none;
   }
 

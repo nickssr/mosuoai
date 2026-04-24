@@ -3,6 +3,7 @@ import { Calendar } from 'lucide-astro';
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
+import PopularArticles from '../../components/PopularArticles.astro';
 
 const allOpensource = await getCollection('opensource', ({ data }) => !data.draft);
 const sortedOpensource = allOpensource.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
@@ -47,6 +48,7 @@ const defaultThumb = '/og-default.svg';
     </main>
 
     <aside class="sidebar">
+      <PopularArticles />
       <div class="sidebar-section">
         <h3 class="sidebar-title">热门标签</h3>
         <div class="tag-cloud">

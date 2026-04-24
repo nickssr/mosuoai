@@ -1,0 +1,54 @@
+---
+import { getCollection } from 'astro:content';
+
+interface Props {
+  /** 当前文章 ID，用于排除（可选） */
+  excludeId?: string;
+  /** 限制文章数量，默认 5 */
+  limit?: number;
+}
+
+const { excludeId, limit = 5 } = Astro.props;
+
+// 获取所有非草稿文章
+const [allNews, allTutorials, allReviews, allOpensource] = await Promise.all([
+  getCollection('news', ({ data }) => !data.draft),
+  getCollection('tutorials', ({ data }) => !data.draft),
+  getCollection('reviews', ({ data }) => !data.draft),
+  getCollection('opensource', ({ data }) => !data.draft),
+]);
+
+// 统一格式
+interface PopularArticle {
+  type: string;
+  id: string;
+  title: string;
+  pubDate: Date;
+}
+
+const allArticles: PopularArticle[] = [
+  ...allNews.map((a) => ({ type: 'news', id: a.id, title: a.data.title, pubDate: a.data.pubDate })),
+  ...allTutorials.map((a) => ({ type: 'tutorials', id: a.id, title: a.data.title, pubDate: a.data.pubDate })),
+  ...allReviews.map((a) => ({ type: 'reviews', id: a.id, title: a.data.title, pubDate: a.data.pubDate })),
+  ...allOpensource.map((a) => ({ type: 'opensource', id: a.id, title: a.data.title, pubDate: a.data.pubDate })),
+];
+
+// 排除指定文章并按日期排序
+const popularArticles = allArticles
+  .filter((a) => a.id !== excludeId)
+  .sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf())
+  .slice(0, limit);
+---
+
+<div class="sidebar-section">
+  <h3 class="sidebar-title">热门文章</h3>
+  <ul class="popular-list">
+    {popularArticles.map((article) => (
+      <li>
+        <a href={`/${article.type}/${article.id}`} class="popular-link">
+          {article.title}
+        </a>
+      </li>
+    ))}
+  </ul>
+</div>
