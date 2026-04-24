@@ -157,7 +157,8 @@
 .article-card:hover {
   border-color: var(--color-primary);
   background: rgba(0, 212, 224, 0.02);
-  transform: translateX(4px);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 212, 224, 0.1);
 }
 
 .article-card-link {
