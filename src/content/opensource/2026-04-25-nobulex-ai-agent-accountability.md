@@ -3,7 +3,7 @@ title: "Nobulex：15 岁少年构建的 AI Agent 加密问责层"
 description: "15 岁开发者 Arian Gogani 创建了 Nobulex，一个基于密码学的 AI Agent 行为问责系统。通过声明、强制、证明三个原语，让 AI Agent 能够证明自己遵守了规则。"
 pubDate: 2026-04-25
 tags: ["AI Agent", "安全", "密码学", "开源", "问责"]
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/nobulex-ai-agent-accountability/cover.webp"
 ---
 
 AI Agent 有一个根本问题：它们无法证明自己遵守了规则。
