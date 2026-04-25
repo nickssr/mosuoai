@@ -1,7 +1,7 @@
 ---
 title: "AI Agent 信任危机：85% 企业试点，仅 5% 敢上线"
 description: "Cisco 在 RSA Conference 2026 上发布的调查显示，85% 的企业正在试点 AI Agent，但只有 5% 将其部署到生产环境。信任缺失成为阻碍 AI Agent 落地的核心障碍，Cisco 发布开源安全框架 Defense Claw 应对挑战。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 22:07:00
 tags: ["AI Agent", "企业落地", "信任危机", "Cisco", "安全"]
 category: "news"
 heroImage: "/images/posts/cisco-ai-agent-trust-crisis/cover.webp"

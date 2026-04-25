@@ -1,7 +1,7 @@
 ---
 title: "Meta 扩展与 AWS 合作：数十万核心 Graviton 芯片驱动 Agentic AI"
 description: "Meta 与 AWS 签署协议，将部署数十万核心 AWS Graviton 处理器驱动 Agentic AI 工作负载。Graviton5 芯片专为代码生成、实时推理、多步骤任务编排等 CPU 密集型工作设计，Meta 成为全球最大 Graviton 客户之一。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 23:53:00
 tags: ["Meta", "AWS", "Graviton", "Agentic AI", "芯片"]
 category: "news"
 heroImage: "/images/posts/meta-aws-graviton-agentic-ai/cover.webp"

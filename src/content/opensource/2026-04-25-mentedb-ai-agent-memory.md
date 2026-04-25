@@ -1,7 +1,7 @@
 ---
 title: "MenteDB：专为 AI Agent 记忆设计的数据库引擎"
 description: "MenteDB 不是数据库包装，而是从零用 Rust 构建的存储引擎，专为 AI Agent 记忆优化。支持 WAL、HNSW 向量索引、知识图谱，研究显示其解决了传统方案 97% 记忆无关的问题。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 15:44:00
 tags: ["AI Agent", "数据库", "Rust", "开源", "记忆系统"]
 heroImage: "/images/posts/mentedb-ai-agent-memory/cover.webp"
 ---

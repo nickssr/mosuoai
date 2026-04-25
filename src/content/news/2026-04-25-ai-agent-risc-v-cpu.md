@@ -1,7 +1,7 @@
 ---
 title: "AI Agent 设计 RISC-V CPU：Verkor.io 实现全流程自动化"
 description: "Verkor.io 的代理式 AI 系统从 219 字规格说明出发，自动完成了 RISC-V CPU 的设计与实现，输出可直接用于流片的 GDSII 文件。VerCore CPU 主频 1.5 GHz，性能相当于 2011 年笔记本处理器。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 14:56:00
 tags: ["AI Agent", "RISC-V", "芯片设计", "自动化"]
 category: "news"
 heroImage: "/images/posts/ai-agent-risc-v-cpu/cover.webp"

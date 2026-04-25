@@ -1,7 +1,7 @@
 ---
 title: "LangChain 深度评测：为什么生产环境要慎用"
 description: "一个团队使用 LangChain 12 个月后决定放弃。本文深入分析 LangChain 的抽象问题、对开发团队的影响，以及什么时候需要框架、什么时候不需要。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 20:00:00
 tags: ["LangChain", "AI Agent", "框架评测", "生产环境"]
 rating: 2
 pros:

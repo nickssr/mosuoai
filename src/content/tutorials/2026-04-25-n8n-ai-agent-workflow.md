@@ -1,7 +1,7 @@
 ---
 title: "n8n AI Agent 实战教程：从零搭建自动化工作流"
 description: "手把手教你用 n8n 搭建 AI Agent 工作流，实现智能客服分流、自动化研究等场景。涵盖触发器、AI Agent 节点、Chat Model、Memory、Tools 五大核心组件，附带完整代码示例。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 14:56:00
 tags: ["n8n", "AI Agent", "工作流", "自动化", "教程"]
 category: "setup"
 difficulty: "beginner"

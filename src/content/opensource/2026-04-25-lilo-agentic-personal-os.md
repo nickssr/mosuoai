@@ -1,7 +1,7 @@
 ---
 title: "Lilo：自托管智能个人 OS，让 Agent 管理你的数字生活"
 description: "Lilo 是一个自托管的智能个人操作系统，集成应用、记忆、文件和 Agent。支持桌面、移动端、WhatsApp、Telegram、Email 多渠道接入，让 AI Agent 全方位管理你的数字生活。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 17:00:00
 tags: ["AI Agent", "个人 OS", "自托管", "开源"]
 heroImage: "/images/posts/lilo-agentic-personal-os/cover.webp"
 ---

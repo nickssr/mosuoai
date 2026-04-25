@@ -1,7 +1,7 @@
 ---
 title: "OpenClaw vs Hermes Agent：持久化 AI Agent 深度对比评测"
 description: "The New Stack 发布深度评测，对比 OpenClaw 和 Hermes Agent 两款「永不遗忘」的持久化 AI Agent。从记忆架构、使用体验、安全性等方面进行全面分析。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 20:30:00
 tags: ["AI Agent", "OpenClaw", "Hermes Agent", "持久化", "评测"]
 category: "review"
 rating: 4

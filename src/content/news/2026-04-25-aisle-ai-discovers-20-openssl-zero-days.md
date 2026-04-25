@@ -1,7 +1,7 @@
 ---
 title: "AI Agent 安全里程碑：6 个月发现 20 个 OpenSSL 零日漏洞"
 description: "AISLE 的自主 AI 系统在 6 个月内发现并修复了 20 个 OpenSSL 零日漏洞，其中最新一批 5 个 CVE 于 2026 年 4 月 7 日发布。这是 AI Agent 首次大规模、持续性地发现高危漏洞，标志着 AI 安全能力的重大突破。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 15:44:00
 tags: ["AI安全", "零日漏洞", "OpenSSL", "AISLE", "漏洞发现"]
 category: "news"
 heroImage: "/images/posts/aisle-ai-discovers-openssl-zero-days/cover.webp"

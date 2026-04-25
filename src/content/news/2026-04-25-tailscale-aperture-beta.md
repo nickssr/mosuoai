@@ -1,7 +1,7 @@
 ---
 title: "Tailscale 发布 Aperture beta：AI Agent 时代的成本与安全控制工具"
 description: "Tailscale 发布 Aperture beta，为 AI Agent 提供跨 provider 的统一配额管理、PII 护栏和审计日志。个人和小团队免费使用，解决 Agent 高 Token 消耗带来的成本失控和数据安全风险。"
-pubDate: 2026-04-25
+pubDate: 2026-04-25 15:44:00
 tags: ["AI Agent", "成本控制", "Tailscale", "Aperture", "安全工具"]
 category: "news"
 heroImage: "/images/posts/tailscale-aperture-beta/cover.webp"
