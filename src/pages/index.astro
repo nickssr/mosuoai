@@ -69,7 +69,17 @@ const articles: UnifiedArticle[] = [
     categoryLabel: '开源',
     categoryColor: '#8b5cf6',
   })),
-].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
+].sort((a, b) => {
+  // 按发布日期倒序
+  const dateDiff = b.pubDate.valueOf() - a.pubDate.valueOf();
+  if (dateDiff !== 0) return dateDiff;
+  
+  // 同一天的文章，混合排列（使用ID的哈希值分散不同栏目的文章）
+  // 简单哈希：将ID字符串转为数字
+  const hashA = a.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  const hashB = b.id.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+  return hashB - hashA;
+});
 
 const defaultThumb = '/og-default.svg';
 ---
