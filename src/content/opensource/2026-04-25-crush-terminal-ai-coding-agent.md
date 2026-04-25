@@ -3,7 +3,7 @@ title: "Crush：终端里的 AI 编程搭档，Charmbracelet 出品"
 description: "Charmbracelet 发布开源 AI 编程 Agent Crush，支持多模型切换、LSP 增强、MCP 扩展。支持 macOS/Linux/Windows/FreeBSD，个人使用完全免费。"
 pubDate: 2026-04-25
 tags: ["AI编程", "开源", "终端", "Charmbracelet", "Crush"]
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/crush-terminal-ai-coding-agent/cover.webp"
 ---
 
 ## 前言

@@ -4,7 +4,7 @@ description: "AISLE 的自主 AI 系统在 6 个月内发现并修复了 20 个 
 pubDate: 2026-04-25
 tags: ["AI安全", "零日漏洞", "OpenSSL", "AISLE", "漏洞发现"]
 category: "news"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/aisle-ai-discovers-openssl-zero-days/cover.webp"
 ---
 
 ## 前言
