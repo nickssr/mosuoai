@@ -1,23 +1,18 @@
 ---
-/**
- * PageHero 组件 - 统一的栏目页 Hero 区域
- * 支持自定义标题、描述、主题色
- */
+import { siteConfig } from '../config.mjs';
 
 interface Props {
   title: string;
   description?: string;
-  /** 主题色，用于背景渐变和光晕 */
-  themeColor?: string;
-  /** 是否为首页样式（更大的 padding 和字体） */
   isHome?: boolean;
+  themeColor?: string;
 }
 
 const {
   title,
   description,
-  themeColor = '0, 212, 224', // 默认主色 RGB 值
   isHome = false,
+  themeColor = '0, 212, 224',
 } = Astro.props;
 ---
 
@@ -27,9 +22,9 @@ const {
   </div>
   <div class="hero-content">
     <h1 class:list={['hero-title', { 'hero-title-home': isHome }]}>
-      <span class="text-gradient">{title}</span>
+      {title}
     </h1>
-    {isHome && <p class="hero-subtitle">探索 AI 技术，分享知识洞见</p>}
+    {isHome && <p class="hero-subtitle">{siteConfig.description}</p>}
     {description && <p class="hero-desc">{description}</p>}
   </div>
 </section>
@@ -38,22 +33,19 @@ const {
   .hero-section {
     position: relative;
     text-align: center;
-    width: 100vw;
-    left: 50%;
-    margin-left: -50vw;
+    padding: 3rem 1.5rem 2.5rem;
     margin-bottom: 2rem;
-    padding: calc(2rem + 73px) 2rem 3rem;
     background: linear-gradient(
       135deg,
-      rgba(0, 212, 224, 0.08) 0%,
-      rgba(0, 212, 224, 0.02) 50%,
+      rgba(0, 212, 224, 0.06) 0%,
+      rgba(0, 212, 224, 0.02) 40%,
       transparent 100%
     );
   }
 
   .hero-home {
-    padding: calc(3rem + 73px) 2rem 4rem;
-    margin-bottom: 3rem;
+    padding: 3.5rem 1.5rem 3rem;
+    margin-bottom: 2.5rem;
   }
 
   .hero-bg {
@@ -89,55 +81,47 @@ const {
   }
 
   .hero-title {
-    font-size: 2.75rem;
+    font-size: 2.5rem;
     font-weight: 800;
-    margin-bottom: 0.5rem;
-    letter-spacing: -0.02em;
-  }
-
-  .hero-title-home {
-    font-size: 3.5rem;
     margin-bottom: 0.75rem;
+    color: var(--color-text-primary);
+    background: linear-gradient(135deg, var(--color-text-primary) 0%, var(--color-primary) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
   }
 
   .hero-subtitle {
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     color: var(--color-text-secondary);
-    margin-bottom: 1rem;
-    font-weight: 600;
+    margin-bottom: 0.5rem;
   }
 
   .hero-desc {
-    color: var(--color-text-secondary);
-    font-size: 1.05rem;
+    font-size: 1rem;
+    color: var(--color-text-muted);
     max-width: 600px;
     margin: 0 auto;
-    line-height: 1.7;
   }
 
+  /* Responsive */
   @media (max-width: 768px) {
     .hero-section {
-      padding: 2.5rem 1rem 2rem;
+      padding: 2rem 1rem 1.5rem;
     }
 
     .hero-home {
-      padding: 3rem 1rem 2rem;
+      padding: 2.5rem 1rem 2rem;
     }
 
     .hero-title {
       font-size: 2rem;
     }
+  }
 
-    .hero-title-home {
-      font-size: 2.25rem;
-    }
-
-    .hero-subtitle {
-      font-size: 1.15rem;
-    }
-
-    .hero-desc {
-      font-size: 0.95rem;
+  @media (max-width: 640px) {
+    .hero-title {
+      font-size: 1.75rem;
     }
   }
 </style>
