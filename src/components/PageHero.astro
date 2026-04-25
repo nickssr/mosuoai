@@ -32,6 +32,8 @@ const {
 <style>
   .hero-section {
     position: relative;
+    width: 100vw;
+    margin-left: calc(50% - 50vw);
     padding: 3.5rem 1.5rem 3rem;
     margin-bottom: 2.5rem;
     background: linear-gradient(
@@ -40,14 +42,6 @@ const {
       rgba(0, 212, 224, 0.02) 40%,
       transparent 100%
     );
-  }
-
-  .hero-section::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: inherit;
-    z-index: -1;
   }
 
   .hero-home {
@@ -65,9 +59,9 @@ const {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
     width: 500px;
     height: 500px;
+    transform: translate(-50%, -50%);
   }
 
   .hero-home .hero-glow {
