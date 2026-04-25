@@ -148,7 +148,7 @@ const categoryNames: Record<string, string> = {
       {(prevNews || nextNews) && (
         <nav class="article-nav">
           {prevNews && (
-            <a href={`/news/${prevNews.slug}`} class="nav-item nav-prev">
+            <a href={`/news/${prevNews.id}`} class="nav-item nav-prev">
               <span class="nav-label">
                 <ArrowLeft size={14} />
                 上一篇
@@ -157,7 +157,7 @@ const categoryNames: Record<string, string> = {
             </a>
           )}
           {nextNews && (
-            <a href={`/news/${nextNews.slug}`} class="nav-item nav-next">
+            <a href={`/news/${nextNews.id}`} class="nav-item nav-next">
               <span class="nav-label">
                 下一篇
                 <ArrowRight size={14} />

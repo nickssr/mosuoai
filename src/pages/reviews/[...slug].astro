@@ -51,7 +51,7 @@ while ((match = headingRegex.exec(review.body)) !== null) {
 const sortedReviews = allReviews
   .filter((r) => !r.data.draft)
   .sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-const currentIndex = sortedReviews.findIndex((r) => r.slug === review.id);
+const currentIndex = sortedReviews.findIndex((r) => r.id === review.id);
 const prevReview = currentIndex > 0 ? sortedReviews[currentIndex - 1] : null;
 const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[currentIndex + 1] : null;
 ---
@@ -197,7 +197,7 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
       {(prevReview || nextReview) && (
         <nav class="article-nav">
           {prevReview && (
-            <a href={`/reviews/${prevReview.slug}`} class="nav-item nav-prev">
+            <a href={`/reviews/${prevReview.id}`} class="nav-item nav-prev">
               <span class="nav-label">
                 <ArrowLeft size={14} />
                 上一篇
@@ -206,7 +206,7 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
             </a>
           )}
           {nextReview && (
-            <a href={`/reviews/${nextReview.slug}`} class="nav-item nav-next">
+            <a href={`/reviews/${nextReview.id}`} class="nav-item nav-next">
               <span class="nav-label">
                 下一篇
                 <ArrowRight size={14} />
