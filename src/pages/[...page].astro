@@ -81,14 +81,11 @@ export async function getStaticPaths({ paginate }: any) {
 }
 
 const { page } = Astro.props;
-const articles = page.data;
 const defaultThumb = '/og-default.svg';
-
-// 获取所有标签用于侧边栏
-const allTags = Array.from(new Set(articles.flatMap((a: UnifiedArticle) => a.tags ?? [])));
+const allTags = Array.from(new Set(page.data.flatMap((a) => a.tags ?? [])));
 ---
 
-<BaseLayout title={`第 ${page.currentPage} 页 - MosuoAI`} description="探索 AI 技术，分享知识洞见">
+<BaseLayout title="MosuoAI" description="探索 AI 技术，分享知识洞见">
   <PageHero
     title="Mosuo AI"
     description="AI资讯、教程、学习、评测一站式内容平台"
@@ -98,7 +95,7 @@ const allTags = Array.from(new Set(articles.flatMap((a: UnifiedArticle) => a.tag
   <div class="page-layout">
     <main class="main-content">
       <div class="article-list">
-        {articles.map((article: UnifiedArticle) => (
+        {page.data.map((article: UnifiedArticle) => (
           <article class="article-card">
             <a href={`/${article.type}/${article.id}`} class="article-card-link"></a>
             <div class="article-card-thumb">
@@ -124,7 +121,7 @@ const allTags = Array.from(new Set(articles.flatMap((a: UnifiedArticle) => a.tag
           </article>
         ))}
       </div>
-      <Pagination currentPage={page.currentPage} totalPages={page.lastPage} />
+      <Pagination currentPage={page.currentPage} totalPages={page.lastPage} baseUrl="" />
     </main>
 
     <aside class="sidebar">
@@ -132,7 +129,7 @@ const allTags = Array.from(new Set(articles.flatMap((a: UnifiedArticle) => a.tag
       <div class="sidebar-section">
         <h3 class="sidebar-title">热门标签</h3>
         <div class="tag-cloud">
-          {allTags.slice(0, 20).map((tag: string) => (
+          {allTags.slice(0, 20).map((tag) => (
             <a href={`/tags/${tag}`} class="tag-pill">
               {tag}
             </a>

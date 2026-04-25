@@ -7,8 +7,19 @@ interface Props {
 
 const { currentPage, totalPages, baseUrl = '' } = Astro.props;
 
-const prevUrl = currentPage > 1 ? (currentPage === 2 ? '/' : `/${currentPage - 1}`) : null;
-const nextUrl = currentPage < totalPages ? `/${currentPage + 1}` : null;
+// 构建分页 URL
+const getPageUrl = (page: number): string => {
+  if (baseUrl === '') {
+    // 首页分页
+    return page === 1 ? '/' : `/${page}/`;
+  } else {
+    // 栏目页分页
+    return page === 1 ? `${baseUrl}/` : `${baseUrl}/${page}/`;
+  }
+};
+
+const prevUrl = currentPage > 1 ? getPageUrl(currentPage - 1) : null;
+const nextUrl = currentPage < totalPages ? getPageUrl(currentPage + 1) : null;
 ---
 
 {totalPages > 1 && (
@@ -31,7 +42,7 @@ const nextUrl = currentPage < totalPages ? `/${currentPage + 1}` : null;
       
       {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
         <a
-          href={page === 1 ? '/' : `/${page}`}
+          href={getPageUrl(page)}
           class:list={['pagination-num', { active: page === currentPage }]}
         >
           {page}
