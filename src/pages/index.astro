@@ -9,10 +9,11 @@ import { getCollection } from 'astro:content';
 const allNews = await getCollection('news', ({ data }) => !data.draft);
 const allTutorials = await getCollection('tutorials', ({ data }) => !data.draft);
 const allReviews = await getCollection('reviews', ({ data }) => !data.draft);
+const allOpensource = await getCollection('opensource', ({ data }) => !data.draft);
 
 // 统一合并为文章列表
 interface UnifiedArticle {
-  type: 'news' | 'tutorials' | 'reviews';
+  type: 'news' | 'tutorials' | 'reviews' | 'opensource';
   id: string;
   title: string;
   description: string;
@@ -56,6 +57,17 @@ const articles: UnifiedArticle[] = [
     tags: r.data.tags,
     categoryLabel: '评测',
     categoryColor: '#f59e0b',
+  })),
+  ...allOpensource.map((o) => ({
+    type: 'opensource' as const,
+    id: o.id,
+    title: o.data.title,
+    description: o.data.description,
+    pubDate: o.data.pubDate,
+    heroImage: o.data.heroImage,
+    tags: o.data.tags,
+    categoryLabel: '开源',
+    categoryColor: '#8b5cf6',
   })),
 ].sort((a, b) => b.pubDate.valueOf() - a.pubDate.valueOf());
 

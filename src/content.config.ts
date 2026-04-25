@@ -51,6 +51,20 @@ const tutorials = defineCollection({
   }),
 });
 
+// 开源集合（板块 4：开源项目）
+const opensource = defineCollection({
+  loader: glob({ pattern: '**/*.md', base: './src/content/opensource' }),
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    pubDate: z.date(),
+    updatedDate: z.date().optional(),
+    heroImage: z.string().optional(),
+    tags: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
+  }),
+});
+
 // 资源集合（板块 7：资源导航）
 const resources = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/resources' }),
@@ -90,6 +104,7 @@ export const collections = {
   'news': news,
   'reviews': reviews,
   'tutorials': tutorials,
+  'opensource': opensource,
   'resources': resources,
   'paths': paths,
 };
