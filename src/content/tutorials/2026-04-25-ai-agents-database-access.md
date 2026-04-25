@@ -3,7 +3,7 @@ title: "给 AI Agent 数据库访问？比想象中难得多"
 description: "QueryBear 工程师分享实战经验：为什么给 AI Agent 安全地开放数据库访问如此困难。从 SQL 注入到提示注入，从单层防御到洋葱模型，全面解析 AI Agent 的数据库安全挑战。"
 pubDate: 2026-04-25
 tags: ["AI Agent", "数据库安全", "SQL注入", "提示注入", "教程"]
-category: "tutorial"
+category: "skill-dev"
 difficulty: "intermediate"
 duration: "15分钟"
 heroImage: "/images/posts/ai-agents-database-access/cover.webp"
