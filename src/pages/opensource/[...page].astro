@@ -4,12 +4,18 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import PopularArticles from '../../components/PopularArticles.astro';
+import Pagination from '../../components/Pagination.astro';
 
-const allOpensource = await getCollection('opensource', ({ data }) => !data.draft);
-const sortedOpensource = allOpensource.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const allTags = Array.from(new Set(sortedOpensource.flatMap((a) => a.data.tags ?? [])));
 const defaultThumb = '/og-default.svg';
+
+export async function getStaticPaths({ paginate }: any) {
+  const allOpensource = await getCollection('opensource', ({ data }) => !data.draft);
+  const sortedOpensource = allOpensource.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(sortedOpensource, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+const allTags = Array.from(new Set(page.data.flatMap((a: any) => a.data.tags ?? [])));
 ---
 
 <BaseLayout title="开源" description="开源框架、源码解读、MCP协议、Skill生态">
@@ -19,7 +25,7 @@ const defaultThumb = '/og-default.svg';
     <main class="main-content">
       <div class="breadcrumb">首页 &gt; 开源</div>
       <div class="article-list">
-        {sortedOpensource.map((item) => (
+        {page.data.map((item: any) => (
           <article class="article-card">
             <a href={`/opensource/${item.id}`} class="article-card-link"></a>
             <div class="article-card-thumb">
@@ -45,6 +51,7 @@ const defaultThumb = '/og-default.svg';
           </article>
         ))}
       </div>
+      <Pagination currentPage={page.currentPage} totalPages={page.lastPage} baseUrl="/opensource" />
     </main>
 
     <aside class="sidebar">
@@ -52,7 +59,7 @@ const defaultThumb = '/og-default.svg';
       <div class="sidebar-section">
         <h3 class="sidebar-title">热门标签</h3>
         <div class="tag-cloud">
-          {allTags.slice(0, 20).map((tag) => (
+          {allTags.slice(0, 20).map((tag: string) => (
             <a href={`/tags/${tag}`} class="tag-pill">
               {tag}
             </a>

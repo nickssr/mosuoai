@@ -1,0 +1,145 @@
+---
+interface Props {
+  currentPage: number;
+  totalPages: number;
+  baseUrl?: string;
+}
+
+const { currentPage, totalPages, baseUrl = '' } = Astro.props;
+
+const prevUrl = currentPage > 1 ? (currentPage === 2 ? '/' : `/${currentPage - 1}`) : null;
+const nextUrl = currentPage < totalPages ? `/${currentPage + 1}` : null;
+---
+
+{totalPages > 1 && (
+  <nav class="pagination">
+    <div class="pagination-info">
+      第 {currentPage} 页 / 共 {totalPages} 页
+    </div>
+    <div class="pagination-buttons">
+      {prevUrl ? (
+        <a href={prevUrl} class="pagination-btn prev">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          上一页
+        </a>
+      ) : (
+        <span class="pagination-btn disabled">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          上一页
+        </span>
+      )}
+      
+      {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+        <a
+          href={page === 1 ? '/' : `/${page}`}
+          class:list={['pagination-num', { active: page === currentPage }]}
+        >
+          {page}
+        </a>
+      ))}
+      
+      {nextUrl ? (
+        <a href={nextUrl} class="pagination-btn next">
+          下一页
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </a>
+      ) : (
+        <span class="pagination-btn disabled">
+          下一页
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg>
+        </span>
+      )}
+    </div>
+  </nav>
+)}
+
+<style>
+  .pagination {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 3rem;
+    padding: 1.5rem;
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+  }
+
+  .pagination-info {
+    font-size: 0.9rem;
+    color: var(--color-text-muted);
+  }
+
+  .pagination-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .pagination-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .pagination-btn:not(.disabled):hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+    background: rgba(0, 212, 224, 0.06);
+  }
+
+  .pagination-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .pagination-num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2.5rem;
+    height: 2.5rem;
+    padding: 0 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+    background: var(--color-bg-primary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: all var(--transition-fast);
+  }
+
+  .pagination-num:hover {
+    color: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .pagination-num.active {
+    color: white;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  @media (max-width: 640px) {
+    .pagination {
+      padding: 1rem;
+    }
+
+    .pagination-num {
+      min-width: 2rem;
+      height: 2rem;
+      font-size: 0.8rem;
+    }
+  }
+</style>

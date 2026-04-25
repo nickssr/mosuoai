@@ -4,12 +4,18 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import PopularArticles from '../../components/PopularArticles.astro';
+import Pagination from '../../components/Pagination.astro';
 
-const allNews = await getCollection('news', ({ data }) => !data.draft);
-const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
-
-const allTags = Array.from(new Set(sortedNews.flatMap((a) => a.data.tags ?? [])));
 const defaultThumb = '/og-default.svg';
+
+export async function getStaticPaths({ paginate }: any) {
+  const allNews = await getCollection('news', ({ data }) => !data.draft);
+  const sortedNews = allNews.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(sortedNews, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+const allTags = Array.from(new Set(page.data.flatMap((a: any) => a.data.tags ?? [])));
 ---
 
 <BaseLayout title="资讯" description="AI Agent 领域最新资讯和动态">
@@ -19,7 +25,7 @@ const defaultThumb = '/og-default.svg';
     <main class="main-content">
       <div class="breadcrumb">首页 &gt; 资讯</div>
       <div class="article-list">
-        {sortedNews.map((news) => (
+        {page.data.map((news: any) => (
           <article class="article-card">
             <a href={`/news/${news.id}`} class="article-card-link"></a>
             <div class="article-card-thumb">
@@ -45,6 +51,7 @@ const defaultThumb = '/og-default.svg';
           </article>
         ))}
       </div>
+      <Pagination currentPage={page.currentPage} totalPages={page.lastPage} baseUrl="/news" />
     </main>
 
     <aside class="sidebar">
@@ -52,7 +59,7 @@ const defaultThumb = '/og-default.svg';
       <div class="sidebar-section">
         <h3 class="sidebar-title">热门标签</h3>
         <div class="tag-cloud">
-          {allTags.slice(0, 20).map((tag) => (
+          {allTags.slice(0, 20).map((tag: string) => (
             <a href={`/tags/${tag}`} class="tag-pill">
               {tag}
             </a>
