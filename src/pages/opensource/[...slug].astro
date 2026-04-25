@@ -1,5 +1,5 @@
 ---
-import { Calendar, User, ArrowLeft, ArrowRight, Tag } from 'lucide-astro';
+import { Calendar, User, ArrowLeft, ArrowRight, Tag, Clock } from 'lucide-astro';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import TableOfContents from '../../components/TableOfContents.astro';
@@ -34,12 +34,27 @@ if (!item) {
 
 const { Content } = await render(item);
 
-// 提取标题用于目录
-const headings = item.body?.toc?.map((t) => ({
+// 计算阅读时长
+const textContent = item.body?.replace(/[#*_`~\[\]()<>]/g, '') || '';
+const wordCount = textContent.length;
+const readingTime = Math.ceil(wordCount / 200) || 1;
+
+// 提取标题用于目录（如果body有toc属性则使用，否则正则提取）
+const headings = item.body?.toc ? item.body.toc.map((t: { text: string; depth: number; slug: string }) => ({
   text: t.text,
   depth: t.depth,
   slug: slug(t.text),
-})) ?? [];
+})) : [];
+
+// 如果toc为空，用正则提取
+const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+let m;
+while ((m = headingRegex.exec(item.body || '')) !== null) {
+  const text = m[2].trim();
+  if (!headings.find((h: { text: string }) => h.text === text)) {
+    headings.push({ depth: m[1].length, slug: slug(text), text });
+  }
+}
 
 // 获取上一篇和下一篇
 const sortedItems = allOpensource
@@ -54,7 +69,8 @@ const defaultThumb = '/og-default.svg';
 
 <BaseLayout title={item.data.title} description={item.data.description}>
   <article class="article-page">
-    <header class="article-header">
+    <header class="article-header opensource-header">
+      <div class="opensource-glow"></div>
       <a href="/opensource" class="back-link">
         <ArrowLeft size={14} />
         返回开源
@@ -73,15 +89,18 @@ const defaultThumb = '/og-default.svg';
             day: 'numeric',
           })}
         </span>
+        <span class="meta-item">
+          <Clock size={14} />
+          {readingTime} 分钟阅读
+        </span>
       </div>
-
       {item.data.tags && item.data.tags.length > 0 && (
         <div class="article-tags">
           {item.data.tags.map((tag) => (
-            <a href={`/tags/${tag}`} class="article-tag">
+            <span class="article-tag opensource-tag">
               <Tag size={12} />
               {tag}
-            </a>
+            </span>
           ))}
         </div>
       )}
@@ -101,6 +120,7 @@ const defaultThumb = '/og-default.svg';
         <Content />
       </div>
       <aside class="article-sidebar">
+        <div class="sidebar-section">
           <h3 class="sidebar-title">热门文章</h3>
           <ul class="popular-list">
             <li><a href="/opensource/2026-04-23-langgraph-vs-langchain" class="popular-link">LangGraph vs LangChain：Agent 开发范式之争</a></li>
@@ -108,6 +128,7 @@ const defaultThumb = '/og-default.svg';
             <li><a href="/tutorials/2026-04-22-ai-agent-getting-started" class="popular-link">AI Agent 开发入门指南</a></li>
           </ul>
         </div>
+        <div class="sidebar-section">
           <h3 class="sidebar-title">热门标签</h3>
           <div class="tag-cloud">
             {item.data.tags?.map((tag) => (
@@ -148,7 +169,28 @@ const defaultThumb = '/og-default.svg';
 </BaseLayout>
 
 <style>
-  /* 开源页特有样式：文章标签可点击 */
+  /* 开源页特有样式：渐变头部 + 标签样式 */
+  .opensource-header {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .opensource-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(139, 92, 246, 0.1) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .article-tag.opensource-tag {
+    background: linear-gradient(135deg, rgba(139, 92, 246, 0.2) 0%, rgba(124, 58, 237, 0.1) 100%);
+    color: #a78bfa;
+    border-color: rgba(139, 92, 246, 0.3);
+  }
+
   .article-tag {
     text-decoration: none;
     transition: all var(--transition-fast);
@@ -157,5 +199,10 @@ const defaultThumb = '/og-default.svg';
   .article-tag:hover {
     background: rgba(0, 212, 224, 0.2);
     border-color: var(--color-primary);
+  }
+
+  .opensource-header .article-tag:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: #a78bfa;
   }
 </style>

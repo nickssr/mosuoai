@@ -66,7 +66,8 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
   }}
 >
   <article class="article-page">
-    <header class="article-header">
+    <header class="article-header reviews-header">
+      <div class="reviews-glow"></div>
       <a href="/reviews" class="back-link">
         <ArrowLeft size={16} />
         返回评测列表
@@ -105,6 +106,17 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
           {readingTime} 分钟阅读
         </span>
       </div>
+
+      {review.data.tags && review.data.tags.length > 0 && (
+        <div class="article-tags">
+          {review.data.tags.map((tag) => (
+            <span class="article-tag reviews-tag">
+              <Tag size={12} />
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
 
       {review.data.heroImage && (
         <div class="article-hero">
@@ -153,6 +165,7 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
         <Content />
       </div>
       <aside class="article-sidebar">
+        <div class="sidebar-section">
           <h3 class="sidebar-title">热门文章</h3>
           <ul class="popular-list">
             <li><a href="/news/2026-04-22-openai-agents-sdk-evolution" class="popular-link">OpenAI 发布 Agents SDK 重大更新</a></li>
@@ -160,6 +173,7 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
             <li><a href="/reviews/cursor-ai-review" class="popular-link">Cursor AI 编辑器评测</a></li>
           </ul>
         </div>
+        <div class="sidebar-section">
           <h3 class="sidebar-title">热门标签</h3>
           <div class="tag-cloud">
             {review.data.tags?.map((tag) => (
@@ -207,7 +221,27 @@ const nextReview = currentIndex < sortedReviews.length - 1 ? sortedReviews[curre
 </BaseLayout>
 
 <style>
-  /* 评测页特有样式：评分系统 */
+  /* 评测页特有样式：评分系统 + 渐变头部 */
+  .reviews-header {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .reviews-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.08) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .reviews-tag {
+    background: linear-gradient(135deg, rgba(251, 191, 36, 0.2) 0%, rgba(245, 158, 11, 0.1) 100%);
+    color: #fbbf24;
+    border-color: rgba(251, 191, 36, 0.3);
+  }
   .rating-banner {
     display: flex;
     align-items: center;

@@ -2,6 +2,8 @@
 import { Calendar, Clock, ArrowLeft, Tag } from 'lucide-astro';
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import { slug } from 'github-slugger';
 
 export async function getStaticPaths() {
   const tutorials = await getCollection('tutorials');
@@ -29,6 +31,16 @@ function calculateReadingTime(content: string): number {
 }
 
 const readingTime = calculateReadingTime(tutorial.body);
+
+// 提取标题用于目录
+const headings: Array<{ depth: number; slug: string; text: string }> = [];
+const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+let match;
+while ((match = headingRegex.exec(tutorial.body)) !== null) {
+  const depth = match[1].length;
+  const text = match[2].trim();
+  headings.push({ depth, slug: slug(text), text });
+}
 ---
 
 <BaseLayout
@@ -73,10 +85,14 @@ const readingTime = calculateReadingTime(tutorial.body);
     </header>
 
     <div class="article-content-wrapper">
+      <nav class="floating-toc">
+        <TableOfContents headings={headings} />
+      </nav>
       <div class="article-body">
         <Content />
       </div>
       <aside class="article-sidebar">
+        <div class="sidebar-section">
           <h3 class="sidebar-title">热门文章</h3>
           <ul class="popular-list">
             <li><a href="/news/2026-04-22-openai-agents-sdk-evolution" class="popular-link">OpenAI 发布 Agents SDK 重大更新</a></li>
@@ -84,6 +100,7 @@ const readingTime = calculateReadingTime(tutorial.body);
             <li><a href="/reviews/cursor-ai-review" class="popular-link">Cursor AI 编辑器评测</a></li>
           </ul>
         </div>
+        <div class="sidebar-section">
           <h3 class="sidebar-title">热门标签</h3>
           <div class="tag-cloud">
             {tutorial.data.tags?.map((tag) => (
