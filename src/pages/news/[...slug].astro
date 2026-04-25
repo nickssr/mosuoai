@@ -79,7 +79,8 @@ const categoryNames: Record<string, string> = {
   }}
 >
   <article class="article-page">
-    <header class="article-header">
+    <header class="article-header news-header">
+      <div class="news-glow"></div>
       <a href="/news" class="back-link">
         <ArrowLeft size={16} />
         返回资讯列表
@@ -122,6 +123,7 @@ const categoryNames: Record<string, string> = {
         <Content />
       </div>
       <aside class="article-sidebar">
+        <div class="sidebar-section">
           <h3 class="sidebar-title">热门文章</h3>
           <ul class="popular-list">
             <li><a href="/news/2026-04-22-openai-agents-sdk-evolution" class="popular-link">OpenAI 发布 Agents SDK 重大更新</a></li>
@@ -129,6 +131,7 @@ const categoryNames: Record<string, string> = {
             <li><a href="/reviews/cursor-ai-review" class="popular-link">Cursor AI 编辑器评测</a></li>
           </ul>
         </div>
+        <div class="sidebar-section">
           <h3 class="sidebar-title">热门标签</h3>
           <div class="tag-cloud">
             {news.data.tags?.map((tag) => (
@@ -169,7 +172,22 @@ const categoryNames: Record<string, string> = {
 </BaseLayout>
 
 <style>
-  /* 资讯页特有样式：分类标签 */
+  /* 资讯页特有样式：分类标签 + 渐变头部 */
+  .news-header {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .news-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+  }
+
   .meta-category {
     background: rgba(59, 130, 246, 0.15);
     color: #3b82f6;
