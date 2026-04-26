@@ -3,7 +3,7 @@ title: "OpenClaw 实例突破 50 万：安全风险与企业的致命盲区"
 description: "OpenClaw 作为本地 AI Agent 平台增长迅猛，但安全研究表明其已暴露约 50 万实例，且缺乏企业级 kill switch。本文深入分析这一安全盲区对企业的潜在威胁。"
 pubDate: 2026-04-26 10:30:00
 tags: ["OpenClaw", "AI Agent", "安全", "企业", "隐私"]
-category: "news"
+category: "skill-dev"
 heroImage: "/og-default.svg"
 ---
 
