@@ -1,7 +1,7 @@
 ---
-title: "华为支持 DeepSeek V4：Ascend 芯片加强中国 AI 自立
+title: "华为支持 DeepSeek V4：Ascend 芯片加强中国 AI 自立"
 description: "中国 AI 初创公司 DeepSeek 发布 V4 模型，全面支持华为 Ascend 芯片。这是 DeepSeek 首次在非 NVIDIA 硬件上大规模运行，标志着中国 AI 生态向自立更生迈出关键一步。"
-pubDate: 2026-04-26
+pubDate: 2026-04-26 09:21:00
 tags: ["DeepSeek", "华为", "Ascend", "中国 AI", "AI 自立"]
 category: "news"
 heroImage: "/images/posts/huawei-deepseek-v4-ascend-chips/cover.webp"

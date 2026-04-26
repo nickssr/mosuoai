@@ -1,7 +1,7 @@
 ---
 title: "Meta 与亚马逊达成数十亿美元芯片协议，直击 NVIDIA 主导地位"
 description: "Meta 与 AWS 签署新协议，将使用数百万亚马逊自研处理器开发 AI 系统。AWS Graviton 芯片将承担 AI Agent 工作负载，这被分析师视为对 NVIDIA 在 AI 芯片市场主导地位的重大打击。"
-pubDate: 2026-04-26
+pubDate: 2026-04-26 09:26:00
 tags: ["Meta", "AWS", "Graviton", "NVIDIA", "AI 芯片"]
 category: "news"
 heroImage: "/images/posts/meta-amazon-deal-nvidia-dominance/cover.webp"

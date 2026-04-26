@@ -1,7 +1,7 @@
 ---
 title: "美国务院向全球发出中国 AI 技术窃取警告，DeepSeek 被点名"
 description: "美国务院向全球外交站发布密电，警告中国通过 AI 蒸馏等技术窃取美国 AI 机密。DeepSeek 被特别提及，其新模型仅向中国公司提供早期访问，不与美国工程师共享。地缘政治 AI 竞争进一步升级。"
-pubDate: 2026-04-26
+pubDate: 2026-04-26 09:18:00
 tags: ["美国务院", "DeepSeek", "AI 窃取", "地缘政治", "AI 蒸馏"]
 category: "news"
 heroImage: "/images/posts/us-state-dept-china-ai-theft-warning/cover.webp"
