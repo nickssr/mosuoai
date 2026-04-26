@@ -4,7 +4,7 @@ description: "Anthropic 正在创建一个类似应用商店的 Agent 交易市�
 pubDate: 2026-04-26 09:00:00
 tags: ["Anthropic", "Claude", "Agent", "AI 智能体", "生态"]
 category: "news"
-heroImage: "/images/posts/2026-04-26-anthropic-agent-marketplace/hero.png"
+heroImage: "/images/posts/2026-04-26-anthropic-agent-marketplace/hero.jpg"
 ---
 
 ## 前言

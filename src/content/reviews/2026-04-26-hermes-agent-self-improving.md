@@ -1,9 +1,13 @@
 ---
 title: "Hermes Agent 评测：Nous Research 的自改进 AI 能否超越 OpenClaw？"
 description: "Nous Research 推出的 Hermes Agent 声称解决了 AI Agent 最大的痛点——记忆丢失问题。本文深入评测 Hermes Agent 的自我改进机制与实际表现。"
+rating: 4
+pros:
+  - "待补充"
+cons:
+  - "待补充"
 pubDate: 2026-04-26 10:32:00
 tags: ["Hermes Agent", "Nous Research", "AI Agent", "自改进", "评测"]
-category: "skill-dev"
 heroImage: "/images/posts/2026-04-26-hermes-agent-self-improving/hero.png"
 ---
 
