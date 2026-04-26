@@ -4,7 +4,7 @@ description: "Anthropic 近日公布了一项名为 Project Deal 的内部实验
 pubDate: 2026-04-26 13:00:00
 tags: ["AI Agent", "Anthropic", "Agent Commerce"]
 category: "news"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-26-anthropic-project-deal-agent-commerce/hero.jpg"
 ---
 
 ## 前言
