@@ -6,7 +6,7 @@ tags: ["Dify", "Docker", "AI Agent", "部署", "教程"]
 category: "setup"
 difficulty: "beginner"
 duration: "20分钟"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-26-dify-docker-deploy/hero.png"
 ---
 
 ## 前言

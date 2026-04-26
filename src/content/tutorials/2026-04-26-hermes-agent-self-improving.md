@@ -4,7 +4,7 @@ description: "Nous Research 推出的 Hermes Agent 声称解决了 AI Agent 最�
 pubDate: 2026-04-26 10:32:00
 tags: ["Hermes Agent", "Nous Research", "AI Agent", "自改进", "评测"]
 category: "skill-dev"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-26-hermes-agent-self-improving/hero.png"
 ---
 
 ## 前言

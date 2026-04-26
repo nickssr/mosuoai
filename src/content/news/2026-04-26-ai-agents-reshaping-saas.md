@@ -4,7 +4,7 @@ description: "据 Forbes 报道，AI Agents 已导致 SaaS 市场蒸发 2850 亿
 pubDate: 2026-04-26 10:00:00
 tags: ["AI Agents", "SaaS", "Per-seat 定价", "市场影响"]
 category: "news"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-26-ai-agents-reshaping-saas/hero.png"
 ---
 
 ## 前言

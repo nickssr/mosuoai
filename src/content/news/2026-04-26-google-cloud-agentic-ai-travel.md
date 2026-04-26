@@ -4,7 +4,7 @@ description: "在 Google Cloud Next 大会上，Google 正式发布 Gemini Enter
 pubDate: 2026-04-26 13:00:00
 tags: ["AI Agent", "Google Cloud", "Gemini", "旅游行业"]
 category: "news"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-26-google-cloud-agentic-ai-travel/hero.png"
 ---
 
 ## 前言
