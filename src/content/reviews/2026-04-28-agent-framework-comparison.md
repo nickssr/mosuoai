@@ -15,7 +15,7 @@ cons:
   - "新兴框架（如Mastra、Agno）生产案例有限"
   - "中文社区资料少，部分框架需阅读英文文档"
 verdict: "没有万能框架。LangGraph适合需要状态追溯的生产工作流，CrewAI适合快速原型，Azure团队首选Microsoft Agent Framework，GPT工作流选OpenAI Agents SDK，GCP-native选Google ADK。先明确编排模式，再用检查清单筛选。"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-28-agent-framework-comparison/hero.webp"
 ---
 
 ## 前言

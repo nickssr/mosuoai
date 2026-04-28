@@ -4,7 +4,7 @@ description: "Archon是2026年4月发布的全新开源项目，允许团队用Y
 pubDate: 2026-04-28 10:15:00
 tags: ["Archon", "开源项目", "AI流水线", "YAML", "CI/CD"]
 category: "opensource"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-28-archon-ai-pipeline/hero.png"
 ---
 
 ## 前言

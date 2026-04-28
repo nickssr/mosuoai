@@ -5,7 +5,7 @@ category: "tools"
 tags: ["AI Agent", "工具推荐", "开发工具", "2026"]
 featured: false
 pubDate: 2026-04-28
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-28-ai-agent-tools-recommend/hero.jpg"
 ---
 
 ## 前言
