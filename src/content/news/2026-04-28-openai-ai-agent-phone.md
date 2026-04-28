@@ -4,7 +4,7 @@ description: "据多方报道，OpenAI 正在秘密开发一款深度集成 AI A
 pubDate: 2026-04-28 13:00:00
 tags: ["OpenAI", "AI Agent", "硬件", "手机", "产品发布"]
 category: "news"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-28-openai-ai-agent-phone/hero.jpg"
 ---
 
 据 Gizmodo 援引多方知情人士报道，OpenAI 正在开发一款深度集成 AI Agent 能力的智能手机，代号暂不明确，但内部定位是「AI Agent Phone」——不是给现有手机加个语音助手，而是从操作系统层开始重构 AI 能力。
