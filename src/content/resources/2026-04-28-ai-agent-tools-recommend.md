@@ -1,10 +1,10 @@
 ---
 title: "2026年AI Agent工具推荐：开发者必备的15款工具清单"
 description: "从Dockerset、Mastra到MCPAnything，本文整理2026年最值得关注的AI Agent工具，覆盖框架、平台、安全、开发工具等类别，帮开发者快速构建AI工作流。"
-url: "https://mosuoai.com/resources/2026-04-28-ai-agent-tools-recommend"
 category: "tools"
 tags: ["AI Agent", "工具推荐", "开发工具", "2026"]
 featured: false
+pubDate: 2026-04-28
 heroImage: "/og-default.svg"
 ---
 

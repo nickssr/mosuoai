@@ -2,6 +2,7 @@
 title: "Awesome-Agent-Learning：AI Agent 学习资源精选清单"
 description: "从零开始学习 AI Agent 开发的精选资源列表，涵盖理论基础、实战项目、工具框架、论文研究。适合初学者到进阶开发者。"
 pubDate: 2026-04-25
+heroImage: "/og-default.svg"
 tags: ["AI Agent", "学习资源", "开源", "教程"]
 url: "https://github.com/artnitolog/awesome-agent-learning"
 category: "learning"

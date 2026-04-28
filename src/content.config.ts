@@ -65,16 +65,16 @@ const opensource = defineCollection({
   }),
 });
 
-// 资源集合（板块 7：资源导航）
+// 资源集合（板块 7：文章）
 const resources = defineCollection({
   loader: glob({ pattern: '**/*.md', base: './src/content/resources' }),
   schema: z.object({
     title: z.string(),
     description: z.string(),
-    url: z.string().url(),
-    icon: z.string().optional(),
-    category: z.enum(['tools', 'frameworks', 'platforms', 'learning', 'community']).default('tools'),
+    pubDate: z.date(),
+    heroImage: z.string().optional(),
     tags: z.array(z.string()).default([]),
+    category: z.enum(['tools', 'frameworks', 'platforms', 'learning', 'community']).default('tools'),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
   }),

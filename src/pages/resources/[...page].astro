@@ -1,0 +1,71 @@
+---
+import { Calendar } from 'lucide-astro';
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+import PopularArticles from '../../components/PopularArticles.astro';
+import Pagination from '../../components/Pagination.astro';
+
+const defaultThumb = '/og-default.svg';
+
+export async function getStaticPaths({ paginate }: any) {
+  const allResources = await getCollection('resources', ({ data }) => !data.draft);
+  const sortedResources = allResources.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+  return paginate(sortedResources, { pageSize: 12 });
+}
+
+const { page } = Astro.props;
+const allTags = Array.from(new Set(page.data.flatMap((a: any) => a.data.tags ?? [])));
+---
+
+<BaseLayout title="教程" description="AI Agent 部署和开发教程">
+  <PageHero title="教程" description="从入门到精通，系统的 AI Agent 开发教程" themeColor="16, 185, 129" />
+
+  <div class="page-layout">
+    <main class="main-content">
+      <div class="breadcrumb">首页 &gt; 教程</div>
+      <div class="article-list">
+        {page.data.map((tutorial: any) => (
+          <article class="article-card">
+            <a href={`/resources/${tutorial.id}`} class="article-card-link"></a>
+            <div class="article-card-thumb">
+              <img
+                src={tutorial.data.heroImage || defaultThumb}
+                alt={tutorial.data.title}
+                loading="lazy"
+              />
+            </div>
+            <div class="article-card-body">
+              <div class="article-card-meta">
+                <span class="category-badge" style={{ 'background': '#10b98120', 'color': '#10b981' }}>
+                  教程
+                </span>
+                <span class="date-text">
+                  <Calendar size={12} />
+                  {tutorial.data.pubDate.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' })}
+                </span>
+              </div>
+              <h3 class="article-card-title">{tutorial.data.title}</h3>
+              <p class="article-card-desc">{tutorial.data.description}</p>
+            </div>
+          </article>
+        ))}
+      </div>
+      <Pagination currentPage={page.currentPage} totalPages={page.lastPage} baseUrl="/resources" />
+    </main>
+
+    <aside class="sidebar">
+      <PopularArticles />
+      <div class="sidebar-section">
+        <h3 class="sidebar-title">热门标签</h3>
+        <div class="tag-cloud">
+          {allTags.slice(0, 20).map((tag: string) => (
+            <a href={`/tags/${tag}`} class="tag-pill">
+              {tag}
+            </a>
+          ))}
+        </div>
+      </div>
+    </aside>
+  </div>
+</BaseLayout>

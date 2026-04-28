@@ -1,0 +1,171 @@
+---
+import { Calendar, Clock, ArrowLeft, Tag } from 'lucide-astro';
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TableOfContents from '../../components/TableOfContents.astro';
+import { slug } from 'github-slugger';
+
+export async function getStaticPaths() {
+  const resources = await getCollection('resources');
+  return resources.map((resource) => ({
+    params: { slug: resource.id },
+    props: { resource },
+  }));
+}
+
+const { resource } = Astro.props;
+const { Content } = await render(resource);
+
+// 计算阅读时间（中文字数 / 300 字每分钟）
+function calculateReadingTime(content: string): number {
+  const text = content.replace(/```[\s\S]*?```/g, '').replace(/---[\s\S]*?---/g, '');
+  const chineseChars = (text.match(/[\u4e00-\u9fff]/g) || []).length;
+  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
+  const totalChars = chineseChars + englishWords;
+  return Math.ceil(totalChars / 300) || 1;
+}
+
+const readingTime = calculateReadingTime(resource.body);
+
+// 提取标题用于目录
+const headings: Array<{ depth: number; slug: string; text: string }> = [];
+const headingRegex = /^(#{2,3})\s+(.+)$/gm;
+let match;
+while ((match = headingRegex.exec(resource.body)) !== null) {
+  const depth = match[1].length;
+  const text = match[2].trim();
+  headings.push({ depth, slug: slug(text), text });
+}
+---
+
+<BaseLayout
+  title={resource.data.title}
+  description={resource.data.description}
+  image={resource.data.heroImage}
+>
+  <article class="article-page resource-page">
+    <header class="article-header resource-header">
+      <div class="header-glow"></div>
+      <a href="/resources" class="back-link">
+        <ArrowLeft size={16} />
+        返回文章列表
+      </a>
+      <h1 class="article-title">{resource.data.title}</h1>
+      <p class="article-description">{resource.data.description}</p>
+      <div class="article-meta">
+        <time datetime={resource.data.pubDate.toISOString()} class="meta-item">
+          <Calendar size={14} />
+          {resource.data.pubDate.toLocaleDateString('zh-CN', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+          })}
+        </time>
+        <span class="meta-divider">•</span>
+        <span class="meta-item">
+          <Clock size={14} />
+          {readingTime} 分钟阅读
+        </span>
+      </div>
+      {resource.data.tags && resource.data.tags.length > 0 && (
+        <div class="article-tags">
+          {resource.data.tags.map((tag) => (
+            <span class="article-tag resource-tag">
+              <Tag size={12} />
+              {tag}
+            </span>
+          ))}
+        </div>
+      )}
+    </header>
+
+    <div class="article-content-wrapper">
+      <nav class="floating-toc">
+        <TableOfContents headings={headings} />
+      </nav>
+      <div class="article-body">
+        <Content />
+      </div>
+      <aside class="article-sidebar">
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">热门文章</h3>
+          <ul class="popular-list">
+            <li><a href="/news/2026-04-22-openai-agents-sdk-evolution" class="popular-link">OpenAI 发布 Agents SDK 重大更新</a></li>
+            <li><a href="/tutorials/2026-04-22-ai-agent-getting-started" class="popular-link">AI Agent 开发入门指南</a></li>
+            <li><a href="/reviews/cursor-ai-review" class="popular-link">Cursor AI 编辑器评测</a></li>
+          </ul>
+        </div>
+        <div class="sidebar-section">
+          <h3 class="sidebar-title">热门标签</h3>
+          <div class="tag-cloud">
+            {resource.data.tags?.map((tag) => (
+              <a href={`/tags/${tag}`} class="tag-pill">
+                {tag}
+              </a>
+            ))}
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <footer class="article-footer">
+      <a href="/resources" class="back-link">
+        <ArrowLeft size={16} />
+        返回文章列表
+      </a>
+    </footer>
+  </article>
+</BaseLayout>
+
+<style>
+  /* 文章页特有样式 */
+  .resource-header {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header-glow {
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    background: radial-gradient(circle, rgba(16, 185, 129, 0.1) 0%, transparent 70%);
+    top: -100px;
+    right: -100px;
+    pointer-events: none;
+  }
+
+  .article-description {
+    color: var(--color-text-secondary);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: var(--space-5);
+  }
+
+  /* 文章页标签使用绿色主题 */
+  .resource-tag {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(16, 185, 129, 0.1) 100%);
+    color: #10b981;
+    border-color: rgba(16, 185, 129, 0.3);
+  }
+
+  /* 文章页侧边栏使用绿色主题 */
+  .article-sidebar .tag-pill:hover {
+    color: #10b981;
+    border-color: #10b981;
+    background: rgba(16, 185, 129, 0.1);
+  }
+
+  .article-sidebar .popular-link:hover {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.06);
+  }
+
+  .article-sidebar .resource-link:hover {
+    color: #10b981;
+    background: rgba(16, 185, 129, 0.05);
+  }
+
+  .article-sidebar .resource-link:hover::before {
+    background: #10b981;
+  }
+</style>
