@@ -18,12 +18,12 @@ const { page } = Astro.props;
 const allTags = Array.from(new Set(page.data.flatMap((a: any) => a.data.tags ?? [])));
 ---
 
-<BaseLayout title="教程" description="AI Agent 部署和开发教程">
-  <PageHero title="教程" description="从入门到精通，系统的 AI Agent 开发教程" themeColor="16, 185, 129" />
+<BaseLayout title="资源" description="AI Agent 工具推荐与学习资源精选">
+  <PageHero title="资源" description="AI Agent 工具推荐与学习资源精选" themeColor="16, 185, 129" />
 
   <div class="page-layout">
     <main class="main-content">
-      <div class="breadcrumb">首页 &gt; 教程</div>
+      <div class="breadcrumb">首页 &gt; 资源</div>
       <div class="article-list">
         {page.data.map((tutorial: any) => (
           <article class="article-card">
@@ -38,7 +38,7 @@ const allTags = Array.from(new Set(page.data.flatMap((a: any) => a.data.tags ?? 
             <div class="article-card-body">
               <div class="article-card-meta">
                 <span class="category-badge" style={{ 'background': '#10b98120', 'color': '#10b981' }}>
-                  教程
+                  资源
                 </span>
                 <span class="date-text">
                   <Calendar size={12} />
