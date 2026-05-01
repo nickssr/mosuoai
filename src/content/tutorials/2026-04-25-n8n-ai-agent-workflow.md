@@ -6,7 +6,7 @@ tags: ["n8n", "AI Agent", "工作流", "自动化", "教程"]
 category: "setup"
 difficulty: "beginner"
 duration: "30分钟"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-25-n8n-ai-agent-workflow/hero.png"
 ---
 
 ## 前言

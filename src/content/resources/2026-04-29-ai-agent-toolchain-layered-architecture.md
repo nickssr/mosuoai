@@ -4,7 +4,7 @@ description: "工具层、编排层、记忆层、观测层——AI Agent 的工
 pubDate: 2026-04-29 14:00:00
 tags: ["AI Agent", "工具链", "MCP", "LangGraph", "Aider", "观测", "记忆系统", "架构"]
 category: "tools"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-29-ai-agent-toolchain-layered-architecture/hero.png"
 ---
 
 ## 前言

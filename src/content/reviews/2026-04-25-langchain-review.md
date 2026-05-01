@@ -13,7 +13,7 @@ cons:
   - "灵活性差，难以定制底层行为"
   - "调试困难，经常需要深入源码"
 verdict: "适合原型验证，不适合复杂生产环境。建议直接使用 LLM SDK + 模块化组件。"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-25-langchain-review/hero.png"
 ---
 
 ## 前言

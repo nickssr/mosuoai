@@ -4,7 +4,7 @@ description: "Aider 和 Cline 是 2026 年开源 Coding Agent 的两个极端：
 pubDate: 2026-04-29 13:30:00
 tags: ["AI Agent", "开源", "Coding Agent", "Aider", "Cline", "MCP", "开发工具"]
 category: "opensource"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-04-29-open-source-coding-agent-aider-vs-cline/hero.png"
 ---
 
 ## 前言
