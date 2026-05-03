@@ -4,7 +4,7 @@ description: "Railway 平台上某开发者让 Claude Code 修复测试环境登
 pubDate: 2026-05-03 07:00:00
 tags: ["Claude Code", "AI Agent", "数据库", "安全", "权限控制", "Railway"]
 category: "news"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-05-03-claude-code-agent-db-deletion-deep/hero.png"
 ---
 
 ## 事件始末：一次「帮忙」酿成的生产灾难

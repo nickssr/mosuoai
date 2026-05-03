@@ -4,7 +4,7 @@ description: "AI Agent 运行时暴露的网络足迹引发安全担忧。诺顿
 pubDate: 2026-05-02 23:00:12
 tags: ["AI Agent", "安全", "VPN", "网络安全"]
 category: "news"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-05-02-gen-digital-ai-agent-vpn/hero.png"
 ---
 
 AI Agent 正在成为企业工作流的标配，但一个长期被忽视的风险正在浮出水面：Agent 在执行任务时产生的网络流量，往往不受企业 VPN 的保护，暴露在公网之上。

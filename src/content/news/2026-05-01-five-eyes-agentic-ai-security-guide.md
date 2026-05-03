@@ -4,7 +4,7 @@ description: "美国 CISA、英国 NCSC、澳大利亚 ASD 等五眼联盟网络
 pubDate: 2026-05-01 23:00:00
 tags: ["Agentic AI", "网络安全", "CISA", "五眼联盟", "安全指南"]
 category: "news"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-05-01-five-eyes-agentic-ai-security-guide/hero.png"
 ---
 
 ## 前言

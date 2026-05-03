@@ -4,7 +4,7 @@ description: "微软 CEO Nadella 在财报电话会议上坦承「直到开始 w
 pubDate: 2026-05-01 07:00:00
 tags: ["Microsoft", "AI Agent", "财报", "GitHub Copilot", "Bing"]
 category: "news"
-heroImage: "/images/posts/2026-05-01-microsoft-earnings-agentic-ai/hero.svg"
+heroImage: "/images/posts/2026-05-01-microsoft-earnings-agentic-ai/hero.png"
 ---
 
 ## 前言

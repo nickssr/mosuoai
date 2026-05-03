@@ -4,7 +4,7 @@ description: "微软在 Word 中推出首款法律专用 AI Agent，能够分析
 pubDate: 2026-05-01 07:00:00
 tags: ["Microsoft", "AI Agent", "法律科技", "Word", "Copilot"]
 category: "news"
-heroImage: "/images/posts/2026-05-01-microsoft-legal-agent-word/hero.svg"
+heroImage: "/images/posts/2026-05-01-microsoft-legal-agent-word/hero.png"
 ---
 
 ## 前言

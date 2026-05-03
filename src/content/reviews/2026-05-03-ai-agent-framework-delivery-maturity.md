@@ -13,7 +13,7 @@ cons:
   - "Pydantic AI 和 AutoGen 资料有限，部分评估依赖社区反馈"
   - "编排模式各有优势，没有绝对winner，需结合场景判断"
 verdict: "2026年的框架竞争已从功能完备性转向交付成熟度。LangGraph适合复杂管道但学习曲线陡峭；CrewAI是快速原型最优解；Mastra为TypeScript全栈团队提供了最小摩擦方案；Pydantic AI是类型强迫症患者的秘密武器。"
-heroImage: "/og-default.svg"
+heroImage: "/images/posts/2026-05-03-ai-agent-framework-delivery-maturity/hero.png"
 ---
 
 ## 前言：选型困境的根源变了

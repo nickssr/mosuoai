@@ -4,7 +4,7 @@ description: "律所部署 Agentic AI 的最大障碍不是技术，而是过去
 pubDate: 2026-05-01 07:00:00
 tags: ["AI Agent", "信息治理", "法律科技", "数据管理", "企业AI"]
 category: "news"
-heroImage: "/images/posts/2026-05-01-agentic-ai-governance-law-firms/hero.svg"
+heroImage: "/images/posts/2026-05-01-agentic-ai-governance-law-firms/hero.png"
 ---
 
 ## 前言
