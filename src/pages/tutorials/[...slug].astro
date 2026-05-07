@@ -41,6 +41,20 @@ while ((match = headingRegex.exec(tutorial.body)) !== null) {
   const text = match[2].trim();
   headings.push({ depth, slug: slug(text), text });
 }
+
+// 侧边栏热门文章（同栏目最新5篇）
+const allTutorials = await getCollection('tutorials', ({ data }) => !data.draft);
+const sortedTutorials = allTutorials.sort((a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf());
+const popularArticles = sortedTutorials.filter((t) => t.id !== tutorial.id).slice(0, 5);
+
+// 侧边栏热门标签（同栏目按频率）
+const tagCount: Record<string, number> = {};
+for (const t of sortedTutorials) {
+  for (const tag of t.data.tags || []) {
+    tagCount[tag] = (tagCount[tag] || 0) + 1;
+  }
+}
+const popularTags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([tag]) => tag);
 ---
 
 <BaseLayout
@@ -95,15 +109,19 @@ while ((match = headingRegex.exec(tutorial.body)) !== null) {
         <div class="sidebar-section">
           <h3 class="sidebar-title">热门文章</h3>
           <ul class="popular-list">
-            <li><a href="/news/2026-04-22-openai-agents-sdk-evolution" class="popular-link">OpenAI 发布 Agents SDK 重大更新</a></li>
-            <li><a href="/tutorials/2026-04-22-ai-agent-getting-started" class="popular-link">AI Agent 开发入门指南</a></li>
-            <li><a href="/reviews/cursor-ai-review" class="popular-link">Cursor AI 编辑器评测</a></li>
+            {popularArticles.map((article) => (
+              <li>
+                <a href={`/tutorials/${article.id}`} class="popular-link">
+                  {article.data.title}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
         <div class="sidebar-section">
           <h3 class="sidebar-title">热门标签</h3>
           <div class="tag-cloud">
-            {tutorial.data.tags?.map((tag) => (
+            {popularTags.map((tag) => (
               <a href={`/tags/${tag}`} class="tag-pill">
                 {tag}
               </a>

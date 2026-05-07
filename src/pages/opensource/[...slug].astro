@@ -64,6 +64,18 @@ const currentIndex = sortedItems.findIndex((i) => i.id === item.id);
 const prevItem = currentIndex < sortedItems.length - 1 ? sortedItems[currentIndex + 1] : null;
 const nextItem = currentIndex > 0 ? sortedItems[currentIndex - 1] : null;
 
+// 侧边栏热门文章（同栏目最新5篇）
+const popularArticles = sortedItems.filter((i) => i.id !== item.id).slice(0, 5);
+
+// 侧边栏热门标签（同栏目按频率）
+const tagCount: Record<string, number> = {};
+for (const i of sortedItems) {
+  for (const tag of i.data.tags || []) {
+    tagCount[tag] = (tagCount[tag] || 0) + 1;
+  }
+}
+const popularTags = Object.entries(tagCount).sort((a, b) => b[1] - a[1]).slice(0, 10).map(([tag]) => tag);
+
 const defaultThumb = '/og-default.svg';
 ---
 
@@ -123,15 +135,19 @@ const defaultThumb = '/og-default.svg';
         <div class="sidebar-section">
           <h3 class="sidebar-title">热门文章</h3>
           <ul class="popular-list">
-            <li><a href="/opensource/2026-04-23-langgraph-vs-langchain" class="popular-link">LangGraph vs LangChain：Agent 开发范式之争</a></li>
-            <li><a href="/opensource/2026-04-22-mcp-protocol-guide" class="popular-link">MCP 协议完全指南</a></li>
-            <li><a href="/tutorials/2026-04-22-ai-agent-getting-started" class="popular-link">AI Agent 开发入门指南</a></li>
+            {popularArticles.map((article) => (
+              <li>
+                <a href={`/opensource/${article.id}`} class="popular-link">
+                  {article.data.title}
+                </a>
+              </li>
+            ))}
           </ul>
         </div>
         <div class="sidebar-section">
           <h3 class="sidebar-title">热门标签</h3>
           <div class="tag-cloud">
-            {item.data.tags?.map((tag) => (
+            {popularTags.map((tag) => (
               <a href={`/tags/${tag}`} class="tag-pill">
                 {tag}
               </a>
