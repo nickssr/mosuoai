@@ -39,7 +39,7 @@ heroImage: "/images/posts/2026-04-29-mastra-agent-framework-review/hero.png"
 | **生态扩展** | 15% | MCP 支持、第三方集成、社区活跃度 |
 | **场景适配度** | 15% | 什么场景强，什么场景弱 |
 
-## 第一维：易用性
+## 易用性体验
 
 **结论：TypeScript 团队友好，但对习惯 Python 的人有学习曲线。**
 
@@ -74,7 +74,7 @@ researcher = Agent(
 
 Mastra 的问题在于：**文档太简略**。很多高级 API 没有完整示例，需要读源码才能理解。比如延迟执行（Defer）和流式工具调用，文档只有一句话，实际用的时候需要去 GitHub Issues 找答案。
 
-## 第二维：功能完整度
+## 功能对比
 
 **结论：覆盖完整，主要模块没有明显短板。**
 
@@ -167,7 +167,7 @@ const result = await eval.run({
 
 支持 model-graded（让模型打分）、rule-based（正则匹配）、statistical（BLEU/ROUGE）三种评估方式。测试驱动开发（TDD）场景下很有用，但内置的 metrics 有限，需要自己写 evaluator。
 
-## 第三维：生产就绪度
+## 性能实测
 
 **结论：核心稳定，运维工具尚在建设。**
 
@@ -179,7 +179,11 @@ Mastra 的核心包 `@mastra/core` 是 Apache 2.0 许可，生产可用。Replit
 
 **高并发**：文档没有说明并发限制。考虑到 v1.0 的发布时间，建议在生产环境先做压测再上线。
 
-## 第四维：生态扩展
+## 定价分析
+
+Mastra 是开源项目（GitHub：mastra-ai/mastra），核心功能免费使用。YC W25 融资 1300 万美元，团队共 26 人，短期内无倒闭风险。
+
+企业如需商业支持、Vercel/Cloudflare 深度集成或专属培训，可联系 Mastra 团队获取企业报价。具体定价根据团队规模和使用场景定制。
 
 **结论：MCP 支持是强项，TypeScript 生态天然优势。**
 
@@ -203,7 +207,7 @@ const server = new MCPServer({
 | CrewAI | ✅ v1.10 原生 | ❌ 需 adapter |
 | Vercel AI SDK | ✅ 原生 | ❌ 不支持 |
 
-## 第五维：场景适配度
+### 适用场景建议
 
 **结论：Web 应用 + TypeScript 团队 = 首选。复杂图编排 = 不适合。**
 
@@ -249,7 +253,7 @@ LangGraph 的插件市场更成熟，Mastra 的插件数量还在增长中。如
 | 生产案例 | 早期 | 多 | 丰富 | 丰富 |
 | 文档完整度 | 中 | 高 | 高 | 高 |
 
-## 结论与选型建议
+## 总结与选型建议
 
 **Mastra 解决了什么问题**：TypeScript 开发者终于有了一个「不用从 Python 移植过来」的生产级 AI Agent 框架。它内置的 RAG、Memory、Evals 模块让中小型 AI 应用可以直接用，不需要从零搭组件。
 
@@ -263,9 +267,3 @@ LangGraph 的插件市场更成熟，Mastra 的插件数量还在增长中。如
 
 **值得期待**：Mastra 的 v1.1 路线图里提到了 Defer（延迟执行）和更好的并发控制。如果这两个做实，Mastra 的适用场景会显著扩大。
 
----
-
-**相关阅读**：
-- [15大AI Agent框架横评：编排模式与选型决策树](/reviews/2026-04-28-agent-framework-comparison)
-- [Hermes Agent 安装配置指南：从零搭建自改进 AI Agent](/tutorials/2026-04-26-hermes-agent-install-guide)
-- [GitHub](https://github.com/mastra-ai/mastra)
